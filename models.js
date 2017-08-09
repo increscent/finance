@@ -7,14 +7,15 @@ var Models = {};
 Models.Budget = mongoose.model('Budget', new Schema({
   category: String,
   allowance: Number,
-  allowance_type: {type: String, default: '$'}
+  allowance_type: {type: String, default: '$'},
+  start_date: Date
 }));
 
 var transactionSchema = new Schema({
   category: String,
   motive: String,
   amount: Number,
-  date: {type: Date, default: Date.now}
+  date: Date
 });
 
 Models.Credit = mongoose.model('Credit', transactionSchema);

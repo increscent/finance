@@ -2,33 +2,32 @@ var express = require('express');
 var router = express.Router();
 var Models = require('../models');
 var helpers = require('./helpers');
+var config = require('../config');
+var Transaction = require('../classes/transaction');
 
-router.get('/transaction/:type/all', function (req, res) {
-  var Model = (req.params.type.toLowerCase() == 'credit')? Models.Credit:Models.Debit;
-  Model.find(function (err, transactions) {
-    if (!transactions) transactions = [];
-    res.send(JSON.stringify(transactions));
-  });
+router.get('/transaction/:type', helpers.getAccountData, function (req, res) {
+  var type = req.params.type.toLowerCase();
+  var collection = (type == 'credit')? req.account.credits:req.account.debits;
+  if (!collection) collection = [];
+  res.send(JSON.stringify(collection));
 });
 
-router.post('/transaction/:type', function (req, res) {
-  if (!req.body.date) req.body.date = Date.now();
-  var required_fields = ['category', 'motive', 'amount', 'date'];
-  if (!helpers.validateRequestBody(req.body, required_fields)) return helpers.userError(res, 'Missing one or more required fields: ' + required_fields.toString());
-
-  var Model = (req.params.type.toLowerCase() == 'credit')? Models.Credit:Models.Debit;
-  new Model(req.body).save(function (err, transaction) {
+router.post('/transaction/:type', helpers.validateRequestBody(config.transaction_required_fields), helpers.getAccountData, function (req, res) {
+  var type = req.params.type.toLowerCase();
+  var collection = (type == 'credit')? req.account.credits:req.account.debits;
+  var new_transaction = helpers.generateNewDocument(config.transaction_required_fields, req.body);
+  collection.push(new_transaction);
+  req.account.save().then(function () {
     res.send('Transaction saved successfully!');
   });
 });
 
-router.delete('/transaction/:type/:id', function (req, res) {
-  var Model = (req.params.type.toLowerCase() == 'credit')? Models.Credit:Models.Debit;
-  Model.findOne({_id: req.params.id}, function (err, transaction) {
-    if (err || !transaction) return helpers.userError(res, 'Transaction does not exist: ' + req.params.id);
-    transaction.remove(function (err) {
-      res.send('Transaction deleted successfully!');
-    });
+router.delete('/transaction/:type/:transaction_id', helpers.getAccountData, function (req, res) {
+  var type = req.params.type.toLowerCase();
+  var collection = (type == 'credit')? req.account.credits:req.account.debits;
+  Transaction.removeTransaction(collection, req.params.transaction_id);
+  req.account.save().then(function () {
+    res.send('Transaction deleted successfully!');
   });
 });
 

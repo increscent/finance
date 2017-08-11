@@ -2,35 +2,32 @@ var express = require('express');
 var router = express.Router();
 var Models = require('../models');
 var helpers = require('./helpers');
+var config = require('../config');
+var Budget = require('../classes/budget');
 
-router.get('/budget/all', function (req, res) {
-  Models.Budget.find(function (err, budgets) {
-    if (!budgets) budgets = [];
-    res.send(JSON.stringify(budgets));
+router.get('/budget', helpers.getAccountData, function (req, res) {
+  var budgets = req.account.budgets;
+  if (!budgets) budgets = [];
+  res.send(JSON.stringify(budgets));
+});
+
+router.post('/budget', helpers.validateRequestBody(config.budget_required_fields), helpers.getAccountData, function (req, res) {
+  if (Budget.findByCategory(req.account.budgets, req.body.category)) {
+    return helpers.userError(res, 'Budget category already exists: ' + req.body.category);
+  }
+
+  var new_budget = helpers.generateNewDocument(config.budget_required_fields, req.body);
+  req.account.budgets.push(new_budget);
+  req.account.save().then(function () {
+    res.send('Budget saved successfully!');
   });
 });
 
-router.post('/budget', function (req, res) {
-  if (!req.body.start_date) req.body.start_date = Date.now();
-  var required_fields = ['category', 'allowance', 'allowance_type', 'start_date'];
-  if (!helpers.validateRequestBody(req.body, required_fields)) return helpers.userError(res, 'Missing one or more required fields: ' + required_fields.toString());
-
-  Models.Budget.findOne({category: req.body.category}, function (err, budget) {
-    if (budget) return helpers.userError(res, 'Category already exists: ' + req.body.category);
-
-    new Models.Budget(req.body).save(function (err, budget) {
-      res.send('Budget saved successfully!');
-    });
-  });
-});
-
-router.delete('/budget/:id', function (req, res) {
-  Models.Budget.findOne({_id: req.params.id}, function (err, budget) {
-    if (err || !budget) return helpers.userError(res, 'Id does not exist: ' + req.params.id);
-    budget.remove(function (err) {
-      res.send('Budget deleted successfully!');
-    })
-  });
-});
+// router.delete('/budget/:budget_id', helpers.getAccountData, function (req, res) {
+//   Budget.removeBudget(req.account.budgets, req.params.budget_id);
+//   req.account.save().then(function () {
+//     res.send('Budget deleted successfully!');
+//   });
+// });
 
 module.exports = router;

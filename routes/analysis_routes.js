@@ -2,20 +2,11 @@ var express = require('express');
 var router = express.Router();
 var Models = require('../models');
 var helpers = require('./helpers');
+var Analysis = require('../classes/analysis');
 
-router.get('/analysis/overview', function (req, res) {
-  Models.Budget.find(function (err, budgets) {
-    var budget = budgets[1];
-    Models.Credit.find({date: {$gt: budget.start_date}}, function (err, credits) {
-      Models.Debit.find({category: budget.category, date: {$gt: budget.start_date}}, function (err, debits) {
-        var totalCredits = sumTransactions(credits);
-        var totalDebits = sumTransactions(debits);
-        var totalAllowance = calculateAllowance(totalCredits, budget.allowance, budget.allowance_type, budget.start_date);
-        var balance = totalAllowance - totalDebits;
-        res.send('Debits: ' + totalDebits + ' Allowance: ' + totalAllowance + ' Balance: ' + balance);
-      });
-    });
-  });
+router.get('/analysis/overview', helpers.getAccountData, function (req, res) {
+  var analysis = new Analysis(req.account.budgets, req.account.credits, req.account.debits);
+  res.send(JSON.stringify(analysis.getOverview()));
 });
 
 module.exports = router;

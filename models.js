@@ -4,21 +4,23 @@ mongoose.connect('mongodb://localhost/finance', {useMongoClient: true});
 var Schema = mongoose.Schema;
 
 var Models = {};
-Models.Budget = mongoose.model('Budget', new Schema({
-  category: String,
-  allowance: Number,
-  allowance_type: {type: String, default: '$'},
-  start_date: Date
-}));
 
-var transactionSchema = new Schema({
+var transactionSchema = {
   category: String,
   motive: String,
   amount: Number,
   date: Date
-});
+};
 
-Models.Credit = mongoose.model('Credit', transactionSchema);
-Models.Debit = mongoose.model('Debit', transactionSchema);
+Models.Account = mongoose.model('Account', new Schema({
+  budgets: [{
+    category: String, // unique id
+    allowance: Number,
+    allowance_type: String,
+    date: Date
+  }],
+  credits: [transactionSchema],
+  debits: [transactionSchema]
+}));
 
 module.exports = Models;

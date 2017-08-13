@@ -1,0 +1,63 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+export default class BalanceTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      Model: this.props.Model
+    };
+  }
+
+  updateModel(model) {
+    this.setState({
+      Model: model
+    });
+  }
+
+  render() {
+    return (
+      <table>
+        <BalanceTableHeader />
+        <tbody>
+          {
+            this.state.Model.budgets.map((budget) => {
+              return <BalanceRow key={budget.category} budget={budget}/>
+            })
+          }
+        </tbody>
+      </table>
+    );
+  }
+}
+
+class BalanceRow extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    var budget = this.props.budget;
+    return (
+      <tr>
+        <td>{budget.category} ({budget.category_allowance})</td>
+        <td>{budget.allowance}</td>
+        <td>{budget.debits}</td>
+        <td>{budget.balance}</td>
+      </tr>
+    );
+  }
+}
+
+function BalanceTableHeader(props) {
+  return (
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Allowance</th>
+        <th>Spent</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+  );
+}

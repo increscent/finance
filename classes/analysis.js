@@ -1,3 +1,5 @@
+var Budget = require('./budget');
+
 class Analysis {
   constructor(budgets, credits, debits) {
     this.budgets = budgets;
@@ -11,10 +13,61 @@ class Analysis {
       var category = this.budgets[i].category;
       var debits = this.totalBudgetDebits(this.budgets[i]);
       var allowance = this.calcBudgetAllowance(this.budgets[i]);
-      var balance = this.getBudgetBalance(this.budgets[i]);
-      overview.push({category: category, debits: debits, allowance: allowance, balance: balance});
+      var balance = allowance - debits;
+      var category_allowance = (this.budgets[i].allowance_type == '$'?'$':'') + this.budgets[i].allowance.toString() + (this.budgets[i].allowance_type == '%'?'%':'');
+      overview.push({category: category, category_allowance: category_allowance, debits: debits, allowance: allowance, balance: balance});
     }
+
+    var totalCredits = this.sumCollection(this.credits);
+    var totalDebits = this.sumCollection(this.debits);
+    var categoryAssociatedAllowance = 0;
+    var categoryAssociatedDebits = 0;
+    for (var i = 0; i < overview.length; i++) {
+      categoryAssociatedAllowance += overview[i].allowance;
+      categoryAssociatedDebits += overview[i].debits;
+    }
+
+    var category = 'Other';
+    var debits = totalDebits - categoryAssociatedDebits;
+    var allowance = totalCredits - categoryAssociatedAllowance;
+    var balance = allowance - debits;
+    var category_allowance = Math.round(allowance / totalCredits * 100).toString() + '%';
+    overview.push({category: category, category_allowance: category_allowance, debits: debits, allowance: allowance, balance: balance});
+
     return overview;
+  }
+
+  getHistory() {
+    var credits = this.credits.map(x => {
+      var credit = {
+        category: x.category,
+        motive: x.motive,
+        amount: x.amount,
+        date: x.date,
+        type: 'credit'
+      };
+      return credit;
+    });
+    var debits = this.debits.map(x => {
+      var debit = {
+        category: x.category,
+        motive: x.motive,
+        amount: x.amount,
+        date: x.date,
+        type: 'debit'
+      };
+      return debit;
+    });
+    var collection = credits.concat(debits);
+    collection.sort((a, b) => a.date - b.date);
+
+    collection.forEach(x => {
+      if (x.type == 'debit') {
+        x.category = Budget.getCategoryById(this.budgets, x.category);
+      }
+    });
+
+    return collection;
   }
 
   getBudgetBalance(budget) {
@@ -52,11 +105,7 @@ class Analysis {
   }
 
   sumCollection(collection) {
-    var total = 0;
-    for (var i in collection) {
-      total += collection[i].amount;
-    }
-    return total;
+    return collection.reduce((sum, x) => sum + x.amount, 0);
   }
 }
 

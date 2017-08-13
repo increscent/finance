@@ -4,17 +4,23 @@ var Models = require('../models');
 var helpers = require('./helpers');
 var config = require('../config');
 var Transaction = require('../classes/transaction');
+var Budget = require('../classes/budget');
 
-router.get('/transaction/:type', helpers.getAccountData, function (req, res) {
+router.use(helpers.getAccountData);
+
+router.get('/:type', function (req, res) {
   var type = req.params.type.toLowerCase();
   var collection = (type == 'credit')? req.account.credits:req.account.debits;
   if (!collection) collection = [];
   res.send(JSON.stringify(collection));
 });
 
-router.post('/transaction/:type', helpers.validateRequestBody(config.transaction_required_fields), helpers.getAccountData, function (req, res) {
+router.put('/:type', helpers.validateRequestBody(config.transaction_required_fields), function (req, res) {
   var type = req.params.type.toLowerCase();
   var collection = (type == 'credit')? req.account.credits:req.account.debits;
+
+  if (type == 'debit' && !Budget.findById(req.account.budgets, req.body.category)) req.body.category = 'Other';
+
   var new_transaction = helpers.generateNewDocument(config.transaction_required_fields, req.body);
   collection.push(new_transaction);
   req.account.save().then(function () {
@@ -22,7 +28,7 @@ router.post('/transaction/:type', helpers.validateRequestBody(config.transaction
   });
 });
 
-router.delete('/transaction/:type/:transaction_id', helpers.getAccountData, function (req, res) {
+router.delete('/:type/:transaction_id', function (req, res) {
   var type = req.params.type.toLowerCase();
   var collection = (type == 'credit')? req.account.credits:req.account.debits;
   Transaction.removeTransaction(collection, req.params.transaction_id);

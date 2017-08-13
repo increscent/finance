@@ -14,7 +14,7 @@ var transactionSchema = {
 
 Models.Account = mongoose.model('Account', new Schema({
   budgets: [{
-    category: String, // unique id
+    category: String,
     allowance: Number,
     allowance_type: String,
     date: Date

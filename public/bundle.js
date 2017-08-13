@@ -20889,7 +20889,7 @@ var HistoryController = function () {
     key: 'updateModel',
     value: function updateModel(model) {
       this.Model.updateTransactions(model.transactions);
-      if (this.View) this.View.updateModel(this.Model);
+      if (this.View) this.View.forceUpdate();
     }
   }, {
     key: 'show',
@@ -20970,7 +20970,7 @@ var OverviewController = function () {
     key: 'updateModel',
     value: function updateModel(model) {
       this.Model.updateBudgets(model.budgets);
-      if (this.View) this.View.updateModel(this.Model);
+      if (this.View) this.View.forceUpdate();
     }
   }, {
     key: 'show',
@@ -21260,13 +21260,6 @@ var HistoryTable = function (_React$Component) {
   }
 
   _createClass(HistoryTable, [{
-    key: 'updateModel',
-    value: function updateModel(model) {
-      this.setState({
-        Model: model
-      });
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -21405,13 +21398,6 @@ var BalanceTable = function (_React$Component) {
   }
 
   _createClass(BalanceTable, [{
-    key: 'updateModel',
-    value: function updateModel(model) {
-      this.setState({
-        Model: model
-      });
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(

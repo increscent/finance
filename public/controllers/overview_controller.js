@@ -26,7 +26,7 @@ export default class OverviewController {
 
   updateModel(model) {
     this.Model.updateBudgets(model.budgets);
-    if (this.View) this.View.updateModel(this.Model);
+    if (this.View) this.View.forceUpdate();
   }
 
   show() {

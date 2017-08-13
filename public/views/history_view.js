@@ -9,12 +9,6 @@ export default class HistoryTable extends React.Component {
     };
   }
 
-  updateModel(model) {
-    this.setState({
-      Model: model
-    });
-  }
-
   render() {
     return (
       <table>

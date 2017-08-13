@@ -26,7 +26,7 @@ export default class HistoryController {
 
   updateModel(model) {
     this.Model.updateTransactions(model.transactions);
-    if (this.View) this.View.updateModel(this.Model);
+    if (this.View) this.View.forceUpdate();
   }
 
   show() {

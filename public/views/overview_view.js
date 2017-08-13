@@ -9,12 +9,6 @@ export default class BalanceTable extends React.Component {
     };
   }
 
-  updateModel(model) {
-    this.setState({
-      Model: model
-    });
-  }
-
   render() {
     return (
       <table>

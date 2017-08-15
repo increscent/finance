@@ -6944,7 +6944,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":52,"./ReactReconciler":102,"./instantiateReactComponent":146,"./shouldUpdateReactComponent":154,"./traverseAllChildren":155,"_process":190,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":162}],57:[function(require,module,exports){
+},{"./KeyEscapeUtils":52,"./ReactReconciler":102,"./instantiateReactComponent":146,"./shouldUpdateReactComponent":154,"./traverseAllChildren":155,"_process":194,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":162}],57:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -16506,7 +16506,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":99,"./ReactPropTypesSecret":100,"./reactProdInvariant":150,"_process":190,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":162}],130:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":99,"./ReactPropTypesSecret":100,"./reactProdInvariant":150,"_process":194,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":162}],130:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -16877,7 +16877,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":52,"./traverseAllChildren":155,"_process":190,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":162}],135:[function(require,module,exports){
+},{"./KeyEscapeUtils":52,"./traverseAllChildren":155,"_process":194,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":162}],135:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -20490,7 +20490,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":162,"./ReactPropTypeLocationNames":169,"./ReactPropTypesSecret":171,"./reactProdInvariant":180,"_process":190,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],175:[function(require,module,exports){
+},{"./ReactComponentTreeHook":162,"./ReactPropTypeLocationNames":169,"./ReactPropTypesSecret":171,"./reactProdInvariant":180,"_process":194,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],175:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -20829,8 +20829,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -20839,71 +20837,41 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _history_model = require('../models/history_model.js');
+var _add_transaction_model = require('../models/add_transaction_model.js');
 
-var _history_model2 = _interopRequireDefault(_history_model);
+var _add_transaction_model2 = _interopRequireDefault(_add_transaction_model);
 
-var _history_view = require('../views/history_view.js');
+var _add_transaction_view = require('../views/add_transaction_view.js');
 
-var _history_view2 = _interopRequireDefault(_history_view);
+var _add_transaction_view2 = _interopRequireDefault(_add_transaction_view);
+
+var _base_controller = require('./base_controller.js');
+
+var _base_controller2 = _interopRequireDefault(_base_controller);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HistoryController = function () {
-  function HistoryController() {
-    var _this = this;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-    _classCallCheck(this, HistoryController);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-    this.Model = new _history_model2.default();
-    this.ViewElement = _react2.default.createElement(_history_view2.default, { Model: this.Model, ref: function ref(instance) {
-        _this.View = instance;
-      } });
-    this.fetchModel();
+var AddTransactionController = function (_BaseController) {
+  _inherits(AddTransactionController, _BaseController);
+
+  function AddTransactionController(props) {
+    _classCallCheck(this, AddTransactionController);
+
+    return _possibleConstructorReturn(this, (AddTransactionController.__proto__ || Object.getPrototypeOf(AddTransactionController)).call(this, props, _add_transaction_model2.default, _add_transaction_view2.default));
   }
 
-  _createClass(HistoryController, [{
-    key: 'fetchModel',
-    value: function fetchModel() {
-      var _this2 = this;
+  return AddTransactionController;
+}(_base_controller2.default);
 
-      var request_options = {
-        method: 'GET',
-        headers: { 'account_id': '598d3551f5468d246bb06fbb' }
-      };
-      fetch('/api/analysis/history', request_options).then(function (res) {
-        if (res.status == 200) {
-          res.json().then(function (data) {
-            return _this2.updateModel({ transactions: data });
-          });
-        } else {
-          res.text().then(function (error) {
-            return console.log(error);
-          });
-        }
-      });
-    }
-  }, {
-    key: 'updateModel',
-    value: function updateModel(model) {
-      this.Model.updateTransactions(model.transactions);
-      if (this.View) this.View.forceUpdate();
-    }
-  }, {
-    key: 'show',
-    value: function show() {
-      return this.ViewElement;
-    }
-  }]);
+exports.default = AddTransactionController;
 
-  return HistoryController;
-}();
-
-exports.default = HistoryController;
-
-},{"../models/history_model.js":186,"../views/history_view.js":188,"react":182,"react-dom":30}],184:[function(require,module,exports){
+},{"../models/add_transaction_model.js":188,"../views/add_transaction_view.js":191,"./base_controller.js":184,"react":182,"react-dom":30}],184:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20932,32 +20900,60 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var OverviewController = function () {
-  function OverviewController() {
-    var _this = this;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-    _classCallCheck(this, OverviewController);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-    this.Model = new _overview_model2.default();
-    this.ViewElement = _react2.default.createElement(_overview_view2.default, { Model: this.Model, ref: function ref(instance) {
-        _this.View = instance;
-      } });
-    this.fetchModel();
+var BaseController = function (_React$Component) {
+  _inherits(BaseController, _React$Component);
+
+  function BaseController(props, Model, View) {
+    _classCallCheck(this, BaseController);
+
+    var _this2 = _possibleConstructorReturn(this, (BaseController.__proto__ || Object.getPrototypeOf(BaseController)).call(this, props));
+
+    _this2.Model = new Model();
+    _this2.View = View;
+    var _this = _this2;
+    _this2.state = {
+      Model: _this2.Model
+    };
+
+    if (_this2.Model.FETCH_endpoint) {
+      _this2.fetchModel();
+    }
+    return _this2;
   }
 
-  _createClass(OverviewController, [{
+  _createClass(BaseController, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this._isMounted = true;
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this._isMounted = false;
+    }
+  }, {
     key: 'fetchModel',
     value: function fetchModel() {
-      var _this2 = this;
+      var _this3 = this;
 
       var request_options = {
         method: 'GET',
         headers: { 'account_id': '598d3551f5468d246bb06fbb' }
       };
-      fetch('/api/analysis/overview', request_options).then(function (res) {
+
+      fetch(this.Model.FETCH_endpoint, request_options).then(function (res) {
         if (res.status == 200) {
           res.json().then(function (data) {
-            return _this2.updateModel({ budgets: data });
+            _this3.Model.update(data);
+            if (_this3._isMounted) {
+              _this3.setState({
+                Model: _this3.Model
+              });
+            }
           });
         } else {
           res.text().then(function (error) {
@@ -20967,24 +20963,153 @@ var OverviewController = function () {
       });
     }
   }, {
-    key: 'updateModel',
-    value: function updateModel(model) {
-      this.Model.updateBudgets(model.budgets);
-      if (this.View) this.View.forceUpdate();
-    }
-  }, {
-    key: 'show',
-    value: function show() {
-      return this.ViewElement;
+    key: 'render',
+    value: function render() {
+      if (this.props.isVisible) {
+        return _react2.default.createElement(this.View, this.state.Model, null);
+      } else {
+        return null;
+      }
     }
   }]);
 
+  return BaseController;
+}(_react2.default.Component);
+
+exports.default = BaseController;
+
+},{"../models/overview_model.js":190,"../views/overview_view.js":193,"react":182,"react-dom":30}],185:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _history_model = require('../models/history_model.js');
+
+var _history_model2 = _interopRequireDefault(_history_model);
+
+var _history_view = require('../views/history_view.js');
+
+var _history_view2 = _interopRequireDefault(_history_view);
+
+var _base_controller = require('./base_controller.js');
+
+var _base_controller2 = _interopRequireDefault(_base_controller);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HistoryController = function (_BaseController) {
+  _inherits(HistoryController, _BaseController);
+
+  function HistoryController(props) {
+    _classCallCheck(this, HistoryController);
+
+    return _possibleConstructorReturn(this, (HistoryController.__proto__ || Object.getPrototypeOf(HistoryController)).call(this, props, _history_model2.default, _history_view2.default));
+  }
+
+  return HistoryController;
+}(_base_controller2.default);
+
+exports.default = HistoryController;
+
+},{"../models/history_model.js":189,"../views/history_view.js":192,"./base_controller.js":184,"react":182,"react-dom":30}],186:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _overview_model = require('../models/overview_model.js');
+
+var _overview_model2 = _interopRequireDefault(_overview_model);
+
+var _overview_view = require('../views/overview_view.js');
+
+var _overview_view2 = _interopRequireDefault(_overview_view);
+
+var _base_controller = require('./base_controller.js');
+
+var _base_controller2 = _interopRequireDefault(_base_controller);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var OverviewController = function (_BaseController) {
+  _inherits(OverviewController, _BaseController);
+
+  function OverviewController(props) {
+    _classCallCheck(this, OverviewController);
+
+    return _possibleConstructorReturn(this, (OverviewController.__proto__ || Object.getPrototypeOf(OverviewController)).call(this, props, _overview_model2.default, _overview_view2.default));
+    //   this.Model = new OverviewModel();
+    //   this.state = {
+    //     budgets: this.Model.budgets
+    //   };
+    //
+    //   this.fetchModel();
+    // }
+    //
+    // fetchModel() {
+    //   var request_options = {
+    //     method: 'GET',
+    //     headers: {'account_id': '598d3551f5468d246bb06fbb'}
+    //   };
+    //   fetch('/api/analysis/overview', request_options).then((res) => {
+    //     if (res.status == 200) {
+    //       res.json().then((data) => this.updateModel({budgets: data}));
+    //     } else {
+    //       res.text().then((error) => console.log(error));
+    //     }
+    //   });
+    // }
+    //
+    // updateModel(model) {
+    //   this.Model.updateBudgets(model.budgets);
+    //   this.setState({
+    //     budgets: this.Model.budgets
+    //   });
+    // }
+    //
+    // render() {
+    //   return (
+    //     <BalanceTable budgets={this.state.budgets} />
+    //   );
+  }
+
   return OverviewController;
-}();
+}(_base_controller2.default);
 
 exports.default = OverviewController;
 
-},{"../models/overview_model.js":187,"../views/overview_view.js":189,"react":182,"react-dom":30}],185:[function(require,module,exports){
+},{"../models/overview_model.js":190,"../views/overview_view.js":193,"./base_controller.js":184,"react":182,"react-dom":30}],187:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21005,6 +21130,10 @@ var _history_controller = require('./controllers/history_controller.js');
 
 var _history_controller2 = _interopRequireDefault(_history_controller);
 
+var _add_transaction_controller = require('./controllers/add_transaction_controller.js');
+
+var _add_transaction_controller2 = _interopRequireDefault(_add_transaction_controller);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21022,11 +21151,8 @@ var App = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
-      currentView: 'overview'
+      currentView: 'addTransaction'
     };
-
-    _this.overviewController = new _overview_controller2.default();
-    _this.historyController = new _history_controller2.default();
 
     _this.switchView = _this.switchView.bind(_this);
     return _this;
@@ -21042,20 +21168,13 @@ var App = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var view;
-      switch (this.state.currentView) {
-        case 'history':
-          view = this.historyController.show();
-          break;
-        default:
-          view = this.overviewController.show();
-      }
-
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(ViewSwitcher, { handleClick: this.switchView }),
-        view
+        _react2.default.createElement(_overview_controller2.default, { isVisible: this.state.currentView == 'overview' }),
+        _react2.default.createElement(_history_controller2.default, { isVisible: this.state.currentView == 'history' }),
+        _react2.default.createElement(_add_transaction_controller2.default, { isVisible: this.state.currentView == 'addTransaction' })
       );
     }
   }]);
@@ -21094,6 +21213,14 @@ var ViewSwitcher = function (_React$Component2) {
               return _this3.props.handleClick('history');
             }, value: 'history' },
           'History'
+        ),
+        '&nbsp:',
+        _react2.default.createElement(
+          'a',
+          { href: '#', onClick: function onClick() {
+              return _this3.props.handleClick('addTransaction');
+            }, value: 'addTransaction' },
+          'Add Transaction'
         )
       );
     }
@@ -21104,14 +21231,41 @@ var ViewSwitcher = function (_React$Component2) {
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-// var overviewController = new OverviewController();
-// updateDOM(overviewController.show());
-//
-// var historyController = new HistoryController();
-// updateDOM(historyController.show());
+},{"./controllers/add_transaction_controller.js":183,"./controllers/history_controller.js":185,"./controllers/overview_controller.js":186,"react":182,"react-dom":30}],188:[function(require,module,exports){
+'use strict';
 
-},{"./controllers/history_controller.js":183,"./controllers/overview_controller.js":184,"react":182,"react-dom":30}],186:[function(require,module,exports){
-"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AddTransactionModel = function () {
+  function AddTransactionModel() {
+    _classCallCheck(this, AddTransactionModel);
+
+    this.debitCategories = [];
+    this.creditCategories = [];
+    this.FETCH_endpoint = '/api/transaction/categories';
+  }
+
+  _createClass(AddTransactionModel, [{
+    key: 'update',
+    value: function update(categories) {
+      this.debitCategories = categories.debitCategories;
+      this.creditCategories = categories.creditCategories;
+    }
+  }]);
+
+  return AddTransactionModel;
+}();
+
+exports.default = AddTransactionModel;
+
+},{}],189:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -21126,41 +21280,12 @@ var HistoryModel = function () {
     _classCallCheck(this, HistoryModel);
 
     this.transactions = [];
-    //   this.transactions = [ { category: 'Paycheck',
-    //   motive: 'yep',
-    //   amount: 80,
-    //   date: '2017-08-11T05:21:25.710Z',
-    //   _id: '598d3ed503433d29f4144a13' },
-    // { category: 'Paycheck',
-    //   motive: 'yep',
-    //   amount: 80,
-    //   date: '2017-08-11T05:24:35.336Z',
-    //   _id: '598d3f9303433d29f4144a16' },
-    // { category: 'Tithing',
-    //   motive: 'tithing',
-    //   amount: 5,
-    //   date: '2017-08-11T05:24:04.705Z',
-    //   _id: '598d3f7403433d29f4144a14' },
-    // { category: 'Tithing',
-    //   motive: 'tithing',
-    //   amount: 10,
-    //   date: '2017-08-11T05:24:11.094Z',
-    //   _id: '598d3f7b03433d29f4144a15' },
-    // { category: 'Food',
-    //   motive: 'Harmon\'s',
-    //   amount: 80,
-    //   date: '2017-08-12T00:28:14.418Z',
-    //   _id: '598e4b9e97660412fffa1c78' },
-    // { category: 'Other',
-    //   motive: 'watch',
-    //   amount: 20,
-    //   date: '2017-08-12T00:29:18.429Z',
-    //   _id: '598e4bde97660412fffa1c79' } ];
+    this.FETCH_endpoint = '/api/analysis/history';
   }
 
   _createClass(HistoryModel, [{
-    key: "updateTransactions",
-    value: function updateTransactions(transactions) {
+    key: 'update',
+    value: function update(transactions) {
       this.transactions = transactions;
     }
   }]);
@@ -21170,8 +21295,8 @@ var HistoryModel = function () {
 
 exports.default = HistoryModel;
 
-},{}],187:[function(require,module,exports){
-"use strict";
+},{}],190:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -21186,31 +21311,12 @@ var OverviewModel = function () {
     _classCallCheck(this, OverviewModel);
 
     this.budgets = [];
-    /*this.budgets = [ { category: 'Tithing',
-        category_allowance: '10%',
-        debits: 15,
-        allowance: 16,
-        balance: 1 },
-      { category: 'Giving',
-        category_allowance: '10%',
-        debits: 0,
-        allowance: 16,
-        balance: 16 },
-      { category: 'Food',
-        category_allowance: '$100',
-        debits: 80,
-        allowance: 100,
-        balance: 20 },
-      { category: 'Other',
-        category_allowance: '18%',
-        debits: 20,
-        allowance: 28,
-        balance: 8 } ];*/
+    this.FETCH_endpoint = '/api/analysis/overview';
   }
 
   _createClass(OverviewModel, [{
-    key: "updateBudgets",
-    value: function updateBudgets(budgets) {
+    key: 'update',
+    value: function update(budgets) {
       this.budgets = budgets;
     }
   }]);
@@ -21220,7 +21326,115 @@ var OverviewModel = function () {
 
 exports.default = OverviewModel;
 
-},{}],188:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddTransactionForm = function (_React$Component) {
+  _inherits(AddTransactionForm, _React$Component);
+
+  function AddTransactionForm(props) {
+    _classCallCheck(this, AddTransactionForm);
+
+    var _this = _possibleConstructorReturn(this, (AddTransactionForm.__proto__ || Object.getPrototypeOf(AddTransactionForm)).call(this, props));
+
+    _this.state = {
+      transaction_type: 'debit',
+      category: '',
+      motive: '',
+      amount: null
+    };
+
+    _this.onTransactionTypeChange = _this.onTransactionTypeChange.bind(_this);
+    _this.onCategoryChange = _this.onCategoryChange.bind(_this);
+    _this.onMotiveChange = _this.onMotiveChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(AddTransactionForm, [{
+    key: 'onTransactionTypeChange',
+    value: function onTransactionTypeChange(e) {
+      this.setState({
+        transaction_type: e.target.value == 'debit' ? 'debit' : 'credit',
+        category: ''
+      });
+    }
+  }, {
+    key: 'onCategoryChange',
+    value: function onCategoryChange(e) {
+      this.setState({
+        category: e.target.value
+      });
+    }
+  }, {
+    key: 'onMotiveChange',
+    value: function onMotiveChange(e) {
+      this.setState({
+        motive: e.target.value
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var categories = this.state.transaction_type == 'debit' ? this.props.debitCategories.map(function (x) {
+        return _react2.default.createElement(
+          'option',
+          { key: x.id, value: x.id },
+          x.category
+        );
+      }) : this.props.creditCategories.map(function (x, i) {
+        return _react2.default.createElement(
+          'option',
+          { key: i, value: x },
+          x
+        );
+      });
+
+      return _react2.default.createElement(
+        'form',
+        { id: 'addTransactionForm' },
+        _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', value: 'debit', checked: this.state.transaction_type == 'debit', onChange: this.onTransactionTypeChange }),
+        'Debit',
+        _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', value: 'credit', checked: this.state.transaction_type == 'credit', onChange: this.onTransactionTypeChange }),
+        'Credit',
+        _react2.default.createElement(
+          'select',
+          { value: this.state.category, onChange: this.onCategoryChange },
+          categories
+        ),
+        _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'note', value: this.state.motive, onChange: this.onMotiveChange }),
+        _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' })
+      );
+    }
+  }]);
+
+  return AddTransactionForm;
+}(_react2.default.Component);
+
+exports.default = AddTransactionForm;
+
+},{"react":182,"react-dom":30}],192:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21251,12 +21465,7 @@ var HistoryTable = function (_React$Component) {
   function HistoryTable(props) {
     _classCallCheck(this, HistoryTable);
 
-    var _this = _possibleConstructorReturn(this, (HistoryTable.__proto__ || Object.getPrototypeOf(HistoryTable)).call(this, props));
-
-    _this.state = {
-      Model: _this.props.Model
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (HistoryTable.__proto__ || Object.getPrototypeOf(HistoryTable)).call(this, props));
   }
 
   _createClass(HistoryTable, [{
@@ -21269,7 +21478,7 @@ var HistoryTable = function (_React$Component) {
         _react2.default.createElement(
           'tbody',
           null,
-          this.state.Model.transactions.map(function (transaction, i) {
+          this.props.transactions.map(function (transaction, i) {
             return _react2.default.createElement(HistoryRow, { key: i, transaction: transaction });
           })
         )
@@ -21358,7 +21567,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"react":182,"react-dom":30}],189:[function(require,module,exports){
+},{"react":182,"react-dom":30}],193:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21389,12 +21598,7 @@ var BalanceTable = function (_React$Component) {
   function BalanceTable(props) {
     _classCallCheck(this, BalanceTable);
 
-    var _this = _possibleConstructorReturn(this, (BalanceTable.__proto__ || Object.getPrototypeOf(BalanceTable)).call(this, props));
-
-    _this.state = {
-      Model: _this.props.Model
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (BalanceTable.__proto__ || Object.getPrototypeOf(BalanceTable)).call(this, props));
   }
 
   _createClass(BalanceTable, [{
@@ -21407,7 +21611,7 @@ var BalanceTable = function (_React$Component) {
         _react2.default.createElement(
           'tbody',
           null,
-          this.state.Model.budgets.map(function (budget) {
+          this.props.budgets.map(function (budget) {
             return _react2.default.createElement(BalanceRow, { key: budget.category, budget: budget });
           })
         )
@@ -21497,7 +21701,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":182,"react-dom":30}],190:[function(require,module,exports){
+},{"react":182,"react-dom":30}],194:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -21683,4 +21887,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[185]);
+},{}]},{},[187]);

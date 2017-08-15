@@ -4,9 +4,6 @@ import ReactDOM from 'react-dom';
 export default class HistoryTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      Model: this.props.Model
-    };
   }
 
   render() {
@@ -15,7 +12,7 @@ export default class HistoryTable extends React.Component {
         <HistoryTableHeader />
         <tbody>
           {
-            this.state.Model.transactions.map((transaction, i) => {
+            this.props.transactions.map((transaction, i) => {
               return <HistoryRow key={i} transaction={transaction}/>
             })
           }

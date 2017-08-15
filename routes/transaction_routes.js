@@ -8,6 +8,15 @@ var Budget = require('../classes/budget');
 
 router.use(helpers.getAccountData);
 
+router.get('/categories', function (req, res) {
+  var debitCategories = Transaction.getDebitCategories(req.account.budgets);
+  var creditCategories = Transaction.getCreditCategories(req.account.credits);
+  res.send(JSON.stringify({
+    debitCategories: debitCategories,
+    creditCategories: creditCategories
+  }));
+});
+
 router.get('/:type', function (req, res) {
   var type = req.params.type.toLowerCase();
   var collection = (type == 'credit')? req.account.credits:req.account.debits;

@@ -4,9 +4,6 @@ import ReactDOM from 'react-dom';
 export default class BalanceTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      Model: this.props.Model
-    };
   }
 
   render() {
@@ -15,7 +12,7 @@ export default class BalanceTable extends React.Component {
         <BalanceTableHeader />
         <tbody>
           {
-            this.state.Model.budgets.map((budget) => {
+            this.props.budgets.map((budget) => {
               return <BalanceRow key={budget.category} budget={budget}/>
             })
           }

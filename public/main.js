@@ -2,16 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import OverviewController from './controllers/overview_controller.js';
 import HistoryController from './controllers/history_controller.js';
+import AddTransactionController from './controllers/add_transaction_controller.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentView: 'overview'
+      currentView: 'addTransaction'
     };
-
-    this.overviewController = new OverviewController();
-    this.historyController = new HistoryController();
 
     this.switchView = this.switchView.bind(this);
   }
@@ -23,19 +21,12 @@ class App extends React.Component {
   }
 
   render() {
-    var view;
-    switch (this.state.currentView) {
-      case 'history':
-        view = this.historyController.show();
-        break;
-      default:
-        view = this.overviewController.show();
-    }
-
     return (
       <div>
         <ViewSwitcher handleClick={this.switchView} />
-        {view}
+        <OverviewController isVisible={this.state.currentView == 'overview'} />
+        <HistoryController isVisible={this.state.currentView == 'history'} />
+        <AddTransactionController isVisible={this.state.currentView == 'addTransaction'} />
       </div>
     );
   }
@@ -52,6 +43,8 @@ class ViewSwitcher extends React.Component {
         <a href="#" onClick={() => this.props.handleClick('overview')} value="overview">Overview</a>
         &nbsp;
         <a href="#" onClick={() => this.props.handleClick('history')} value="history">History</a>
+        &nbsp:
+        <a href="#" onClick={() => this.props.handleClick('addTransaction')} value="addTransaction">Add Transaction</a>
       </span>
     );
   }
@@ -61,9 +54,3 @@ ReactDOM.render(
   <App />,
   document.getElementById('root')
 );
-
-// var overviewController = new OverviewController();
-// updateDOM(overviewController.show());
-//
-// var historyController = new HistoryController();
-// updateDOM(historyController.show());

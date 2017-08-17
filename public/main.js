@@ -43,7 +43,7 @@ class ViewSwitcher extends React.Component {
         <a href="#" onClick={() => this.props.handleClick('overview')} value="overview">Overview</a>
         &nbsp;
         <a href="#" onClick={() => this.props.handleClick('history')} value="history">History</a>
-        &nbsp:
+        &nbsp;
         <a href="#" onClick={() => this.props.handleClick('addTransaction')} value="addTransaction">Add Transaction</a>
       </span>
     );

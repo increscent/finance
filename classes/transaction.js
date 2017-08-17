@@ -10,13 +10,19 @@ class Transaction {
       return {
         id: budget._id,
         category: budget.category
-      }
+      };
     };
     return getCollectionCategories(budgets, getCategory, (x) => x.category);
   }
 
   getCreditCategories(credits) {
-    return getCollectionCategories(credits, (x) => x.category, (x) => x);
+    var getCategory = function (budget) {
+      return {
+        id: budget.category,
+        category: budget.category
+      };
+    };
+    return getCollectionCategories(credits, getCategory, (x) => x.category);
   }
 }
 

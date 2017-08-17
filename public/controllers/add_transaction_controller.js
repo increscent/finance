@@ -7,5 +7,10 @@ import BaseController from './base_controller.js';
 export default class AddTransactionController extends BaseController {
   constructor(props) {
     super(props, AddTransactionModel, AddTransactionForm);
+
+    // this.Model.handleFormSubmit = this.handleFormSubmit;
   }
+
+  // handleFormSubmit(formState) {
+  // }
 }

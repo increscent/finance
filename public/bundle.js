@@ -20864,7 +20864,13 @@ var AddTransactionController = function (_BaseController) {
     _classCallCheck(this, AddTransactionController);
 
     return _possibleConstructorReturn(this, (AddTransactionController.__proto__ || Object.getPrototypeOf(AddTransactionController)).call(this, props, _add_transaction_model2.default, _add_transaction_view2.default));
+
+    // this.Model.handleFormSubmit = this.handleFormSubmit;
   }
+
+  // handleFormSubmit(formState) {
+  // }
+
 
   return AddTransactionController;
 }(_base_controller2.default);
@@ -21214,7 +21220,7 @@ var ViewSwitcher = function (_React$Component2) {
             }, value: 'history' },
           'History'
         ),
-        '&nbsp:',
+        '\xA0',
         _react2.default.createElement(
           'a',
           { href: '#', onClick: function onClick() {
@@ -21361,23 +21367,42 @@ var AddTransactionForm = function (_React$Component) {
 
     _this.state = {
       transaction_type: 'debit',
+      categories: _this.props.debitCategories,
       category: '',
       motive: '',
-      amount: null
+      amount: ''
     };
 
     _this.onTransactionTypeChange = _this.onTransactionTypeChange.bind(_this);
     _this.onCategoryChange = _this.onCategoryChange.bind(_this);
     _this.onMotiveChange = _this.onMotiveChange.bind(_this);
+    _this.onAmountChange = _this.onAmountChange.bind(_this);
+    _this.onFormSubmit = _this.onFormSubmit.bind(_this);
     return _this;
   }
 
   _createClass(AddTransactionForm, [{
+    key: 'updateCategories',
+    value: function updateCategories(props, transaction_type, current_category) {
+      var categories = transaction_type == 'debit' ? props.debitCategories : props.creditCategories;
+      var category = current_category || categories[0] || '';
+      this.setState({
+        categories: categories,
+        category: category.id
+      });
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.updateCategories(nextProps, this.state.transaction_type, this.state.category);
+    }
+  }, {
     key: 'onTransactionTypeChange',
     value: function onTransactionTypeChange(e) {
+      var transaction_type = e.target.value == 'debit' ? 'debit' : 'credit';
+      this.updateCategories(this.props, transaction_type);
       this.setState({
-        transaction_type: e.target.value == 'debit' ? 'debit' : 'credit',
-        category: ''
+        transaction_type: transaction_type
       });
     }
   }, {
@@ -21395,25 +21420,38 @@ var AddTransactionForm = function (_React$Component) {
       });
     }
   }, {
+    key: 'onAmountChange',
+    value: function onAmountChange(e) {
+      this.setState({
+        amount: e.target.value
+      });
+    }
+  }, {
+    key: 'onFormSubmit',
+    value: function onFormSubmit(e) {
+      e.preventDefault();
+
+      var formIsValid = true;
+
+      console.log(this.state.transaction_type);
+      console.log(this.state.category);
+      console.log(this.state.motive);
+      console.log(parseFloat(this.state.amount));
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var categories = this.state.transaction_type == 'debit' ? this.props.debitCategories.map(function (x) {
+      var categories = this.state.categories.map(function (x) {
         return _react2.default.createElement(
           'option',
           { key: x.id, value: x.id },
           x.category
         );
-      }) : this.props.creditCategories.map(function (x, i) {
-        return _react2.default.createElement(
-          'option',
-          { key: i, value: x },
-          x
-        );
       });
 
       return _react2.default.createElement(
         'form',
-        { id: 'addTransactionForm' },
+        { id: 'addTransactionForm', onSubmit: this.onFormSubmit },
         _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', value: 'debit', checked: this.state.transaction_type == 'debit', onChange: this.onTransactionTypeChange }),
         'Debit',
         _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', value: 'credit', checked: this.state.transaction_type == 'credit', onChange: this.onTransactionTypeChange }),
@@ -21424,6 +21462,7 @@ var AddTransactionForm = function (_React$Component) {
           categories
         ),
         _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'note', value: this.state.motive, onChange: this.onMotiveChange }),
+        _react2.default.createElement('input', { type: 'text', name: 'amount', value: this.state.amount, onChange: this.onAmountChange }),
         _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' })
       );
     }

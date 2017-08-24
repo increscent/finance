@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Form from './components/form_class.js';
+import {Form, FormValidationMessages} from './components/form_class.js';
 import mixin from 'mixin';
 
 export default class AddTransactionForm extends mixin(Form, React.Component) {
@@ -11,7 +11,8 @@ export default class AddTransactionForm extends mixin(Form, React.Component) {
       categories: this.props.debitCategories,
       category: '',
       motive: '',
-      amount: ''
+      amount: '',
+      validation_messages: []
     };
 
     this.handleTransactionTypeChange = this.handleTransactionTypeChange.bind(this);
@@ -50,30 +51,23 @@ export default class AddTransactionForm extends mixin(Form, React.Component) {
   handleFormSubmit(e) {
     e.preventDefault();
 
-    var transaction_type = this.state.transaction_type;
-    var category = this.state.category;
-    var motive = this.state.motive;
-    var amount = parseFloat(this.state.amount);
+    var rules = [
+      {name: 'transaction_type', validate: (x) => x == 'debit' || x == 'credit', error_message: 'Please select a transaction type.'},
+      {name: 'category', validate: (x) => x, error_message: 'Please select a category.'},
+      {name: 'motive', validate: (x) => true, error_message: 'It doesn\'t matter what note you write.'},
+      {name: 'amount', validate: (x) => parseFloat(x), error_message: 'Please enter a valid amount.'}
+    ];
 
-    var formIsValid = true;
-    var errorMessage = "";
-    if (!category) {
-      formIsValid = false;
-      errorMessage += "Please choose/enter a valid category\n";
-    }
-    if (!amount) {
-      formIsValid = false;
-      errorMessage += "Please enter a valid transaction amount\n";
-    }
+    var error_messages = this.validateFormInput(rules);
 
-    // if (formIsValid) {
-      console.log(transaction_type);
-      console.log(category);
-      console.log(motive);
-      console.log(amount);
-    // } else {
-      console.log(errorMessage);
-    // }
+    if (error_messages.length) {
+      this.setState({
+        validation_messages: error_messages
+      });
+    } else {
+      // validation successful
+      console.log('yay');
+    }
   }
 
   render() {
@@ -94,6 +88,7 @@ export default class AddTransactionForm extends mixin(Form, React.Component) {
         <input type="text" name="motive" placeholder="Note" value={this.state.motive} onChange={(e) => this.handleFormInput('motive', e)} />
         $<input type="text" name="amount" value={this.state.amount} onChange={(e) => this.handleFormInput('amount', e)} />
         <input type="submit" name="submit" value="save" />
+        <FormValidationMessages validationMessages={this.state.validation_messages} />
       </form>
     );
   }

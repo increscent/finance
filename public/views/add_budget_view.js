@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Form from './components/form_class.js';
+import {Form, FormValidationMessages} from './components/form_class.js';
 import mixin from 'mixin';
 
 export default class AddBudgetForm extends mixin(Form, React.Component) {
@@ -9,7 +9,8 @@ export default class AddBudgetForm extends mixin(Form, React.Component) {
     this.state = {
       category: '',
       allowance: '',
-      allowance_type: '$'
+      allowance_type: '$',
+      validation_messages: []
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -18,33 +19,25 @@ export default class AddBudgetForm extends mixin(Form, React.Component) {
   handleFormSubmit(e) {
     e.preventDefault();
 
-    var category = this.state.category;
-    var allowance_type = this.state.allowance_type;
-    var allowance = parseFloat(this.state.allowance);
+    var debitCategories = this.props.debitCategories;
+    var rules = [
+      {name: 'category', validate: (x) => x, error_message: 'Please enter a name'},
+      {name: 'category', validate: (x) => !debitCategories.find((budget) => x.trim().toLowerCase() == budget.category.trim().toLowerCase()), error_message: 'That name already exists. Please enter a unique budget name.'},
+      {name: 'allowance_type', validate: (x) => x == '%' || x == '$', error_message: 'Please select an allowance type (% or %).'},
+      {name: 'allowance', validate: (x) => parseFloat(x), error_message: 'Please enter a valid amount.'},
+      {name: 'allowance', validate: (x) => x == '$' || (0 <= x <= 100), error_message: 'The allowance percentage must be between 0 and 100.'}
+    ];
 
-    var formIsValid = true;
-    var errorMessage = "";
-    if (!category) {
-      formIsValid = false;
-      errorMessage += "Please enter a valid category\n";
-    }
-    if (!allowance) {
-      formIsValid = false;
-      errorMessage += "Please enter a valid allowance\n";
-    }
-    if (allowance_type == '%' && (allowance < 0 || allowance > 100)) {
-      formIsValid = false;
-      errorMessage += "The allowance must be a valid percentage between 0% and 100%";
-    }
+    var error_messages = this.validateFormInput(rules);
 
-    // if (formIsValid) {
-      console.log(category);
-      console.log(allowance_type);
-      console.log(allowance);
-    // } else {
-      console.log(errorMessage);
-      console.log(this.props.budgets);
-    // }
+    if (error_messages.length) {
+      this.setState({
+        validation_messages: error_messages
+      });
+    } else {
+      // validation successful
+      console.log('yay');
+    }
   }
 
   render() {
@@ -58,6 +51,7 @@ export default class AddBudgetForm extends mixin(Form, React.Component) {
         </select>
         <input type="text" name="allowance" value={this.state.allowance} onChange={(e) => this.handleFormInput('allowance', e)} />
         <input type="submit" name="submit" value="save" />
+        <FormValidationMessages validationMessages={this.state.validation_messages} />
       </form>
     );
   }

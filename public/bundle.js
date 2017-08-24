@@ -3365,7 +3365,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":242}],36:[function(require,module,exports){
+},{"util":241}],36:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8437,7 +8437,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":65,"./ReactReconciler":115,"./instantiateReactComponent":159,"./shouldUpdateReactComponent":167,"./traverseAllChildren":168,"_process":239,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],70:[function(require,module,exports){
+},{"./KeyEscapeUtils":65,"./ReactReconciler":115,"./instantiateReactComponent":159,"./shouldUpdateReactComponent":167,"./traverseAllChildren":168,"_process":238,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],70:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -17999,7 +17999,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":112,"./ReactPropTypesSecret":113,"./reactProdInvariant":163,"_process":239,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],143:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":112,"./ReactPropTypesSecret":113,"./reactProdInvariant":163,"_process":238,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],143:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18370,7 +18370,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":65,"./traverseAllChildren":168,"_process":239,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],148:[function(require,module,exports){
+},{"./KeyEscapeUtils":65,"./traverseAllChildren":168,"_process":238,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],148:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23888,7 +23888,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":200,"./ReactPropTypeLocationNames":207,"./ReactPropTypesSecret":209,"./reactProdInvariant":218,"_process":239,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],213:[function(require,module,exports){
+},{"./ReactComponentTreeHook":200,"./ReactPropTypeLocationNames":207,"./ReactPropTypesSecret":209,"./reactProdInvariant":218,"_process":238,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],213:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24416,9 +24416,9 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _add_budget_model = require('../models/add_budget_model.js');
+var _transaction_model = require('../models/transaction_model.js');
 
-var _add_budget_model2 = _interopRequireDefault(_add_budget_model);
+var _transaction_model2 = _interopRequireDefault(_transaction_model);
 
 var _add_budget_view = require('../views/add_budget_view.js');
 
@@ -24442,7 +24442,7 @@ var AddBudgetController = function (_BaseController) {
   function AddBudgetController(props) {
     _classCallCheck(this, AddBudgetController);
 
-    return _possibleConstructorReturn(this, (AddBudgetController.__proto__ || Object.getPrototypeOf(AddBudgetController)).call(this, props, _add_budget_model2.default, _add_budget_view2.default));
+    return _possibleConstructorReturn(this, (AddBudgetController.__proto__ || Object.getPrototypeOf(AddBudgetController)).call(this, props, _transaction_model2.default, _add_budget_view2.default));
 
     // this.Model.handleFormSubmit = this.handleFormSubmit;
   }
@@ -24456,7 +24456,7 @@ var AddBudgetController = function (_BaseController) {
 
 exports.default = AddBudgetController;
 
-},{"../models/add_budget_model.js":230,"../views/add_budget_view.js":234,"./base_controller.js":226,"react":220,"react-dom":43}],225:[function(require,module,exports){
+},{"../models/transaction_model.js":232,"../views/add_budget_view.js":233,"./base_controller.js":226,"react":220,"react-dom":43}],225:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24471,9 +24471,9 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _add_transaction_model = require('../models/add_transaction_model.js');
+var _transaction_model = require('../models/transaction_model.js');
 
-var _add_transaction_model2 = _interopRequireDefault(_add_transaction_model);
+var _transaction_model2 = _interopRequireDefault(_transaction_model);
 
 var _add_transaction_view = require('../views/add_transaction_view.js');
 
@@ -24497,7 +24497,7 @@ var AddTransactionController = function (_BaseController) {
   function AddTransactionController(props) {
     _classCallCheck(this, AddTransactionController);
 
-    return _possibleConstructorReturn(this, (AddTransactionController.__proto__ || Object.getPrototypeOf(AddTransactionController)).call(this, props, _add_transaction_model2.default, _add_transaction_view2.default));
+    return _possibleConstructorReturn(this, (AddTransactionController.__proto__ || Object.getPrototypeOf(AddTransactionController)).call(this, props, _transaction_model2.default, _add_transaction_view2.default));
 
     // this.Model.handleFormSubmit = this.handleFormSubmit;
   }
@@ -24511,7 +24511,7 @@ var AddTransactionController = function (_BaseController) {
 
 exports.default = AddTransactionController;
 
-},{"../models/add_transaction_model.js":231,"../views/add_transaction_view.js":235,"./base_controller.js":226,"react":220,"react-dom":43}],226:[function(require,module,exports){
+},{"../models/transaction_model.js":232,"../views/add_transaction_view.js":234,"./base_controller.js":226,"react":220,"react-dom":43}],226:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24614,7 +24614,7 @@ var BaseController = function (_React$Component) {
 
 exports.default = BaseController;
 
-},{"../models/overview_model.js":233,"../views/overview_view.js":238,"react":220,"react-dom":43}],227:[function(require,module,exports){
+},{"../models/overview_model.js":231,"../views/overview_view.js":237,"react":220,"react-dom":43}],227:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24663,7 +24663,7 @@ var HistoryController = function (_BaseController) {
 
 exports.default = HistoryController;
 
-},{"../models/history_model.js":232,"../views/history_view.js":237,"./base_controller.js":226,"react":220,"react-dom":43}],228:[function(require,module,exports){
+},{"../models/history_model.js":230,"../views/history_view.js":236,"./base_controller.js":226,"react":220,"react-dom":43}],228:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24745,7 +24745,7 @@ var OverviewController = function (_BaseController) {
 
 exports.default = OverviewController;
 
-},{"../models/overview_model.js":233,"../views/overview_view.js":238,"./base_controller.js":226,"react":220,"react-dom":43}],229:[function(require,module,exports){
+},{"../models/overview_model.js":231,"../views/overview_view.js":237,"./base_controller.js":226,"react":220,"react-dom":43}],229:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -24775,35 +24775,6 @@ var _add_budget_controller = require('./controllers/add_budget_controller.js');
 var _add_budget_controller2 = _interopRequireDefault(_add_budget_controller);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// class App extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       currentView: 'addTransaction'
-//     };
-//
-//     this.switchView = this.switchView.bind(this);
-//   }
-//
-//   switchView(view) {
-//     this.setState({
-//       currentView: view
-//     });
-//   }
-//
-//   render() {
-//     return (
-//       <div>
-//         <ViewSwitcher handleClick={this.switchView} />
-//         <OverviewController isVisible={this.state.currentView == 'overview'} />
-//         <HistoryController isVisible={this.state.currentView == 'history'} />
-//         <AddTransactionController isVisible={this.state.currentView == 'addTransaction'} />
-//         <AddBudgetController isVisible={this.state.currentView == 'addBudget'} />
-//       </div>
-//     );
-//   }
-// }
 
 function App(props) {
   return _react2.default.createElement(
@@ -24861,94 +24832,9 @@ function App(props) {
   );
 }
 
-// class ViewSwitcher extends React.Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//
-//   render() {
-//     return (
-//       <span>
-//         <a href="#" onClick={() => this.props.handleClick('overview')} value="overview">Overview</a>
-//         &nbsp;
-//         <a href="#" onClick={() => this.props.handleClick('history')} value="history">History</a>
-//         &nbsp;
-//         <a href="#" onClick={() => this.props.handleClick('addTransaction')} value="addTransaction">Add Transaction</a>
-//         &nbsp;
-//         <a href="#" onClick={() => this.props.handleClick('addBudget')} value="addBudget">Add Budget</a>
-//       </span>
-//     );
-//   }
-// }
-
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
 },{"./controllers/add_budget_controller.js":224,"./controllers/add_transaction_controller.js":225,"./controllers/history_controller.js":227,"./controllers/overview_controller.js":228,"react":220,"react-dom":43,"react-router-dom":181}],230:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AddBudgetModel = function () {
-  function AddBudgetModel() {
-    _classCallCheck(this, AddBudgetModel);
-
-    this.budgets = [];
-    this.FETCH_endpoint = '/api/budget';
-  }
-
-  _createClass(AddBudgetModel, [{
-    key: 'update',
-    value: function update(budgets) {
-      this.budgets = budgets;
-    }
-  }]);
-
-  return AddBudgetModel;
-}();
-
-exports.default = AddBudgetModel;
-
-},{}],231:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AddTransactionModel = function () {
-  function AddTransactionModel() {
-    _classCallCheck(this, AddTransactionModel);
-
-    this.debitCategories = [];
-    this.creditCategories = [];
-    this.FETCH_endpoint = '/api/transaction/categories';
-  }
-
-  _createClass(AddTransactionModel, [{
-    key: 'update',
-    value: function update(categories) {
-      this.debitCategories = categories.debitCategories;
-      // this.creditCategories = categories.creditCategories;
-      this.creditCategories = [];
-    }
-  }]);
-
-  return AddTransactionModel;
-}();
-
-exports.default = AddTransactionModel;
-
-},{}],232:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24979,7 +24865,7 @@ var HistoryModel = function () {
 
 exports.default = HistoryModel;
 
-},{}],233:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25010,7 +24896,40 @@ var OverviewModel = function () {
 
 exports.default = OverviewModel;
 
-},{}],234:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TransactionModel = function () {
+  function TransactionModel() {
+    _classCallCheck(this, TransactionModel);
+
+    this.debitCategories = [];
+    this.creditCategories = [];
+    this.FETCH_endpoint = '/api/transaction/categories';
+  }
+
+  _createClass(TransactionModel, [{
+    key: 'update',
+    value: function update(categories) {
+      this.debitCategories = categories.debitCategories;
+      this.creditCategories = categories.creditCategories;
+    }
+  }]);
+
+  return TransactionModel;
+}();
+
+exports.default = TransactionModel;
+
+},{}],233:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25028,8 +24947,6 @@ var _reactDom = require('react-dom');
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _form_class = require('./components/form_class.js');
-
-var _form_class2 = _interopRequireDefault(_form_class);
 
 var _mixin2 = require('mixin');
 
@@ -25054,7 +24971,8 @@ var AddBudgetForm = function (_mixin) {
     _this.state = {
       category: '',
       allowance: '',
-      allowance_type: '$'
+      allowance_type: '$',
+      validation_messages: []
     };
 
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
@@ -25066,33 +24984,31 @@ var AddBudgetForm = function (_mixin) {
     value: function handleFormSubmit(e) {
       e.preventDefault();
 
-      var category = this.state.category;
-      var allowance_type = this.state.allowance_type;
-      var allowance = parseFloat(this.state.allowance);
+      var debitCategories = this.props.debitCategories;
+      var rules = [{ name: 'category', validate: function validate(x) {
+          return x;
+        }, error_message: 'Please enter a name' }, { name: 'category', validate: function validate(x) {
+          return !debitCategories.find(function (budget) {
+            return x.trim().toLowerCase() == budget.category.trim().toLowerCase();
+          });
+        }, error_message: 'That name already exists. Please enter a unique budget name.' }, { name: 'allowance_type', validate: function validate(x) {
+          return x == '%' || x == '$';
+        }, error_message: 'Please select an allowance type (% or %).' }, { name: 'allowance', validate: function validate(x) {
+          return parseFloat(x);
+        }, error_message: 'Please enter a valid amount.' }, { name: 'allowance', validate: function validate(x) {
+          return x == '$' || 0 <= x <= 100;
+        }, error_message: 'The allowance percentage must be between 0 and 100.' }];
 
-      var formIsValid = true;
-      var errorMessage = "";
-      if (!category) {
-        formIsValid = false;
-        errorMessage += "Please enter a valid category\n";
-      }
-      if (!allowance) {
-        formIsValid = false;
-        errorMessage += "Please enter a valid allowance\n";
-      }
-      if (allowance_type == '%' && (allowance < 0 || allowance > 100)) {
-        formIsValid = false;
-        errorMessage += "The allowance must be a valid percentage between 0% and 100%";
-      }
+      var error_messages = this.validateFormInput(rules);
 
-      // if (formIsValid) {
-      console.log(category);
-      console.log(allowance_type);
-      console.log(allowance);
-      // } else {
-      console.log(errorMessage);
-      console.log(this.props.budgets);
-      // }
+      if (error_messages.length) {
+        this.setState({
+          validation_messages: error_messages
+        });
+      } else {
+        // validation successful
+        console.log('yay');
+      }
     }
   }, {
     key: 'render',
@@ -25125,17 +25041,18 @@ var AddBudgetForm = function (_mixin) {
         _react2.default.createElement('input', { type: 'text', name: 'allowance', value: this.state.allowance, onChange: function onChange(e) {
             return _this2.handleFormInput('allowance', e);
           } }),
-        _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' })
+        _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' }),
+        _react2.default.createElement(_form_class.FormValidationMessages, { validationMessages: this.state.validation_messages })
       );
     }
   }]);
 
   return AddBudgetForm;
-}((0, _mixin3.default)(_form_class2.default, _react2.default.Component));
+}((0, _mixin3.default)(_form_class.Form, _react2.default.Component));
 
 exports.default = AddBudgetForm;
 
-},{"./components/form_class.js":236,"mixin":35,"react":220,"react-dom":43}],235:[function(require,module,exports){
+},{"./components/form_class.js":235,"mixin":35,"react":220,"react-dom":43}],234:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25153,8 +25070,6 @@ var _reactDom = require('react-dom');
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _form_class = require('./components/form_class.js');
-
-var _form_class2 = _interopRequireDefault(_form_class);
 
 var _mixin2 = require('mixin');
 
@@ -25181,7 +25096,8 @@ var AddTransactionForm = function (_mixin) {
       categories: _this.props.debitCategories,
       category: '',
       motive: '',
-      amount: ''
+      amount: '',
+      validation_messages: []
     };
 
     _this.handleTransactionTypeChange = _this.handleTransactionTypeChange.bind(_this);
@@ -25228,30 +25144,26 @@ var AddTransactionForm = function (_mixin) {
     value: function handleFormSubmit(e) {
       e.preventDefault();
 
-      var transaction_type = this.state.transaction_type;
-      var category = this.state.category;
-      var motive = this.state.motive;
-      var amount = parseFloat(this.state.amount);
+      var rules = [{ name: 'transaction_type', validate: function validate(x) {
+          return x == 'debit' || x == 'credit';
+        }, error_message: 'Please select a transaction type.' }, { name: 'category', validate: function validate(x) {
+          return x;
+        }, error_message: 'Please select a category.' }, { name: 'motive', validate: function validate(x) {
+          return true;
+        }, error_message: 'It doesn\'t matter what note you write.' }, { name: 'amount', validate: function validate(x) {
+          return parseFloat(x);
+        }, error_message: 'Please enter a valid amount.' }];
 
-      var formIsValid = true;
-      var errorMessage = "";
-      if (!category) {
-        formIsValid = false;
-        errorMessage += "Please choose/enter a valid category\n";
-      }
-      if (!amount) {
-        formIsValid = false;
-        errorMessage += "Please enter a valid transaction amount\n";
-      }
+      var error_messages = this.validateFormInput(rules);
 
-      // if (formIsValid) {
-      console.log(transaction_type);
-      console.log(category);
-      console.log(motive);
-      console.log(amount);
-      // } else {
-      console.log(errorMessage);
-      // }
+      if (error_messages.length) {
+        this.setState({
+          validation_messages: error_messages
+        });
+      } else {
+        // validation successful
+        console.log('yay');
+      }
     }
   }, {
     key: 'render',
@@ -25280,13 +25192,14 @@ var AddTransactionForm = function (_mixin) {
         _react2.default.createElement('input', { type: 'text', name: 'amount', value: this.state.amount, onChange: function onChange(e) {
             return _this2.handleFormInput('amount', e);
           } }),
-        _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' })
+        _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' }),
+        _react2.default.createElement(_form_class.FormValidationMessages, { validationMessages: this.state.validation_messages })
       );
     }
   }]);
 
   return AddTransactionForm;
-}((0, _mixin3.default)(_form_class2.default, _react2.default.Component));
+}((0, _mixin3.default)(_form_class.Form, _react2.default.Component));
 
 exports.default = AddTransactionForm;
 
@@ -25339,14 +25252,17 @@ function CustomSelectInput(props) {
   return _react2.default.createElement('input', { type: 'text', value: props.value, style: { position: "absolute", zIndex: 1, width: "100px" }, onChange: props.onChange, autoFocus: true });
 }
 
-},{"./components/form_class.js":236,"mixin":35,"react":220,"react-dom":43}],236:[function(require,module,exports){
+},{"./components/form_class.js":235,"mixin":35,"react":220,"react-dom":43}],235:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Form = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.FormValidationMessages = FormValidationMessages;
 
 var _react = require('react');
 
@@ -25362,7 +25278,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Form = function () {
+var Form = exports.Form = function () {
   function Form(props) {
     _classCallCheck(this, Form);
 
@@ -25374,14 +25290,42 @@ var Form = function () {
     value: function handleFormInput(property, e) {
       this.setState(_defineProperty({}, property, e.target.value));
     }
+  }, {
+    key: 'validateFormInput',
+    value: function validateFormInput(rules) {
+      var error_messages = [];
+      for (var i = 0; i < rules.length; i++) {
+        var result = rules[i].validate(this.state[rules[i].name]);
+        if (!result) {
+          error_messages.push(rules[i].error_message);
+        }
+      }
+      return error_messages;
+    }
   }]);
 
   return Form;
 }();
 
-exports.default = Form;
+function FormValidationMessages(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'errorMessages' },
+    _react2.default.createElement(
+      'ul',
+      null,
+      props.validationMessages.map(function (x, i) {
+        return _react2.default.createElement(
+          'li',
+          { key: i },
+          x
+        );
+      })
+    )
+  );
+}
 
-},{"react":220,"react-dom":43}],237:[function(require,module,exports){
+},{"react":220,"react-dom":43}],236:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25514,7 +25458,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"react":220,"react-dom":43}],238:[function(require,module,exports){
+},{"react":220,"react-dom":43}],237:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25648,7 +25592,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":220,"react-dom":43}],239:[function(require,module,exports){
+},{"react":220,"react-dom":43}],238:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -25834,7 +25778,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],240:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -25859,14 +25803,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],241:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],242:[function(require,module,exports){
+},{}],241:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -26456,4 +26400,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":241,"_process":239,"inherits":240}]},{},[229]);
+},{"./support/isBuffer":240,"_process":238,"inherits":239}]},{},[229]);

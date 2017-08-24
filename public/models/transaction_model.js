@@ -1,4 +1,4 @@
-export default class AddTransactionModel {
+export default class TransactionModel {
   constructor() {
     this.debitCategories = [];
     this.creditCategories = [];
@@ -7,7 +7,6 @@ export default class AddTransactionModel {
 
   update(categories) {
     this.debitCategories = categories.debitCategories;
-    // this.creditCategories = categories.creditCategories;
-    this.creditCategories = [];
+    this.creditCategories = categories.creditCategories;
   }
 }

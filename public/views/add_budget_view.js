@@ -1,33 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Form from './components/form_class.js';
+import mixin from 'mixin';
 
-export default class AddBudgetForm extends React.Component {
+export default class AddBudgetForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
       category: '',
       allowance: '',
-      allowance_type: '$',
-      budgets: props.budgets
+      allowance_type: '$'
     };
 
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.onFormInputChange = this.onFormInputChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      budgets: nextProps.budgets
-    });
-  }
-
-  onFormInputChange(property, e) {
-    this.setState({
-      [property]: e.target.value
-    });
-  }
-
-  onFormSubmit(e) {
+  handleFormSubmit(e) {
     e.preventDefault();
 
     var category = this.state.category;
@@ -49,25 +37,26 @@ export default class AddBudgetForm extends React.Component {
       errorMessage += "The allowance must be a valid percentage between 0% and 100%";
     }
 
-    if (formIsValid) {
+    // if (formIsValid) {
       console.log(category);
       console.log(allowance_type);
       console.log(allowance);
-    } else {
+    // } else {
       console.log(errorMessage);
-    }
+      console.log(this.props.budgets);
+    // }
   }
 
   render() {
     return (
-      <form id="addBudgetForm" onSubmit={this.onFormSubmit}>
-        <input type="text" name="category" placeholder="Name" value={this.state.category} onChange={(e) => this.onFormInputChange('category', e)} />
+      <form id="addBudgetForm" onSubmit={this.handleFormSubmit}>
+        <input type="text" name="category" placeholder="Name" value={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
         Monthly Allowance
-        <select value={this.state.allowance_type} onChange={(e) => this.onFormInputChange('allowance_type', e)}>
+        <select value={this.state.allowance_type} onChange={(e) => this.handleFormInput('allowance_type', e)}>
           <option value="$">$</option>
           <option value="%">%</option>
         </select>
-        <input type="text" name="allowance" value={this.state.allowance} onChange={(e) => this.onFormInputChange('allowance', e)} />
+        <input type="text" name="allowance" value={this.state.allowance} onChange={(e) => this.handleFormInput('allowance', e)} />
         <input type="submit" name="submit" value="save" />
       </form>
     );

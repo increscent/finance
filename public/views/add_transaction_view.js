@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Form from './components/form_class.js';
+import mixin from 'mixin';
 
-export default class AddTransactionForm extends React.Component {
+export default class AddTransactionForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,53 +14,40 @@ export default class AddTransactionForm extends React.Component {
       amount: ''
     };
 
-    this.onTransactionTypeChange = this.onTransactionTypeChange.bind(this);
-    this.onCategoryChange = this.onCategoryChange.bind(this);
-    this.onMotiveChange = this.onMotiveChange.bind(this);
-    this.onAmountChange = this.onAmountChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.handleTransactionTypeChange = this.handleTransactionTypeChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  updateCategories(props, transaction_type, current_category) {
-    var categories = (transaction_type == 'debit')? props.debitCategories:props.creditCategories;
-    var category = current_category || (categories[0] || '');
-    this.setState({
-      categories: categories,
-      category: category.id
-    });
+  componentWillMount() {
+    this.setDefaultCategory(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.updateCategories(nextProps, this.state.transaction_type, this.state.category);
+    this.setDefaultCategory(nextProps);
   }
 
-  onTransactionTypeChange(e) {
-    var transaction_type = (e.target.value == 'debit')? 'debit':'credit';
-    this.updateCategories(this.props, transaction_type);
+  setDefaultCategory(props) {
+    var default_category = this.getDefaultCategory(this.state.transaction_type, props);
     this.setState({
-      transaction_type: transaction_type
+      category: default_category
     });
   }
 
-  onCategoryChange(e) {
+  getDefaultCategory(transaction_type, props) {
+    var categories = (transaction_type == 'debit')? props.debitCategories:props.creditCategories;
+    return categories[0]? categories[0].id:'';
+  }
+
+  handleTransactionTypeChange(e) {
+    var transaction_type = e.target.value;
+    var default_category = this.getDefaultCategory(transaction_type, this.props);
     this.setState({
-      category: e.target.value
+      transaction_type: transaction_type,
+      category: default_category
     });
   }
 
-  onMotiveChange(e) {
-    this.setState({
-      motive: e.target.value
-    });
-  }
-
-  onAmountChange(e) {
-    this.setState({
-      amount: e.target.value
-    });
-  }
-
-  onFormSubmit(e) {
+  handleFormSubmit(e) {
     e.preventDefault();
 
     var transaction_type = this.state.transaction_type;
@@ -77,105 +66,73 @@ export default class AddTransactionForm extends React.Component {
       errorMessage += "Please enter a valid transaction amount\n";
     }
 
-    if (formIsValid) {
+    // if (formIsValid) {
       console.log(transaction_type);
       console.log(category);
       console.log(motive);
       console.log(amount);
-    } else {
+    // } else {
       console.log(errorMessage);
-    }
+    // }
   }
 
   render() {
+    var select_categories = (this.state.transaction_type == 'debit')? this.props.debitCategories:this.props.creditCategories;
+
     return (
-      <form id="addTransactionForm" onSubmit={this.onFormSubmit}>
-        <input type="radio" name="transaction_type" value="debit" checked={this.state.transaction_type == 'debit'} onChange={this.onTransactionTypeChange} />Debit
-        <input type="radio" name="transaction_type" value="credit" checked={this.state.transaction_type == 'credit'} onChange={this.onTransactionTypeChange} />Credit
-        <CategorySelect category={this.state.category} categories={this.state.categories} enableCustomCategory={this.state.transaction_type == "credit"} onChange={this.onCategoryChange} />
-        <input type="text" name="motive" placeholder="Note" value={this.state.motive} onChange={this.onMotiveChange} />
-        $<input type="text" name="amount" value={this.state.amount} onChange={this.onAmountChange} />
+      <form id="addTransactionForm" onSubmit={this.handleFormSubmit}>
+        <input type="radio" name="transaction_type" value="debit" checked={this.state.transaction_type == 'debit'} onChange={this.handleTransactionTypeChange} />Debit
+        <input type="radio" name="transaction_type" value="credit" checked={this.state.transaction_type == 'credit'} onChange={this.handleTransactionTypeChange} />Credit
+        {
+          this.state.transaction_type == 'debit' &&
+          <DebitCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
+        }
+        {
+          this.state.transaction_type == 'credit' &&
+          <CreditCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
+        }
+        <input type="text" name="motive" placeholder="Note" value={this.state.motive} onChange={(e) => this.handleFormInput('motive', e)} />
+        $<input type="text" name="amount" value={this.state.amount} onChange={(e) => this.handleFormInput('amount', e)} />
         <input type="submit" name="submit" value="save" />
       </form>
     );
   }
 }
 
-class CategorySelect extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      category: props.category,
-      custom_category: !props.categories.length && props.enableCustomCategory
-    };
+function DebitCategorySelect(props) {
+  return (
+    <span>
+      <select value={props.category} style={{width: "120px"}} onChange={props.onChange}>
+        {
+          props.categories.map(x => {
+            return <option key={x.id} value={x.id}>{x.category}</option>
+          })
+        }
+      </select>
+    </span>
+  );
+}
 
-    this.onSelectChange = this.onSelectChange.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.categories != nextProps.categories) {
-      this.setState({
-        category: nextProps.category,
-        custom_category: !nextProps.categories.length && nextProps.enableCustomCategory
-      });
-    }
-  }
-
-  updateParent(value) {
-    this.props.onChange({
-      target: {
-        value: value
+function CreditCategorySelect(props) {
+  return (
+    <span>
+      {
+        Boolean(props.categories.find((x) => x.id == props.category)) ||
+        <CustomSelectInput value={props.category} onChange={props.onChange} />
       }
-    });
-  }
 
-  onSelectChange(e) {
-    var value = e.target.value;
-    var custom_category = false;
-    if (value == "custom_category") {
-      value = "";
-      custom_category = this.props.enableCustomCategory;
-    }
-    this.setState({
-      category: value,
-      custom_category: custom_category
-    });
-    this.updateParent(value);
-  }
-
-  onInputChange(e) {
-    this.setState({
-      category: e.target.value
-    });
-    this.updateParent(e.target.value);
-  }
-
-  render() {
-    var custom_category_option = (this.props.enableCustomCategory)?
-      <option value="custom_category">New Category</option>:null;
-
-    return (
-      <span>
-        <CustomSelectInput isVisible={this.state.custom_category} value={this.state.category} onChange={this.onInputChange} />
-
-        <select value={(this.state.custom_category)? 'custom_category':this.state.category} style={{width: "120px"}} onChange={this.onSelectChange}>
-          {custom_category_option}
-          {
-            this.props.categories.map(x => {
-              return <option key={x.id} value={x.id}>{x.category}</option>
-            })
-          }
-        </select>
-      </span>
-    );
-  }
+      <select value={props.category} style={{width: "120px"}} onChange={props.onChange}>
+        <option value="">New Category</option>
+        {
+          props.categories.map(x => {
+            return <option key={x.id} value={x.id}>{x.category}</option>
+          })
+        }
+      </select>
+    </span>
+  );
 }
 
 function CustomSelectInput(props) {
-  if (props.isVisible) {
-    return <input type="text" value={props.value} style={{position: "absolute", zIndex: 1, width: "100px"}} onChange={props.onChange} autoFocus />;
-  } else {
-    return null;
-  }
+  return <input type="text" value={props.value} style={{position: "absolute", zIndex: 1, width: "100px"}} onChange={props.onChange} autoFocus />;
 }

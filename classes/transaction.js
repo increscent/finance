@@ -12,7 +12,12 @@ class Transaction {
         category: budget.category
       };
     };
-    return getCollectionCategories(budgets, getCategory, (x) => x.category);
+    var debitCategories = getCollectionCategories(budgets, getCategory, (x) => x.category);
+    debitCategories.push({
+      id: 'Other',
+      category: 'Other'
+    });
+    return debitCategories;
   }
 
   getCreditCategories(credits) {

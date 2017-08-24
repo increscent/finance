@@ -49,10 +49,6 @@ export default class BaseController extends React.Component {
   }
 
   render() {
-    if (this.props.isVisible) {
-      return React.createElement(this.View, this.state.Model, null);
-    } else {
-      return null;
-    }
+    return React.createElement(this.View, this.state.Model, null);
   }
 }

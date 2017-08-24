@@ -7,6 +7,7 @@ export default class AddTransactionModel {
 
   update(categories) {
     this.debitCategories = categories.debitCategories;
-    this.creditCategories = categories.creditCategories;
+    // this.creditCategories = categories.creditCategories;
+    this.creditCategories = [];
   }
 }

@@ -2,8 +2,8 @@ var Models = require('../models');
 
 module.exports = {
   getAccountData: function (req, res, next) {
-    Models.Account.findOne({_id: req.headers.AccoundId}, function (err, account) {
-      if (!account) return module.exports.userError(res, 'Account does not exist: ' + req.headers.AccountId);
+    Models.Account.findOne({_id: req.headers['account-id']}, function (err, account) {
+      if (!account) return module.exports.userError(res, 'Account does not exist: ' + req.headers['account-id']);
 
       req.account = account;
       return next();

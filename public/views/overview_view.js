@@ -1,9 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AnalysisService from '../services/analysis_service.js';
 
-export default class BalanceTable extends React.Component {
+export default class Overview extends React.Component {
   constructor(props) {
     super(props);
+
+    this.forceUpdate = this.forceUpdate.bind(this);
+    AnalysisService.updateOverview();
+  }
+
+  componentDidMount() {
+    this.analysisServiceListenerId = AnalysisService.registerListener(this.forceUpdate);
+  }
+
+  componentWillUnmount() {
+    AnalysisService.unRegisterListener(this.analysisServiceListenerId);
   }
 
   render() {
@@ -12,7 +24,7 @@ export default class BalanceTable extends React.Component {
         <BalanceTableHeader />
         <tbody>
           {
-            this.props.budgets.map((budget) => {
+            AnalysisService.overview.map((budget) => {
               return <BalanceRow key={budget.category} budget={budget}/>
             })
           }

@@ -20,6 +20,7 @@ export class Form {
         error_messages.push(rules[i].error_message);
       }
     }
+
     return error_messages;
   }
 }

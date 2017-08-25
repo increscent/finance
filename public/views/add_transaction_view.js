@@ -1,47 +1,51 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {withRouter} from "react-router-dom";
+import TransactionService from '../services/transaction_service.js';
 import {Form, FormValidationMessages} from './components/form_class.js';
 import mixin from 'mixin';
 
-export default class AddTransactionForm extends mixin(Form, React.Component) {
+class AddTransaction extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
       transaction_type: 'debit',
-      categories: this.props.debitCategories,
-      category: '',
+      category: this.getDefaultCategory('debit'),
       motive: '',
       amount: '',
       validation_messages: []
     };
 
     this.handleTransactionTypeChange = this.handleTransactionTypeChange.bind(this);
+    this.setDefaultCategory = this.setDefaultCategory.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    TransactionService.update();
   }
 
-  componentWillMount() {
-    this.setDefaultCategory(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setDefaultCategory(nextProps);
-  }
-
-  setDefaultCategory(props) {
-    var default_category = this.getDefaultCategory(this.state.transaction_type, props);
+  setDefaultCategory() {
+    if (this.state.category) return;
+    var default_category = this.getDefaultCategory(this.state.transaction_type);
     this.setState({
       category: default_category
     });
   }
 
-  getDefaultCategory(transaction_type, props) {
-    var categories = (transaction_type == 'debit')? props.debitCategories:props.creditCategories;
+  componentDidMount() {
+    this.transactionServiceListenerId = TransactionService.registerListener(this.setDefaultCategory);
+  }
+
+  componentWillUnmount() {
+    TransactionService.unRegisterListener(this.transactionServiceListenerId);
+  }
+
+  getDefaultCategory(transaction_type) {
+    var categories = (transaction_type == 'debit')? TransactionService.debitCategories:TransactionService.creditCategories;
     return categories[0]? categories[0].id:'';
   }
 
   handleTransactionTypeChange(e) {
     var transaction_type = e.target.value;
-    var default_category = this.getDefaultCategory(transaction_type, this.props);
+    var default_category = this.getDefaultCategory(transaction_type);
     this.setState({
       transaction_type: transaction_type,
       category: default_category
@@ -59,19 +63,33 @@ export default class AddTransactionForm extends mixin(Form, React.Component) {
     ];
 
     var error_messages = this.validateFormInput(rules);
+    this.setState({
+      validation_messages: error_messages
+    });
 
     if (error_messages.length) {
-      this.setState({
-        validation_messages: error_messages
-      });
+      // validation failed
     } else {
       // validation successful
-      console.log('yay');
+      TransactionService.addNew({
+        transaction_type: this.state.transaction_type,
+        category: this.state.category.trim(),
+        motive: this.state.motive.trim(),
+        amount: parseFloat(this.state.amount)
+      }, error => {
+        if (error) {
+          this.setState({
+            validation_messages: [error]
+          })
+        } else {
+          this.props.history.push('/overview');
+        }
+      });
     }
   }
 
   render() {
-    var select_categories = (this.state.transaction_type == 'debit')? this.props.debitCategories:this.props.creditCategories;
+    var select_categories = (this.state.transaction_type == 'debit')? TransactionService.debitCategories:TransactionService.creditCategories;
 
     return (
       <form id="addTransactionForm" onSubmit={this.handleFormSubmit}>
@@ -131,3 +149,5 @@ function CreditCategorySelect(props) {
 function CustomSelectInput(props) {
   return <input type="text" value={props.value} style={{position: "absolute", zIndex: 1, width: "100px"}} onChange={props.onChange} autoFocus />;
 }
+
+export default withRouter(AddTransaction);

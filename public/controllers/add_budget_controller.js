@@ -8,9 +8,17 @@ export default class AddBudgetController extends BaseController {
   constructor(props) {
     super(props, TransactionModel, AddBudgetForm);
 
-    // this.Model.handleFormSubmit = this.handleFormSubmit;
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.Model.onFormSubmit = this.handleFormSubmit;
   }
 
-  // handleFormSubmit(formState) {
-  // }
+  handleFormSubmit(budget, error_callback) {
+    this.putRequest('/api/budget', budget)
+    .then(data => {
+      this.props.history.push('/overview');
+    })
+    .catch(error => {
+      error_callback(error.toString());
+    });
+  }
 }

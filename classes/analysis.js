@@ -31,7 +31,7 @@ class Analysis {
     var debits = totalDebits - categoryAssociatedDebits;
     var allowance = totalCredits - categoryAssociatedAllowance;
     var balance = allowance - debits;
-    var category_allowance = Math.round(allowance / totalCredits * 100).toString() + '%';
+    var category_allowance = (totalCredits == 0)? '0%':Math.round(allowance / totalCredits * 100).toString() + '%';
     overview.push({category: category, category_allowance: category_allowance, debits: debits, allowance: allowance, balance: balance});
 
     return overview;
@@ -99,7 +99,7 @@ class Analysis {
       var currentDate = new Date();
       var initialDateMonths = initialDate.getMonth() + (12 * initialDate.getYear());
       var currentDateMonths = currentDate.getMonth() + (12 * currentDate.getYear());
-      var activeMonths = currentDateMonths - initialDateMonths;
+      var activeMonths = currentDateMonths - initialDateMonths + 1;
       return budget.allowance * activeMonths;
     }
   }

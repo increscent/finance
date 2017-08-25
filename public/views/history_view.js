@@ -1,9 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AnalysisService from '../services/analysis_service.js';
 
-export default class HistoryTable extends React.Component {
+export default class History extends React.Component {
   constructor(props) {
     super(props);
+
+    this.forceUpdate = this.forceUpdate.bind(this);
+    AnalysisService.updateHistory();
+  }
+
+  componentDidMount() {
+    this.analysisServiceListenerId = AnalysisService.registerListener(this.forceUpdate);
+  }
+
+  componentWillUnmount() {
+    AnalysisService.unRegisterListener(this.analysisServiceListenerId);
   }
 
   render() {
@@ -12,7 +24,7 @@ export default class HistoryTable extends React.Component {
         <HistoryTableHeader />
         <tbody>
           {
-            this.props.transactions.map((transaction, i) => {
+            AnalysisService.history.map((transaction, i) => {
               return <HistoryRow key={i} transaction={transaction}/>
             })
           }

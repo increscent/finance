@@ -13,9 +13,9 @@ export default class BaseController extends React.Component {
       Model: this.Model
     };
 
-    if (this.Model.FETCH_endpoint) {
-      this.fetchModel();
-    }
+    // if (this.Model.FETCH_endpoint) {
+    //   this.fetchModel();
+    // }
   }
 
   componentDidMount() {
@@ -32,19 +32,31 @@ export default class BaseController extends React.Component {
       headers: {'account_id': '598d3551f5468d246bb06fbb'}
     };
 
-    fetch(this.Model.FETCH_endpoint, request_options).then((res) => {
-      if (res.status == 200) {
-        res.json().then((data) => {
-          this.Model.update(data);
-          if (this._isMounted) {
-            this.setState({
-              Model: this.Model
-            });
-          }
-        });
-      } else {
-        res.text().then((error) => console.log(error));
-      }
+    fetch(this.Model.FETCH_endpoint, request_options)
+    .then(res => {
+      if (res.status == 200) return res.json();
+      throw new Error('The model fetch failed.')
+    })
+    .then(data => {
+      this.Model.update(data);
+      if (this._isMounted) this.forceUpdate();
+    })
+    .catch(error => {
+      console.log(error.toString());
+    });
+  }
+
+  putRequest(endpoint, body) {
+    var request_options = {
+      method: 'PUT',
+      headers: {'account_id': '598d3551f5468d246bb06fbb', 'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    };
+
+    return fetch(endpoint, request_options)
+    .then(res => {
+      if (res.status == 200) return res.text();
+      throw new Error('Sorry, we had a server error. Please try again soon.')
     });
   }
 

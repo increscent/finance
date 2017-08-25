@@ -2,7 +2,7 @@ class ApiService {
   getRequest(endpoint) {
     var request_options = {
       method: 'GET',
-      headers: {'account_id': '598d3551f5468d246bb06fbb'}
+      headers: {'AccountId': '598d3551f5468d246bb06fbb'}
     };
 
     return this.apiRequest(endpoint, request_options, 'json');
@@ -11,7 +11,7 @@ class ApiService {
   putRequest (endpoint, body) {
     var request_options = {
       method: 'PUT',
-      headers: {'account_id': '598d3551f5468d246bb06fbb', 'Content-Type': 'application/json'},
+      headers: {'AccountId': '598d3551f5468d246bb06fbb', 'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     };
 

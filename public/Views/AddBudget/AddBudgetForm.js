@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {withRouter} from 'react-router-dom';
-import BudgetService from '../services/budget_service.js';
-import {Form, FormValidationMessages} from './components/form_class.js';
+import BudgetService from '../../Services/BudgetService.js';
+import Form from '../Components/Form.js';
+import FormValidationMessages from '../Components/FormValidationMessages.js';
 import mixin from 'mixin';
 
-class AddBudget extends mixin(Form, React.Component) {
+class AddBudgetForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
@@ -80,4 +80,4 @@ class AddBudget extends mixin(Form, React.Component) {
   }
 }
 
-export default withRouter(AddBudget);
+export default withRouter(AddBudgetForm);

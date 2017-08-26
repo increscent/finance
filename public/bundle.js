@@ -3365,7 +3365,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":239}],36:[function(require,module,exports){
+},{"util":252}],36:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8437,7 +8437,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":65,"./ReactReconciler":115,"./instantiateReactComponent":159,"./shouldUpdateReactComponent":167,"./traverseAllChildren":168,"_process":236,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],70:[function(require,module,exports){
+},{"./KeyEscapeUtils":65,"./ReactReconciler":115,"./instantiateReactComponent":159,"./shouldUpdateReactComponent":167,"./traverseAllChildren":168,"_process":249,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],70:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -17999,7 +17999,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":112,"./ReactPropTypesSecret":113,"./reactProdInvariant":163,"_process":236,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],143:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":112,"./ReactPropTypesSecret":113,"./reactProdInvariant":163,"_process":249,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],143:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18370,7 +18370,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":65,"./traverseAllChildren":168,"_process":236,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],148:[function(require,module,exports){
+},{"./KeyEscapeUtils":65,"./traverseAllChildren":168,"_process":249,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],148:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23888,7 +23888,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":200,"./ReactPropTypeLocationNames":207,"./ReactPropTypesSecret":209,"./reactProdInvariant":218,"_process":236,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],213:[function(require,module,exports){
+},{"./ReactComponentTreeHook":200,"./ReactPropTypeLocationNames":207,"./ReactPropTypesSecret":209,"./reactProdInvariant":218,"_process":249,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],213:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24414,21 +24414,21 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = require('react-router-dom');
 
-var _overview_view = require('./views/overview_view.js');
+var _OverviewView = require('./Views/Overview/OverviewView.js');
 
-var _overview_view2 = _interopRequireDefault(_overview_view);
+var _OverviewView2 = _interopRequireDefault(_OverviewView);
 
-var _history_view = require('./views/history_view.js');
+var _HistoryView = require('./Views/History/HistoryView.js');
 
-var _history_view2 = _interopRequireDefault(_history_view);
+var _HistoryView2 = _interopRequireDefault(_HistoryView);
 
-var _add_transaction_view = require('./views/add_transaction_view.js');
+var _AddTransactionView = require('./Views/AddTransaction/AddTransactionView.js');
 
-var _add_transaction_view2 = _interopRequireDefault(_add_transaction_view);
+var _AddTransactionView2 = _interopRequireDefault(_AddTransactionView);
 
-var _add_budget_view = require('./views/add_budget_view.js');
+var _AddBudgetView = require('./Views/AddBudget/AddBudgetView.js');
 
-var _add_budget_view2 = _interopRequireDefault(_add_budget_view);
+var _AddBudgetView2 = _interopRequireDefault(_AddBudgetView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24439,40 +24439,18 @@ function App(props) {
     _react2.default.createElement(
       'div',
       null,
-      _react2.default.createElement(
-        'ul',
-        null,
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(
-            _reactRouterDom.Link,
-            { to: '/addTransaction' },
-            'Add Transaction'
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(
-            _reactRouterDom.Link,
-            { to: '/addBudget' },
-            'Add Budget'
-          )
-        )
-      ),
       _react2.default.createElement('hr', null),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/overview', component: _overview_view2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/history', component: _history_view2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/addTransaction', component: _add_transaction_view2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/addBudget', component: _add_budget_view2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/overview', component: _OverviewView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/history', component: _HistoryView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/addTransaction', component: _AddTransactionView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/addBudget', component: _AddBudgetView2.default })
     )
   );
 }
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./views/add_budget_view.js":231,"./views/add_transaction_view.js":232,"./views/history_view.js":234,"./views/overview_view.js":235,"react":220,"react-dom":43,"react-router-dom":181}],225:[function(require,module,exports){
+},{"./Views/AddBudget/AddBudgetView.js":232,"./Views/AddTransaction/AddTransactionView.js":234,"./Views/History/HistoryView.js":244,"./Views/Overview/OverviewView.js":248,"react":220,"react-dom":43,"react-router-dom":181}],225:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24481,17 +24459,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _api_service = require('./api_service.js');
+var _ApiService = require('./ApiService.js');
 
-var _api_service2 = _interopRequireDefault(_api_service);
+var _ApiService2 = _interopRequireDefault(_ApiService);
 
-var _listener_service = require('./listener_service.js');
+var _ListenerService2 = require('./ListenerService.js');
 
-var _listener_service2 = _interopRequireDefault(_listener_service);
+var _ListenerService3 = _interopRequireDefault(_ListenerService2);
 
-var _store = require('../store.js');
+var _Store = require('../Store.js');
 
-var _store2 = _interopRequireDefault(_store);
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24513,7 +24491,7 @@ var AnalysisService = function (_ListenerService) {
     _this.fetchOverview();
 
     _this.update = _this.update.bind(_this);
-    _store2.default.registerListener(_this.update);
+    _Store2.default.registerListener(_this.update);
     return _this;
   }
 
@@ -24527,7 +24505,7 @@ var AnalysisService = function (_ListenerService) {
     value: function fetchOverview() {
       var _this2 = this;
 
-      _api_service2.default.getRequest('/api/analysis/overview').then(function (data) {
+      _ApiService2.default.getRequest('/api/analysis/overview').then(function (data) {
         _this2.overview = data;
         _this2.notifyListeners();
       }).catch(function (error) {
@@ -24537,11 +24515,11 @@ var AnalysisService = function (_ListenerService) {
   }]);
 
   return AnalysisService;
-}(_listener_service2.default);
+}(_ListenerService3.default);
 
 exports.default = new AnalysisService();
 
-},{"../store.js":230,"./api_service.js":226,"./listener_service.js":228}],226:[function(require,module,exports){
+},{"../Store.js":230,"./ApiService.js":226,"./ListenerService.js":228}],226:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24612,17 +24590,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _api_service = require('./api_service.js');
+var _ApiService = require('./ApiService.js');
 
-var _api_service2 = _interopRequireDefault(_api_service);
+var _ApiService2 = _interopRequireDefault(_ApiService);
 
-var _listener_service = require('./listener_service.js');
+var _ListenerService2 = require('./ListenerService.js');
 
-var _listener_service2 = _interopRequireDefault(_listener_service);
+var _ListenerService3 = _interopRequireDefault(_ListenerService2);
 
-var _store = require('../store.js');
+var _Store = require('../Store.js');
 
-var _store2 = _interopRequireDefault(_store);
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24644,21 +24622,21 @@ var BudgetService = function (_ListenerService) {
     _this.fetchBudgets();
 
     _this.update = _this.update.bind(_this);
-    _store2.default.registerListener(_this.update);
+    _Store2.default.registerListener(_this.update);
     return _this;
   }
 
   _createClass(BudgetService, [{
     key: 'update',
     value: function update() {
-      this.budgets = _store2.default.budgets;
+      this.budgets = _Store2.default.budgets;
       this.notifyListeners();
     }
   }, {
     key: 'fetchBudgets',
     value: function fetchBudgets() {
-      _api_service2.default.getRequest('/api/budget/budgets').then(function (data) {
-        _store2.default.setStore('budgets', data);
+      _ApiService2.default.getRequest('/api/budget/budgets').then(function (data) {
+        _Store2.default.setStore('budgets', data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24668,9 +24646,9 @@ var BudgetService = function (_ListenerService) {
     value: function addBudget(budget, callback) {
       var _this2 = this;
 
-      _api_service2.default.putRequest('/api/budget', budget).then(function (data) {
+      _ApiService2.default.putRequest('/api/budget', budget).then(function (data) {
         insertBudget(data, _this2.budgets);
-        _store2.default.setStore('budgets', _this2.budgets, true);
+        _Store2.default.setStore('budgets', _this2.budgets, true);
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
@@ -24679,7 +24657,7 @@ var BudgetService = function (_ListenerService) {
   }]);
 
   return BudgetService;
-}(_listener_service2.default);
+}(_ListenerService3.default);
 
 exports.default = new BudgetService();
 
@@ -24688,7 +24666,7 @@ function insertBudget(budget, collection) {
   collection.push(budget);
 }
 
-},{"../store.js":230,"./api_service.js":226,"./listener_service.js":228}],228:[function(require,module,exports){
+},{"../Store.js":230,"./ApiService.js":226,"./ListenerService.js":228}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24741,17 +24719,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _api_service = require('./api_service.js');
+var _ApiService = require('./ApiService.js');
 
-var _api_service2 = _interopRequireDefault(_api_service);
+var _ApiService2 = _interopRequireDefault(_ApiService);
 
-var _listener_service = require('./listener_service.js');
+var _ListenerService2 = require('./ListenerService.js');
 
-var _listener_service2 = _interopRequireDefault(_listener_service);
+var _ListenerService3 = _interopRequireDefault(_ListenerService2);
 
-var _store = require('../store.js');
+var _Store = require('../Store.js');
 
-var _store2 = _interopRequireDefault(_store);
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24778,25 +24756,25 @@ var TransactionService = function (_ListenerService) {
     _this.fetchDebits();
 
     _this.update = _this.update.bind(_this);
-    _store2.default.registerListener(_this.update);
+    _Store2.default.registerListener(_this.update);
     return _this;
   }
 
   _createClass(TransactionService, [{
     key: 'update',
     value: function update() {
-      this.debits = _store2.default.debits;
-      this.credits = _store2.default.credits;
-      this.readableDebits = calcReadableDebits(_store2.default.debits);
-      this.debitCategories = calcDebitCategories(_store2.default.budgets);
-      this.creditCategories = calcCreditCategories(_store2.default.credits);
+      this.debits = _Store2.default.debits;
+      this.credits = _Store2.default.credits;
+      this.readableDebits = calcReadableDebits(_Store2.default.debits);
+      this.debitCategories = calcDebitCategories(_Store2.default.budgets);
+      this.creditCategories = calcCreditCategories(_Store2.default.credits);
       this.notifyListeners();
     }
   }, {
     key: 'fetchCredits',
     value: function fetchCredits() {
-      _api_service2.default.getRequest('/api/transaction/credits').then(function (data) {
-        _store2.default.setStore('credits', data);
+      _ApiService2.default.getRequest('/api/transaction/credits').then(function (data) {
+        _Store2.default.setStore('credits', data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24804,8 +24782,8 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'fetchDebits',
     value: function fetchDebits() {
-      _api_service2.default.getRequest('/api/transaction/debits').then(function (data) {
-        _store2.default.setStore('debits', data);
+      _ApiService2.default.getRequest('/api/transaction/debits').then(function (data) {
+        _Store2.default.setStore('debits', data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24815,10 +24793,10 @@ var TransactionService = function (_ListenerService) {
     value: function addTransaction(transaction, callback) {
       var _this2 = this;
 
-      _api_service2.default.putRequest('/api/transaction/' + transaction.type, transaction).then(function (data) {
+      _ApiService2.default.putRequest('/api/transaction/' + transaction.type, transaction).then(function (data) {
         var collection = transaction.type == 'debit' ? 'debits' : 'credits';
         insertTransaction(data, _this2[collection]);
-        _store2.default.setStore(collection, _this2[collection], true);
+        _Store2.default.setStore(collection, _this2[collection], true);
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
@@ -24830,10 +24808,10 @@ var TransactionService = function (_ListenerService) {
       var _this3 = this;
 
       console.log('deleted ' + transaction._id);
-      _api_service2.default.deleteRequest('/api/transaction/' + transaction.type + '/' + transaction._id).then(function (data) {
+      _ApiService2.default.deleteRequest('/api/transaction/' + transaction.type + '/' + transaction._id).then(function (data) {
         var collection = transaction.type == 'debit' ? 'debits' : 'credits';
         removeTransaction(transaction._id, _this3[collection]);
-        _store2.default.setStore(collection, _this3[collection], true);
+        _Store2.default.setStore(collection, _this3[collection], true);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24841,7 +24819,7 @@ var TransactionService = function (_ListenerService) {
   }]);
 
   return TransactionService;
-}(_listener_service2.default);
+}(_ListenerService3.default);
 
 exports.default = new TransactionService();
 
@@ -24873,7 +24851,7 @@ function calcReadableDebits(debits) {
 
 function calcBudgets() {
   var budgets = {};
-  _store2.default.budgets.forEach(function (x) {
+  _Store2.default.budgets.forEach(function (x) {
     budgets[x._id] = x.category;
   });
   return budgets;
@@ -24913,7 +24891,7 @@ function noDuplicates(array, getKey) {
   });
 }
 
-},{"../store.js":230,"./api_service.js":226,"./listener_service.js":228}],230:[function(require,module,exports){
+},{"../Store.js":230,"./ApiService.js":226,"./ListenerService.js":228}],230:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24922,9 +24900,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _listener_service = require("./services/listener_service.js");
+var _ListenerService2 = require("./Services/ListenerService.js");
 
-var _listener_service2 = _interopRequireDefault(_listener_service);
+var _ListenerService3 = _interopRequireDefault(_ListenerService2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24957,11 +24935,11 @@ var Store = function (_ListenerService) {
   }]);
 
   return Store;
-}(_listener_service2.default);
+}(_ListenerService3.default);
 
 exports.default = new Store();
 
-},{"./services/listener_service.js":228}],231:[function(require,module,exports){
+},{"./Services/ListenerService.js":228}],231:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24974,17 +24952,19 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _reactRouterDom = require('react-router-dom');
 
-var _budget_service = require('../services/budget_service.js');
+var _BudgetService = require('../../Services/BudgetService.js');
 
-var _budget_service2 = _interopRequireDefault(_budget_service);
+var _BudgetService2 = _interopRequireDefault(_BudgetService);
 
-var _form_class = require('./components/form_class.js');
+var _Form = require('../Components/Form.js');
+
+var _Form2 = _interopRequireDefault(_Form);
+
+var _FormValidationMessages = require('../Components/FormValidationMessages.js');
+
+var _FormValidationMessages2 = _interopRequireDefault(_FormValidationMessages);
 
 var _mixin2 = require('mixin');
 
@@ -24998,13 +24978,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var AddBudget = function (_mixin) {
-  _inherits(AddBudget, _mixin);
+var AddBudgetForm = function (_mixin) {
+  _inherits(AddBudgetForm, _mixin);
 
-  function AddBudget(props) {
-    _classCallCheck(this, AddBudget);
+  function AddBudgetForm(props) {
+    _classCallCheck(this, AddBudgetForm);
 
-    var _this = _possibleConstructorReturn(this, (AddBudget.__proto__ || Object.getPrototypeOf(AddBudget)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (AddBudgetForm.__proto__ || Object.getPrototypeOf(AddBudgetForm)).call(this, props));
 
     _this.state = {
       category: '',
@@ -25018,15 +24998,15 @@ var AddBudget = function (_mixin) {
     return _this;
   }
 
-  _createClass(AddBudget, [{
+  _createClass(AddBudgetForm, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.budgetServiceListenerId = _budget_service2.default.registerListener(this.forceUpdate);
+      this.budgetServiceListenerId = _BudgetService2.default.registerListener(this.forceUpdate);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _budget_service2.default.unRegisterListener(this.budgetServiceListenerId);
+      _BudgetService2.default.unRegisterListener(this.budgetServiceListenerId);
     }
   }, {
     key: 'handleFormSubmit',
@@ -25038,7 +25018,7 @@ var AddBudget = function (_mixin) {
       var rules = [{ name: 'category', validate: function validate(x) {
           return x;
         }, error_message: 'Please enter a name' }, { name: 'category', validate: function validate(x) {
-          return !_budget_service2.default.budgets.find(function (budget) {
+          return !_BudgetService2.default.budgets.find(function (budget) {
             return x.trim().toLowerCase() == budget.category.trim().toLowerCase();
           });
         }, error_message: 'That name already exists. Please enter a unique budget name.' }, { name: 'allowance_type', validate: function validate(x) {
@@ -25058,7 +25038,7 @@ var AddBudget = function (_mixin) {
         // validation failed
       } else {
         // validation successful
-        _budget_service2.default.addBudget({
+        _BudgetService2.default.addBudget({
           category: this.state.category.trim(),
           allowance_type: this.state.allowance_type,
           allowance: parseFloat(this.state.allowance)
@@ -25105,17 +25085,43 @@ var AddBudget = function (_mixin) {
             return _this3.handleFormInput('allowance', e);
           } }),
         _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' }),
-        _react2.default.createElement(_form_class.FormValidationMessages, { validationMessages: this.state.validation_messages })
+        _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
       );
     }
   }]);
 
-  return AddBudget;
-}((0, _mixin3.default)(_form_class.Form, _react2.default.Component));
+  return AddBudgetForm;
+}((0, _mixin3.default)(_Form2.default, _react2.default.Component));
 
-exports.default = (0, _reactRouterDom.withRouter)(AddBudget);
+exports.default = (0, _reactRouterDom.withRouter)(AddBudgetForm);
 
-},{"../services/budget_service.js":227,"./components/form_class.js":233,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],232:[function(require,module,exports){
+},{"../../Services/BudgetService.js":227,"../Components/Form.js":238,"../Components/FormValidationMessages.js":239,"mixin":35,"react":220,"react-router-dom":181}],232:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = AddBudgetView;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _AddBudgetForm = require('./AddBudgetForm.js');
+
+var _AddBudgetForm2 = _interopRequireDefault(_AddBudgetForm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function AddBudgetView(props) {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_AddBudgetForm2.default, null)
+  );
+}
+
+},{"./AddBudgetForm.js":231,"react":220}],233:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25128,17 +25134,27 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _reactRouterDom = require('react-router-dom');
 
-var _transaction_service = require('../services/transaction_service.js');
+var _TransactionService = require('../../Services/TransactionService.js');
 
-var _transaction_service2 = _interopRequireDefault(_transaction_service);
+var _TransactionService2 = _interopRequireDefault(_TransactionService);
 
-var _form_class = require('./components/form_class.js');
+var _DebitCategorySelect = require('./DebitCategorySelect.js');
+
+var _DebitCategorySelect2 = _interopRequireDefault(_DebitCategorySelect);
+
+var _CreditCategorySelect = require('./CreditCategorySelect.js');
+
+var _CreditCategorySelect2 = _interopRequireDefault(_CreditCategorySelect);
+
+var _Form = require('../Components/Form.js');
+
+var _Form2 = _interopRequireDefault(_Form);
+
+var _FormValidationMessages = require('../Components/FormValidationMessages.js');
+
+var _FormValidationMessages2 = _interopRequireDefault(_FormValidationMessages);
 
 var _mixin2 = require('mixin');
 
@@ -25152,13 +25168,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var AddTransaction = function (_mixin) {
-  _inherits(AddTransaction, _mixin);
+var AddTransactionForm = function (_mixin) {
+  _inherits(AddTransactionForm, _mixin);
 
-  function AddTransaction(props) {
-    _classCallCheck(this, AddTransaction);
+  function AddTransactionForm(props) {
+    _classCallCheck(this, AddTransactionForm);
 
-    var _this = _possibleConstructorReturn(this, (AddTransaction.__proto__ || Object.getPrototypeOf(AddTransaction)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (AddTransactionForm.__proto__ || Object.getPrototypeOf(AddTransactionForm)).call(this, props));
 
     _this.state = {
       transaction_type: 'debit',
@@ -25174,7 +25190,7 @@ var AddTransaction = function (_mixin) {
     return _this;
   }
 
-  _createClass(AddTransaction, [{
+  _createClass(AddTransactionForm, [{
     key: 'setDefaultCategory',
     value: function setDefaultCategory() {
       if (this.state.category) return;
@@ -25186,17 +25202,17 @@ var AddTransaction = function (_mixin) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.transactionServiceListenerId = _transaction_service2.default.registerListener(this.setDefaultCategory);
+      this.transactionServiceListenerId = _TransactionService2.default.registerListener(this.setDefaultCategory);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _transaction_service2.default.unRegisterListener(this.transactionServiceListenerId);
+      _TransactionService2.default.unRegisterListener(this.transactionServiceListenerId);
     }
   }, {
     key: 'getDefaultCategory',
     value: function getDefaultCategory(transaction_type) {
-      var categories = transaction_type == 'debit' ? _transaction_service2.default.debitCategories : _transaction_service2.default.creditCategories;
+      var categories = transaction_type == 'debit' ? _TransactionService2.default.debitCategories : _TransactionService2.default.creditCategories;
       return categories[0] ? categories[0].id : '';
     }
   }, {
@@ -25235,7 +25251,7 @@ var AddTransaction = function (_mixin) {
         // validation failed
       } else {
         // validation successful
-        _transaction_service2.default.addTransaction({
+        _TransactionService2.default.addTransaction({
           type: this.state.transaction_type,
           category: this.state.category.trim(),
           motive: this.state.motive.trim(),
@@ -25256,7 +25272,7 @@ var AddTransaction = function (_mixin) {
     value: function render() {
       var _this3 = this;
 
-      var select_categories = this.state.transaction_type == 'debit' ? _transaction_service2.default.debitCategories : _transaction_service2.default.creditCategories;
+      var select_categories = this.state.transaction_type == 'debit' ? _TransactionService2.default.debitCategories : _TransactionService2.default.creditCategories;
 
       return _react2.default.createElement(
         'form',
@@ -25265,10 +25281,10 @@ var AddTransaction = function (_mixin) {
         'Debit',
         _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', value: 'credit', checked: this.state.transaction_type == 'credit', onChange: this.handleTransactionTypeChange }),
         'Credit',
-        this.state.transaction_type == 'debit' && _react2.default.createElement(DebitCategorySelect, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
+        this.state.transaction_type == 'debit' && _react2.default.createElement(_DebitCategorySelect2.default, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
             return _this3.handleFormInput('category', e);
           } }),
-        this.state.transaction_type == 'credit' && _react2.default.createElement(CreditCategorySelect, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
+        this.state.transaction_type == 'credit' && _react2.default.createElement(_CreditCategorySelect2.default, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
             return _this3.handleFormInput('category', e);
           } }),
         _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'Note', value: this.state.motive, onChange: function onChange(e) {
@@ -25279,31 +25295,59 @@ var AddTransaction = function (_mixin) {
             return _this3.handleFormInput('amount', e);
           } }),
         _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' }),
-        _react2.default.createElement(_form_class.FormValidationMessages, { validationMessages: this.state.validation_messages })
+        _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
       );
     }
   }]);
 
-  return AddTransaction;
-}((0, _mixin3.default)(_form_class.Form, _react2.default.Component));
+  return AddTransactionForm;
+}((0, _mixin3.default)(_Form2.default, _react2.default.Component));
 
-function DebitCategorySelect(props) {
+exports.default = (0, _reactRouterDom.withRouter)(AddTransactionForm);
+
+},{"../../Services/TransactionService.js":229,"../Components/Form.js":238,"../Components/FormValidationMessages.js":239,"./CreditCategorySelect.js":235,"./DebitCategorySelect.js":237,"mixin":35,"react":220,"react-router-dom":181}],234:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = AddTransactionView;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _AddTransactionForm = require('./AddTransactionForm.js');
+
+var _AddTransactionForm2 = _interopRequireDefault(_AddTransactionForm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function AddTransactionView(props) {
   return _react2.default.createElement(
-    'span',
+    'div',
     null,
-    _react2.default.createElement(
-      'select',
-      { value: props.category, style: { width: "120px" }, onChange: props.onChange },
-      props.categories.map(function (x) {
-        return _react2.default.createElement(
-          'option',
-          { key: x.id, value: x.id },
-          x.category
-        );
-      })
-    )
+    _react2.default.createElement(_AddTransactionForm2.default, null)
   );
 }
+
+},{"./AddTransactionForm.js":233,"react":220}],235:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = CreditCategorySelect;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _CustomSelectInput = require('./CustomSelectInput.js');
+
+var _CustomSelectInput2 = _interopRequireDefault(_CustomSelectInput);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function CreditCategorySelect(props) {
   return _react2.default.createElement(
@@ -25311,7 +25355,7 @@ function CreditCategorySelect(props) {
     null,
     Boolean(props.categories.find(function (x) {
       return x.id == props.category;
-    })) || _react2.default.createElement(CustomSelectInput, { value: props.category, onChange: props.onChange }),
+    })) || _react2.default.createElement(_CustomSelectInput2.default, { value: props.category, onChange: props.onChange }),
     _react2.default.createElement(
       'select',
       { value: props.category, style: { width: "120px" }, onChange: props.onChange },
@@ -25331,39 +25375,70 @@ function CreditCategorySelect(props) {
   );
 }
 
-function CustomSelectInput(props) {
-  return _react2.default.createElement('input', { type: 'text', value: props.value, style: { position: "absolute", zIndex: 1, width: "100px" }, onChange: props.onChange, autoFocus: true });
-}
-
-exports.default = (0, _reactRouterDom.withRouter)(AddTransaction);
-
-},{"../services/transaction_service.js":229,"./components/form_class.js":233,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],233:[function(require,module,exports){
-'use strict';
+},{"./CustomSelectInput.js":236,"react":220}],236:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Form = undefined;
+exports.default = CustomSelectInput;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.FormValidationMessages = FormValidationMessages;
-
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _reactDom2 = _interopRequireDefault(_reactDom);
+function CustomSelectInput(props) {
+  return _react2.default.createElement("input", { type: "text", value: props.value, style: { position: "absolute", zIndex: 1, width: "100px" }, onChange: props.onChange, autoFocus: true });
+}
+
+},{"react":220}],237:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = DebitCategorySelect;
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function DebitCategorySelect(props) {
+  return _react2.default.createElement(
+    "span",
+    null,
+    _react2.default.createElement(
+      "select",
+      { value: props.category, style: { width: "120px" }, onChange: props.onChange },
+      props.categories.map(function (x) {
+        return _react2.default.createElement(
+          "option",
+          { key: x.id, value: x.id },
+          x.category
+        );
+      })
+    )
+  );
+}
+
+},{"react":220}],238:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Form = exports.Form = function () {
+var Form = function () {
   function Form(props) {
     _classCallCheck(this, Form);
 
@@ -25371,12 +25446,12 @@ var Form = exports.Form = function () {
   }
 
   _createClass(Form, [{
-    key: 'handleFormInput',
+    key: "handleFormInput",
     value: function handleFormInput(property, e) {
       this.setState(_defineProperty({}, property, e.target.value));
     }
   }, {
-    key: 'validateFormInput',
+    key: "validateFormInput",
     value: function validateFormInput(rules) {
       var error_messages = [];
       for (var i = 0; i < rules.length; i++) {
@@ -25393,104 +25468,94 @@ var Form = exports.Form = function () {
   return Form;
 }();
 
+exports.default = Form;
+
+},{}],239:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = FormValidationMessages;
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function FormValidationMessages(props) {
   return _react2.default.createElement(
-    'div',
-    { className: 'errorMessages' },
+    "div",
+    { className: "errorMessages" },
     _react2.default.createElement(
-      'ul',
+      "ul",
       null,
       props.validationMessages.map(function (x, i) {
         return _react2.default.createElement(
-          'li',
+          "li",
           { key: i },
           x
         );
       })
     )
   );
-}
+};
 
-},{"react":220,"react-dom":43}],234:[function(require,module,exports){
+},{"react":220}],240:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.default = TopNav;
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _transaction_service = require('../services/transaction_service.js');
-
-var _transaction_service2 = _interopRequireDefault(_transaction_service);
+var _reactRouterDom = require('react-router-dom');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function TopNav(props) {
+  return _react2.default.createElement(
+    'div',
+    { id: 'top-nav' },
+    _react2.default.createElement(
+      'span',
+      null,
+      _react2.default.createElement(
+        _reactRouterDom.Link,
+        { to: '/overview' },
+        'Overview'
+      )
+    ),
+    _react2.default.createElement(
+      'span',
+      null,
+      _react2.default.createElement(
+        _reactRouterDom.Link,
+        { to: '/history' },
+        'History'
+      )
+    )
+  );
+}
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+},{"react":220,"react-router-dom":181}],241:[function(require,module,exports){
+'use strict';
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = HistoryRow;
 
-var History = function (_React$Component) {
-  _inherits(History, _React$Component);
+var _react = require('react');
 
-  function History(props) {
-    _classCallCheck(this, History);
+var _react2 = _interopRequireDefault(_react);
 
-    var _this = _possibleConstructorReturn(this, (History.__proto__ || Object.getPrototypeOf(History)).call(this, props));
-
-    _this.forceUpdate = _this.forceUpdate.bind(_this);
-    return _this;
-  }
-
-  _createClass(History, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.transactionServiceListenerId = _transaction_service2.default.registerListener(this.forceUpdate);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      _transaction_service2.default.unRegisterListener(this.transactionServiceListenerId);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      _transaction_service2.default.readableDebits.forEach(function (x) {
-        return x.type = 'debit';
-      });
-      _transaction_service2.default.credits.forEach(function (x) {
-        return x.type = 'credit';
-      });
-      return _react2.default.createElement(
-        'table',
-        null,
-        _react2.default.createElement(HistoryTableHeader, null),
-        _react2.default.createElement(
-          'tbody',
-          null,
-          _transaction_service2.default.readableDebits.concat(_transaction_service2.default.credits).map(function (transaction, i) {
-            return _react2.default.createElement(HistoryRow, { key: i, transaction: transaction });
-          })
-        )
-      );
-    }
-  }]);
-
-  return History;
-}(_react2.default.Component);
-
-exports.default = History;
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function HistoryRow(props) {
   var transaction = props.transaction;
@@ -25502,7 +25567,7 @@ function HistoryRow(props) {
       'td',
       null,
       _react2.default.createElement('span', { className: 'oi oi-x', onClick: function onClick() {
-          return _transaction_service2.default.deleteTransaction(transaction);
+          return props.onDeleteTransaction(transaction);
         } })
     ),
     _react2.default.createElement(
@@ -25527,7 +25592,113 @@ function HistoryRow(props) {
       transaction.motive
     )
   );
-}
+};
+
+},{"react":220}],242:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TransactionService = require('../../Services/TransactionService.js');
+
+var _TransactionService2 = _interopRequireDefault(_TransactionService);
+
+var _HistoryTableHeader = require('./HistoryTableHeader.js');
+
+var _HistoryTableHeader2 = _interopRequireDefault(_HistoryTableHeader);
+
+var _HistoryRow = require('./HistoryRow.js');
+
+var _HistoryRow2 = _interopRequireDefault(_HistoryRow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HistoryTable = function (_React$Component) {
+  _inherits(HistoryTable, _React$Component);
+
+  function HistoryTable(props) {
+    _classCallCheck(this, HistoryTable);
+
+    var _this = _possibleConstructorReturn(this, (HistoryTable.__proto__ || Object.getPrototypeOf(HistoryTable)).call(this, props));
+
+    _this.forceUpdate = _this.forceUpdate.bind(_this);
+    _this.handleTransactionDelete = _this.handleTransactionDelete.bind(_this);
+    return _this;
+  }
+
+  _createClass(HistoryTable, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.transactionServiceListenerId = _TransactionService2.default.registerListener(this.forceUpdate);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _TransactionService2.default.unRegisterListener(this.transactionServiceListenerId);
+    }
+  }, {
+    key: 'handleTransactionDelete',
+    value: function handleTransactionDelete(transaction) {
+      _TransactionService2.default.deleteTransaction(transaction);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      _TransactionService2.default.readableDebits.forEach(function (x) {
+        return x.type = 'debit';
+      });
+      _TransactionService2.default.credits.forEach(function (x) {
+        return x.type = 'credit';
+      });
+      return _react2.default.createElement(
+        'table',
+        null,
+        _react2.default.createElement(_HistoryTableHeader2.default, null),
+        _react2.default.createElement(
+          'tbody',
+          null,
+          _TransactionService2.default.readableDebits.concat(_TransactionService2.default.credits).map(function (transaction, i) {
+            return _react2.default.createElement(_HistoryRow2.default, { key: i, transaction: transaction, onDeleteTransaction: _this2.handleTransactionDelete });
+          })
+        )
+      );
+    }
+  }]);
+
+  return HistoryTable;
+}(_react2.default.Component);
+
+exports.default = HistoryTable;
+
+},{"../../Services/TransactionService.js":229,"./HistoryRow.js":241,"./HistoryTableHeader.js":243,"react":220}],243:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = HistoryTableHeader;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function HistoryTableHeader(props) {
   return _react2.default.createElement(
@@ -25561,7 +25732,83 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"../services/transaction_service.js":229,"react":220,"react-dom":43}],235:[function(require,module,exports){
+},{"react":220}],244:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = HistoryView;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TopNav = require('../Components/TopNav.js');
+
+var _TopNav2 = _interopRequireDefault(_TopNav);
+
+var _HistoryTable = require('./HistoryTable.js');
+
+var _HistoryTable2 = _interopRequireDefault(_HistoryTable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function HistoryView(props) {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_TopNav2.default, null),
+    _react2.default.createElement(_HistoryTable2.default, null)
+  );
+}
+
+},{"../Components/TopNav.js":240,"./HistoryTable.js":242,"react":220}],245:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = BalanceRow;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BalanceRow(props) {
+  var budget = props.budget;
+  return _react2.default.createElement(
+    'tr',
+    null,
+    _react2.default.createElement(
+      'td',
+      null,
+      budget.category,
+      ' (',
+      budget.category_allowance,
+      ')'
+    ),
+    _react2.default.createElement(
+      'td',
+      null,
+      budget.allowance
+    ),
+    _react2.default.createElement(
+      'td',
+      null,
+      budget.debits
+    ),
+    _react2.default.createElement(
+      'td',
+      null,
+      budget.balance
+    )
+  );
+}
+
+},{"react":220}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25574,13 +25821,17 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
+var _AnalysisService = require('../../Services/AnalysisService.js');
 
-var _reactDom2 = _interopRequireDefault(_reactDom);
+var _AnalysisService2 = _interopRequireDefault(_AnalysisService);
 
-var _analysis_service = require('../services/analysis_service.js');
+var _BalanceTableHeader = require('./BalanceTableHeader.js');
 
-var _analysis_service2 = _interopRequireDefault(_analysis_service);
+var _BalanceTableHeader2 = _interopRequireDefault(_BalanceTableHeader);
+
+var _BalanceRow = require('./BalanceRow.js');
+
+var _BalanceRow2 = _interopRequireDefault(_BalanceRow);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25590,27 +25841,27 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Overview = function (_React$Component) {
-  _inherits(Overview, _React$Component);
+var BalanceTable = function (_React$Component) {
+  _inherits(BalanceTable, _React$Component);
 
-  function Overview(props) {
-    _classCallCheck(this, Overview);
+  function BalanceTable(props) {
+    _classCallCheck(this, BalanceTable);
 
-    var _this = _possibleConstructorReturn(this, (Overview.__proto__ || Object.getPrototypeOf(Overview)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (BalanceTable.__proto__ || Object.getPrototypeOf(BalanceTable)).call(this, props));
 
     _this.forceUpdate = _this.forceUpdate.bind(_this);
     return _this;
   }
 
-  _createClass(Overview, [{
+  _createClass(BalanceTable, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.analysisServiceListenerId = _analysis_service2.default.registerListener(this.forceUpdate);
+      this.analysisServiceListenerId = _AnalysisService2.default.registerListener(this.forceUpdate);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _analysis_service2.default.unRegisterListener(this.analysisServiceListenerId);
+      _AnalysisService2.default.unRegisterListener(this.analysisServiceListenerId);
     }
   }, {
     key: 'render',
@@ -25618,68 +25869,36 @@ var Overview = function (_React$Component) {
       return _react2.default.createElement(
         'table',
         null,
-        _react2.default.createElement(BalanceTableHeader, null),
+        _react2.default.createElement(_BalanceTableHeader2.default, null),
         _react2.default.createElement(
           'tbody',
           null,
-          _analysis_service2.default.overview.map(function (budget) {
-            return _react2.default.createElement(BalanceRow, { key: budget.category, budget: budget });
+          _AnalysisService2.default.overview.map(function (budget) {
+            return _react2.default.createElement(_BalanceRow2.default, { key: budget.category, budget: budget });
           })
         )
       );
     }
   }]);
 
-  return Overview;
+  return BalanceTable;
 }(_react2.default.Component);
 
-exports.default = Overview;
+exports.default = BalanceTable;
 
-var BalanceRow = function (_React$Component2) {
-  _inherits(BalanceRow, _React$Component2);
+},{"../../Services/AnalysisService.js":225,"./BalanceRow.js":245,"./BalanceTableHeader.js":247,"react":220}],247:[function(require,module,exports){
+'use strict';
 
-  function BalanceRow(props) {
-    _classCallCheck(this, BalanceRow);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = BalanceTableHeader;
 
-    return _possibleConstructorReturn(this, (BalanceRow.__proto__ || Object.getPrototypeOf(BalanceRow)).call(this, props));
-  }
+var _react = require('react');
 
-  _createClass(BalanceRow, [{
-    key: 'render',
-    value: function render() {
-      var budget = this.props.budget;
-      return _react2.default.createElement(
-        'tr',
-        null,
-        _react2.default.createElement(
-          'td',
-          null,
-          budget.category,
-          ' (',
-          budget.category_allowance,
-          ')'
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          budget.allowance
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          budget.debits
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          budget.balance
-        )
-      );
-    }
-  }]);
+var _react2 = _interopRequireDefault(_react);
 
-  return BalanceRow;
-}(_react2.default.Component);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function BalanceTableHeader(props) {
   return _react2.default.createElement(
@@ -25712,7 +25931,38 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"../services/analysis_service.js":225,"react":220,"react-dom":43}],236:[function(require,module,exports){
+},{"react":220}],248:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = OverviewView;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TopNav = require('../Components/TopNav.js');
+
+var _TopNav2 = _interopRequireDefault(_TopNav);
+
+var _BalanceTable = require('./BalanceTable.js');
+
+var _BalanceTable2 = _interopRequireDefault(_BalanceTable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function OverviewView(props) {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_TopNav2.default, null),
+    _react2.default.createElement(_BalanceTable2.default, null)
+  );
+}
+
+},{"../Components/TopNav.js":240,"./BalanceTable.js":246,"react":220}],249:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -25898,7 +26148,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],237:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -25923,14 +26173,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],238:[function(require,module,exports){
+},{}],251:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],239:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -26520,4 +26770,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":238,"_process":236,"inherits":237}]},{},[224]);
+},{"./support/isBuffer":251,"_process":249,"inherits":250}]},{},[224]);

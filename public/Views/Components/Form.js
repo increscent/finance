@@ -1,7 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-export class Form {
+export default class Form {
   constructor(props) {
     this.handleFormInput = this.handleFormInput.bind(this);
   }
@@ -23,16 +20,4 @@ export class Form {
 
     return error_messages;
   }
-}
-
-export function FormValidationMessages(props) {
-  return (
-    <div className="errorMessages">
-      <ul>
-        {
-          props.validationMessages.map((x, i) => <li key={i}>{x}</li>)
-        }
-      </ul>
-    </div>
-  );
 }

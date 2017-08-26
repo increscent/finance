@@ -1,4 +1,4 @@
-import ListenerService from "./services/listener_service.js";
+import ListenerService from "./Services/ListenerService.js";
 
 class Store extends ListenerService {
   constructor() {

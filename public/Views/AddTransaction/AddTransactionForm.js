@@ -1,11 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {withRouter} from "react-router-dom";
-import TransactionService from '../services/transaction_service.js';
-import {Form, FormValidationMessages} from './components/form_class.js';
+import TransactionService from '../../Services/TransactionService.js';
+import DebitCategorySelect from './DebitCategorySelect.js';
+import CreditCategorySelect from './CreditCategorySelect.js';
+import Form from '../Components/Form.js';
+import FormValidationMessages from '../Components/FormValidationMessages.js';
 import mixin from 'mixin';
 
-class AddTransaction extends mixin(Form, React.Component) {
+class AddTransactionForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,42 +113,4 @@ class AddTransaction extends mixin(Form, React.Component) {
   }
 }
 
-function DebitCategorySelect(props) {
-  return (
-    <span>
-      <select value={props.category} style={{width: "120px"}} onChange={props.onChange}>
-        {
-          props.categories.map(x => {
-            return <option key={x.id} value={x.id}>{x.category}</option>
-          })
-        }
-      </select>
-    </span>
-  );
-}
-
-function CreditCategorySelect(props) {
-  return (
-    <span>
-      {
-        Boolean(props.categories.find((x) => x.id == props.category)) ||
-        <CustomSelectInput value={props.category} onChange={props.onChange} />
-      }
-
-      <select value={props.category} style={{width: "120px"}} onChange={props.onChange}>
-        <option value="">New Category</option>
-        {
-          props.categories.map(x => {
-            return <option key={x.id} value={x.id}>{x.category}</option>
-          })
-        }
-      </select>
-    </span>
-  );
-}
-
-function CustomSelectInput(props) {
-  return <input type="text" value={props.value} style={{position: "absolute", zIndex: 1, width: "100px"}} onChange={props.onChange} autoFocus />;
-}
-
-export default withRouter(AddTransaction);
+export default withRouter(AddTransactionForm);

@@ -1,10 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
-export function TopNav(props) {
-  if (!props.isVisible) return null;
-
+export default function TopNav(props) {
   return (
     <div id="top-nav">
       <span><Link to="/overview">Overview</Link></span>

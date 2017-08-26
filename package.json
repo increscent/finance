@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browserify public/main.js -t babelify --outfile public/bundle.js && node index.js"
+    "start": "browserify public/Main.js -t babelify --outfile public/bundle.js && node index.js"
   },
   "repository": {
     "type": "git",

@@ -1,33 +1,35 @@
 import ApiService from './api_service.js';
 import ListenerService from './listener_service.js';
-import AnalysisService from './analysis_service.js';
-import BudgetService from './budget_service.js';
+import Store from '../store.js';
 
 class TransactionService extends ListenerService {
   constructor() {
     super();
-    this.credits = [];
     this.debits = [];
+    this.credits = [];
     this.readableDebits = [];
+    this.debitCategories = [];
     this.creditCategories = [];
     this.fetchCredits();
     this.fetchDebits();
 
-    this.onBudgetEvent = this.onBudgetEvent.bind(this);
-    BudgetService.registerListener(this.onBudgetEvent)
+    this.update = this.update.bind(this);
+    Store.registerListener(this.update);
   }
 
-  onBudgetEvent() {
-    this.readableDebits = calcReadableDebits(this.debits);
+  update() {
+    this.debits = Store.debits;
+    this.credits = Store.credits;
+    this.readableDebits = calcReadableDebits(Store.debits);
+    this.debitCategories = calcDebitCategories(Store.budgets);
+    this.creditCategories = calcCreditCategories(Store.credits);
     this.notifyListeners();
   }
 
   fetchCredits() {
     ApiService.getRequest('/api/transaction/credits')
     .then(data => {
-      this.credits = data;
-      this.creditCategories = calcCreditCategories(this.credits);
-      this.notifyListeners();
+      Store.setStore('credits', data);
     })
     .catch(error => {
       console.log(error);
@@ -37,9 +39,7 @@ class TransactionService extends ListenerService {
   fetchDebits() {
     ApiService.getRequest('/api/transaction/debits')
     .then(data => {
-      this.debits = data;
-      this.readableDebits = calcReadableDebits(this.debits);
-      this.notifyListeners();
+      Store.setStore('debits', data);
     })
     .catch(error => {
       console.log(error);
@@ -49,10 +49,9 @@ class TransactionService extends ListenerService {
   addTransaction(transaction, callback) {
     ApiService.putRequest('/api/transaction/' + transaction.type, transaction)
     .then(data => {
-      insertTransaction(data, (transaction.type == 'debit')? this.debits:this.credits);
-      if (transaction.type == 'debit') this.readableDebits = calcReadableDebits(this.debits); // this is ugly !!!
-      this.notifyListeners();
-      AnalysisService.fetchOverview();
+      var collection = (transaction.type == 'debit')? 'debits':'credits';
+      insertTransaction(data, this[collection]);
+      Store.setStore(collection, this[collection], true);
       callback(null);
     })
     .catch(error => {
@@ -64,10 +63,9 @@ class TransactionService extends ListenerService {
     console.log('deleted ' + transaction._id);
     ApiService.deleteRequest('/api/transaction/' + transaction.type + '/' + transaction._id)
     .then(data => {
-      removeTransaction(transaction._id, (transaction.type == 'debit')? this.debits:this.credits);
-      if (transaction.type == 'debit') this.readableDebits = calcReadableDebits(this.debits); // this is ugly !!!
-      this.notifyListeners();
-      AnalysisService.fetchOverview();
+      var collection = (transaction.type == 'debit')? 'debits':'credits';
+      removeTransaction(transaction._id, this[collection]);
+      Store.setStore(collection, this[collection], true);
     })
     .catch(error => {
       console.log(error);
@@ -75,7 +73,7 @@ class TransactionService extends ListenerService {
   }
 }
 
-export default (new TransactionService());
+export default new TransactionService();
 
 function insertTransaction(transaction, collection) {
   collection.push(transaction);
@@ -102,10 +100,19 @@ function calcReadableDebits(debits) {
 
 function calcBudgets() {
   var budgets = {};
-  BudgetService.budgets.forEach(x => {
+  Store.budgets.forEach(x => {
     budgets[x._id] = x.category;
   });
   return budgets;
+}
+
+function calcDebitCategories(budgets) {
+  return budgets.map(x => {
+    return {
+      id: x._id,
+      category: x.category
+    };
+  });
 }
 
 function calcCreditCategories(credits) {

@@ -13,9 +13,9 @@ export default class ListenerService {
     delete this.listeners[id];
   }
 
-  notifyListeners() {
+  notifyListeners(value) {
     for (var id in this.listeners) {
-      this.listeners[id]();
+      this.listeners[id](value);
     }
   }
 }

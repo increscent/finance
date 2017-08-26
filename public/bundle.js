@@ -3365,7 +3365,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":238}],36:[function(require,module,exports){
+},{"util":239}],36:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8437,7 +8437,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":65,"./ReactReconciler":115,"./instantiateReactComponent":159,"./shouldUpdateReactComponent":167,"./traverseAllChildren":168,"_process":235,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],70:[function(require,module,exports){
+},{"./KeyEscapeUtils":65,"./ReactReconciler":115,"./instantiateReactComponent":159,"./shouldUpdateReactComponent":167,"./traverseAllChildren":168,"_process":236,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],70:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -17999,7 +17999,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":112,"./ReactPropTypesSecret":113,"./reactProdInvariant":163,"_process":235,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],143:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":112,"./ReactPropTypesSecret":113,"./reactProdInvariant":163,"_process":236,"fbjs/lib/invariant":17,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],143:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18370,7 +18370,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":65,"./traverseAllChildren":168,"_process":235,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],148:[function(require,module,exports){
+},{"./KeyEscapeUtils":65,"./traverseAllChildren":168,"_process":236,"fbjs/lib/warning":24,"react/lib/ReactComponentTreeHook":200}],148:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23888,7 +23888,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":200,"./ReactPropTypeLocationNames":207,"./ReactPropTypesSecret":209,"./reactProdInvariant":218,"_process":235,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],213:[function(require,module,exports){
+},{"./ReactComponentTreeHook":200,"./ReactPropTypeLocationNames":207,"./ReactPropTypesSecret":209,"./reactProdInvariant":218,"_process":236,"fbjs/lib/invariant":17,"fbjs/lib/warning":24}],213:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24447,24 +24447,6 @@ function App(props) {
           null,
           _react2.default.createElement(
             _reactRouterDom.Link,
-            { to: '/overview' },
-            'Overview'
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(
-            _reactRouterDom.Link,
-            { to: '/history' },
-            'History'
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(
-            _reactRouterDom.Link,
             { to: '/addTransaction' },
             'Add Transaction'
           )
@@ -24490,7 +24472,7 @@ function App(props) {
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./views/add_budget_view.js":230,"./views/add_transaction_view.js":231,"./views/history_view.js":233,"./views/overview_view.js":234,"react":220,"react-dom":43,"react-router-dom":181}],225:[function(require,module,exports){
+},{"./views/add_budget_view.js":231,"./views/add_transaction_view.js":232,"./views/history_view.js":234,"./views/overview_view.js":235,"react":220,"react-dom":43,"react-router-dom":181}],225:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24507,6 +24489,10 @@ var _listener_service = require('./listener_service.js');
 
 var _listener_service2 = _interopRequireDefault(_listener_service);
 
+var _store = require('../store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24521,16 +24507,22 @@ var AnalysisService = function (_ListenerService) {
   function AnalysisService() {
     _classCallCheck(this, AnalysisService);
 
-    // this.history = [];
     var _this = _possibleConstructorReturn(this, (AnalysisService.__proto__ || Object.getPrototypeOf(AnalysisService)).call(this));
 
     _this.overview = [];
     _this.fetchOverview();
-    // this.updateHistory();
+
+    _this.update = _this.update.bind(_this);
+    _store2.default.registerListener(_this.update);
     return _this;
   }
 
   _createClass(AnalysisService, [{
+    key: 'update',
+    value: function update(server_modified) {
+      if (server_modified) this.fetchOverview();
+    }
+  }, {
     key: 'fetchOverview',
     value: function fetchOverview() {
       var _this2 = this;
@@ -24542,19 +24534,6 @@ var AnalysisService = function (_ListenerService) {
         console.log(error);
       });
     }
-
-    // updateHistory() {
-    //   ApiService.getRequest('/api/analysis/history')
-    //   .then(data => {
-    //     this.history = data;
-    //     this.notifyListeners();
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-    // }
-
-
   }]);
 
   return AnalysisService;
@@ -24562,7 +24541,7 @@ var AnalysisService = function (_ListenerService) {
 
 exports.default = new AnalysisService();
 
-},{"./api_service.js":226,"./listener_service.js":228}],226:[function(require,module,exports){
+},{"../store.js":230,"./api_service.js":226,"./listener_service.js":228}],226:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24641,9 +24620,9 @@ var _listener_service = require('./listener_service.js');
 
 var _listener_service2 = _interopRequireDefault(_listener_service);
 
-var _analysis_service = require('./analysis_service.js');
+var _store = require('../store.js');
 
-var _analysis_service2 = _interopRequireDefault(_analysis_service);
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24663,17 +24642,23 @@ var BudgetService = function (_ListenerService) {
 
     _this.budgets = [];
     _this.fetchBudgets();
+
+    _this.update = _this.update.bind(_this);
+    _store2.default.registerListener(_this.update);
     return _this;
   }
 
   _createClass(BudgetService, [{
+    key: 'update',
+    value: function update() {
+      this.budgets = _store2.default.budgets;
+      this.notifyListeners();
+    }
+  }, {
     key: 'fetchBudgets',
     value: function fetchBudgets() {
-      var _this2 = this;
-
       _api_service2.default.getRequest('/api/budget/budgets').then(function (data) {
-        _this2.budgets = data;
-        _this2.notifyListeners();
+        _store2.default.setStore('budgets', data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24681,12 +24666,11 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'addBudget',
     value: function addBudget(budget, callback) {
-      var _this3 = this;
+      var _this2 = this;
 
       _api_service2.default.putRequest('/api/budget', budget).then(function (data) {
-        insertBudget(data, _this3.budgets);
-        _this3.notifyListeners();
-        _analysis_service2.default.fetchOverview();
+        insertBudget(data, _this2.budgets);
+        _store2.default.setStore('budgets', _this2.budgets, true);
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
@@ -24704,7 +24688,7 @@ function insertBudget(budget, collection) {
   collection.push(budget);
 }
 
-},{"./analysis_service.js":225,"./api_service.js":226,"./listener_service.js":228}],228:[function(require,module,exports){
+},{"../store.js":230,"./api_service.js":226,"./listener_service.js":228}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24736,9 +24720,9 @@ var ListenerService = function () {
     }
   }, {
     key: "notifyListeners",
-    value: function notifyListeners() {
+    value: function notifyListeners(value) {
       for (var id in this.listeners) {
-        this.listeners[id]();
+        this.listeners[id](value);
       }
     }
   }]);
@@ -24765,13 +24749,9 @@ var _listener_service = require('./listener_service.js');
 
 var _listener_service2 = _interopRequireDefault(_listener_service);
 
-var _analysis_service = require('./analysis_service.js');
+var _store = require('../store.js');
 
-var _analysis_service2 = _interopRequireDefault(_analysis_service);
-
-var _budget_service = require('./budget_service.js');
-
-var _budget_service2 = _interopRequireDefault(_budget_service);
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24789,33 +24769,34 @@ var TransactionService = function (_ListenerService) {
 
     var _this = _possibleConstructorReturn(this, (TransactionService.__proto__ || Object.getPrototypeOf(TransactionService)).call(this));
 
-    _this.credits = [];
     _this.debits = [];
+    _this.credits = [];
     _this.readableDebits = [];
+    _this.debitCategories = [];
     _this.creditCategories = [];
     _this.fetchCredits();
     _this.fetchDebits();
 
-    _this.onBudgetEvent = _this.onBudgetEvent.bind(_this);
-    _budget_service2.default.registerListener(_this.onBudgetEvent);
+    _this.update = _this.update.bind(_this);
+    _store2.default.registerListener(_this.update);
     return _this;
   }
 
   _createClass(TransactionService, [{
-    key: 'onBudgetEvent',
-    value: function onBudgetEvent() {
-      this.readableDebits = calcReadableDebits(this.debits);
+    key: 'update',
+    value: function update() {
+      this.debits = _store2.default.debits;
+      this.credits = _store2.default.credits;
+      this.readableDebits = calcReadableDebits(_store2.default.debits);
+      this.debitCategories = calcDebitCategories(_store2.default.budgets);
+      this.creditCategories = calcCreditCategories(_store2.default.credits);
       this.notifyListeners();
     }
   }, {
     key: 'fetchCredits',
     value: function fetchCredits() {
-      var _this2 = this;
-
       _api_service2.default.getRequest('/api/transaction/credits').then(function (data) {
-        _this2.credits = data;
-        _this2.creditCategories = calcCreditCategories(_this2.credits);
-        _this2.notifyListeners();
+        _store2.default.setStore('credits', data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24823,12 +24804,8 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'fetchDebits',
     value: function fetchDebits() {
-      var _this3 = this;
-
       _api_service2.default.getRequest('/api/transaction/debits').then(function (data) {
-        _this3.debits = data;
-        _this3.readableDebits = calcReadableDebits(_this3.debits);
-        _this3.notifyListeners();
+        _store2.default.setStore('debits', data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24836,13 +24813,12 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'addTransaction',
     value: function addTransaction(transaction, callback) {
-      var _this4 = this;
+      var _this2 = this;
 
       _api_service2.default.putRequest('/api/transaction/' + transaction.type, transaction).then(function (data) {
-        insertTransaction(data, transaction.type == 'debit' ? _this4.debits : _this4.credits);
-        if (transaction.type == 'debit') _this4.readableDebits = calcReadableDebits(_this4.debits); // this is ugly !!!
-        _this4.notifyListeners();
-        _analysis_service2.default.fetchOverview();
+        var collection = transaction.type == 'debit' ? 'debits' : 'credits';
+        insertTransaction(data, _this2[collection]);
+        _store2.default.setStore(collection, _this2[collection], true);
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
@@ -24851,14 +24827,13 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'deleteTransaction',
     value: function deleteTransaction(transaction) {
-      var _this5 = this;
+      var _this3 = this;
 
       console.log('deleted ' + transaction._id);
       _api_service2.default.deleteRequest('/api/transaction/' + transaction.type + '/' + transaction._id).then(function (data) {
-        removeTransaction(transaction._id, transaction.type == 'debit' ? _this5.debits : _this5.credits);
-        if (transaction.type == 'debit') _this5.readableDebits = calcReadableDebits(_this5.debits); // this is ugly !!!
-        _this5.notifyListeners();
-        _analysis_service2.default.fetchOverview();
+        var collection = transaction.type == 'debit' ? 'debits' : 'credits';
+        removeTransaction(transaction._id, _this3[collection]);
+        _store2.default.setStore(collection, _this3[collection], true);
       }).catch(function (error) {
         console.log(error);
       });
@@ -24898,10 +24873,19 @@ function calcReadableDebits(debits) {
 
 function calcBudgets() {
   var budgets = {};
-  _budget_service2.default.budgets.forEach(function (x) {
+  _store2.default.budgets.forEach(function (x) {
     budgets[x._id] = x.category;
   });
   return budgets;
+}
+
+function calcDebitCategories(budgets) {
+  return budgets.map(function (x) {
+    return {
+      id: x._id,
+      category: x.category
+    };
+  });
 }
 
 function calcCreditCategories(credits) {
@@ -24929,7 +24913,55 @@ function noDuplicates(array, getKey) {
   });
 }
 
-},{"./analysis_service.js":225,"./api_service.js":226,"./budget_service.js":227,"./listener_service.js":228}],230:[function(require,module,exports){
+},{"../store.js":230,"./api_service.js":226,"./listener_service.js":228}],230:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _listener_service = require("./services/listener_service.js");
+
+var _listener_service2 = _interopRequireDefault(_listener_service);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Store = function (_ListenerService) {
+  _inherits(Store, _ListenerService);
+
+  function Store() {
+    _classCallCheck(this, Store);
+
+    var _this = _possibleConstructorReturn(this, (Store.__proto__ || Object.getPrototypeOf(Store)).call(this));
+
+    _this.budgets = [];
+    _this.credits = [];
+    _this.debits = [];
+    return _this;
+  }
+
+  _createClass(Store, [{
+    key: "setStore",
+    value: function setStore(store, value, server_modified) {
+      this[store] = value;
+      this.notifyListeners(server_modified);
+    }
+  }]);
+
+  return Store;
+}(_listener_service2.default);
+
+exports.default = new Store();
+
+},{"./services/listener_service.js":228}],231:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25083,7 +25115,7 @@ var AddBudget = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddBudget);
 
-},{"../services/budget_service.js":227,"./components/form_class.js":232,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],231:[function(require,module,exports){
+},{"../services/budget_service.js":227,"./components/form_class.js":233,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],232:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25105,10 +25137,6 @@ var _reactRouterDom = require('react-router-dom');
 var _transaction_service = require('../services/transaction_service.js');
 
 var _transaction_service2 = _interopRequireDefault(_transaction_service);
-
-var _budget_service = require('../services/budget_service.js');
-
-var _budget_service2 = _interopRequireDefault(_budget_service);
 
 var _form_class = require('./components/form_class.js');
 
@@ -25159,28 +25187,16 @@ var AddTransaction = function (_mixin) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.transactionServiceListenerId = _transaction_service2.default.registerListener(this.setDefaultCategory);
-      this.budgetServiceListenerId = _budget_service2.default.registerListener(this.setDefaultCategory);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       _transaction_service2.default.unRegisterListener(this.transactionServiceListenerId);
-      _budget_service2.default.unRegisterListener(this.budgetServiceListenerId);
-    }
-  }, {
-    key: 'getDebitCategories',
-    value: function getDebitCategories() {
-      return _budget_service2.default.budgets.map(function (x) {
-        return {
-          id: x._id,
-          category: x.category
-        };
-      });
     }
   }, {
     key: 'getDefaultCategory',
     value: function getDefaultCategory(transaction_type) {
-      var categories = transaction_type == 'debit' ? this.getDebitCategories() : _transaction_service2.default.creditCategories;
+      var categories = transaction_type == 'debit' ? _transaction_service2.default.debitCategories : _transaction_service2.default.creditCategories;
       return categories[0] ? categories[0].id : '';
     }
   }, {
@@ -25240,7 +25256,7 @@ var AddTransaction = function (_mixin) {
     value: function render() {
       var _this3 = this;
 
-      var select_categories = this.state.transaction_type == 'debit' ? this.getDebitCategories() : _transaction_service2.default.creditCategories;
+      var select_categories = this.state.transaction_type == 'debit' ? _transaction_service2.default.debitCategories : _transaction_service2.default.creditCategories;
 
       return _react2.default.createElement(
         'form',
@@ -25321,7 +25337,7 @@ function CustomSelectInput(props) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddTransaction);
 
-},{"../services/budget_service.js":227,"../services/transaction_service.js":229,"./components/form_class.js":232,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],232:[function(require,module,exports){
+},{"../services/transaction_service.js":229,"./components/form_class.js":233,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],233:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25395,7 +25411,7 @@ function FormValidationMessages(props) {
   );
 }
 
-},{"react":220,"react-dom":43}],233:[function(require,module,exports){
+},{"react":220,"react-dom":43}],234:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25545,7 +25561,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"../services/transaction_service.js":229,"react":220,"react-dom":43}],234:[function(require,module,exports){
+},{"../services/transaction_service.js":229,"react":220,"react-dom":43}],235:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25696,7 +25712,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"../services/analysis_service.js":225,"react":220,"react-dom":43}],235:[function(require,module,exports){
+},{"../services/analysis_service.js":225,"react":220,"react-dom":43}],236:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -25882,7 +25898,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],236:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -25907,14 +25923,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],237:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],238:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -26504,4 +26520,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":237,"_process":235,"inherits":236}]},{},[224]);
+},{"./support/isBuffer":238,"_process":236,"inherits":237}]},{},[224]);

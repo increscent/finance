@@ -11,8 +11,6 @@ function App(props) {
     <Router>
       <div>
         <ul>
-          <li><Link to="/overview">Overview</Link></li>
-          <li><Link to="/history">History</Link></li>
           <li><Link to="/addTransaction">Add Transaction</Link></li>
           <li><Link to="/addBudget">Add Budget</Link></li>
         </ul>

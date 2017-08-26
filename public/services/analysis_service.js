@@ -1,13 +1,19 @@
 import ApiService from './api_service.js';
 import ListenerService from './listener_service.js';
+import Store from '../store.js';
 
 class AnalysisService extends ListenerService {
   constructor() {
     super();
-    // this.history = [];
     this.overview = [];
     this.fetchOverview();
-    // this.updateHistory();
+
+    this.update = this.update.bind(this);
+    Store.registerListener(this.update);
+  }
+
+  update(server_modified) {
+    if (server_modified) this.fetchOverview();
   }
 
   fetchOverview() {
@@ -20,19 +26,6 @@ class AnalysisService extends ListenerService {
       console.log(error);
     });
   }
-
-  // updateHistory() {
-  //   ApiService.getRequest('/api/analysis/history')
-  //   .then(data => {
-  //     this.history = data;
-  //     this.notifyListeners();
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   });
-  // }
-
-
 }
 
-export default (new AnalysisService());
+export default new AnalysisService();

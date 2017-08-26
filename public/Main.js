@@ -10,16 +10,7 @@ function App(props) {
   return (
     <Router>
       <div>
-      {
-        // <ul>
-        //   <li><Link to="/addTransaction">Add Transaction</Link></li>
-        //   <li><Link to="/addBudget">Add Budget</Link></li>
-        // </ul>
-      }
-
-        <hr/>
-
-        <Route path="/overview" component={OverviewView}/>
+        <Route path="/:path(overview|)" component={OverviewView}/>
         <Route path="/history" component={HistoryView}/>
         <Route path="/addTransaction" component={AddTransactionView}/>
         <Route path="/addBudget" component={AddBudgetView}/>

@@ -27,7 +27,7 @@ export default class HistoryTable extends React.Component {
     TransactionService.readableDebits.forEach(x => x.type = 'debit');
     TransactionService.credits.forEach(x => x.type = 'credit');
     return (
-      <table>
+      <table className="table table-striped">
         <HistoryTableHeader />
         <tbody>
           {

@@ -20,7 +20,7 @@ export default class BalanceTable extends React.Component {
 
   render() {
     return (
-      <table>
+      <table className="table">
         <BalanceTableHeader />
         <tbody>
           {

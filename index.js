@@ -12,7 +12,7 @@ for (var i in config.route_types) {
 }
 
 // serve frontend files
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 app.listen(45678);
-console.log('App listening on port: 45678');
+console.log('Finance app listening on port: 45678');

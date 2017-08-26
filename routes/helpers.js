@@ -1,11 +1,33 @@
 var Models = require('../models');
 
 module.exports = {
-  getAccountData: function (req, res, next) {
-    Models.Account.findOne({_id: req.headers['account-id']}, function (err, account) {
+  verifyAccount: function (req, res, next) {
+    var account_id = req.headers['account-id'];
+    Models.Account.findOne({_id: account_id}, function (err, account) {
       if (!account) return module.exports.userError(res, 'Account does not exist: ' + req.headers['account-id']);
 
-      req.account = account;
+      req.account_id = account_id;
+      return next();
+    });
+  },
+
+  getBudgets: function (req, res, next) {
+    Models.Budget.find({account_id: req.account_id}, function (err, budgets) {
+      req.budgets = budgets || [];
+      return next();
+    });
+  },
+
+  getDebits: function (req, res, next) {
+    Models.Debit.find({account_id: req.account_id}, function (err, debits) {
+      req.debits = debits || [];
+      return next();
+    });
+  },
+
+  getCredits: function (req, res, next) {
+    Models.Credit.find({account_id: req.account_id}, function (err, credits) {
+      req.credits = credits || [];
       return next();
     });
   },
@@ -14,21 +36,20 @@ module.exports = {
     return function (req, res, next) {
       if (required_fields.includes('date') && !req.body.date) req.body.date = Date.now();
 
+      var new_document = {};
       for (var i in required_fields) {
-        if (req.body[required_fields[i]] == undefined) {
+        var field = required_fields[i];
+        if (req.body[field] == undefined) {
           return module.exports.userError(res, 'Missing one or more required fields: ' + required_fields.toString());
+        } else {
+          new_document[field] = req.body[field];
         }
       }
-      next();
-    };
-  },
+      new_document.account_id = req.account_id;
+      req.validated_body = new_document;
 
-  generateNewDocument(fields, request_body) {
-    var new_document = {};
-    for (var i in fields) {
-      new_document[fields[i]] = request_body[fields[i]];
+      next();
     }
-    return new_document;
   },
 
   userError: function (res, text) {

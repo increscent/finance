@@ -7,7 +7,6 @@ export default class Overview extends React.Component {
     super(props);
 
     this.forceUpdate = this.forceUpdate.bind(this);
-    AnalysisService.updateOverview();
   }
 
   componentDidMount() {

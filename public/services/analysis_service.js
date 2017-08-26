@@ -4,13 +4,13 @@ import ListenerService from './listener_service.js';
 class AnalysisService extends ListenerService {
   constructor() {
     super();
-    this.history = [];
+    // this.history = [];
     this.overview = [];
-    this.updateOverview();
-    this.updateHistory();
+    this.fetchOverview();
+    // this.updateHistory();
   }
 
-  updateOverview() {
+  fetchOverview() {
     ApiService.getRequest('/api/analysis/overview')
     .then(data => {
       this.overview = data;
@@ -21,16 +21,18 @@ class AnalysisService extends ListenerService {
     });
   }
 
-  updateHistory() {
-    ApiService.getRequest('/api/analysis/history')
-    .then(data => {
-      this.history = data;
-      this.notifyListeners();
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  }
+  // updateHistory() {
+  //   ApiService.getRequest('/api/analysis/history')
+  //   .then(data => {
+  //     this.history = data;
+  //     this.notifyListeners();
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
+  //   });
+  // }
+
+
 }
 
 export default (new AnalysisService());

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {withRouter} from "react-router-dom";
 import TransactionService from '../services/transaction_service.js';
+import BudgetService from '../services/budget_service.js';
 import {Form, FormValidationMessages} from './components/form_class.js';
 import mixin from 'mixin';
 
@@ -19,7 +20,6 @@ class AddTransaction extends mixin(Form, React.Component) {
     this.handleTransactionTypeChange = this.handleTransactionTypeChange.bind(this);
     this.setDefaultCategory = this.setDefaultCategory.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    TransactionService.update();
   }
 
   setDefaultCategory() {
@@ -32,14 +32,25 @@ class AddTransaction extends mixin(Form, React.Component) {
 
   componentDidMount() {
     this.transactionServiceListenerId = TransactionService.registerListener(this.setDefaultCategory);
+    this.budgetServiceListenerId = BudgetService.registerListener(this.setDefaultCategory);
   }
 
   componentWillUnmount() {
     TransactionService.unRegisterListener(this.transactionServiceListenerId);
+    BudgetService.unRegisterListener(this.budgetServiceListenerId);
+  }
+
+  getDebitCategories() {
+    return BudgetService.budgets.map(x => {
+      return {
+        id: x._id,
+        category: x.category
+      };
+    });
   }
 
   getDefaultCategory(transaction_type) {
-    var categories = (transaction_type == 'debit')? TransactionService.debitCategories:TransactionService.creditCategories;
+    var categories = (transaction_type == 'debit')? this.getDebitCategories():TransactionService.creditCategories;
     return categories[0]? categories[0].id:'';
   }
 
@@ -71,8 +82,8 @@ class AddTransaction extends mixin(Form, React.Component) {
       // validation failed
     } else {
       // validation successful
-      TransactionService.addNew({
-        transaction_type: this.state.transaction_type,
+      TransactionService.addTransaction({
+        type: this.state.transaction_type,
         category: this.state.category.trim(),
         motive: this.state.motive.trim(),
         amount: parseFloat(this.state.amount)
@@ -82,14 +93,14 @@ class AddTransaction extends mixin(Form, React.Component) {
             validation_messages: [error]
           })
         } else {
-          this.props.history.push('/overview');
+          this.props.history.goBack();
         }
       });
     }
   }
 
   render() {
-    var select_categories = (this.state.transaction_type == 'debit')? TransactionService.debitCategories:TransactionService.creditCategories;
+    var select_categories = (this.state.transaction_type == 'debit')? this.getDebitCategories():TransactionService.creditCategories;
 
     return (
       <form id="addTransactionForm" onSubmit={this.handleFormSubmit}>

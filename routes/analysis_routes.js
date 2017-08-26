@@ -4,16 +4,11 @@ var Models = require('../models');
 var helpers = require('./helpers');
 var Analysis = require('../classes/analysis');
 
-router.use(helpers.getAccountData);
+router.use(helpers.verifyAccount);
 
-router.get('/overview', function (req, res) {
-  var analysis = new Analysis(req.account.budgets, req.account.credits, req.account.debits);
+router.get('/overview', helpers.getBudgets, helpers.getCredits, helpers.getDebits, function (req, res) {
+  var analysis = new Analysis(req.budgets, req.credits, req.debits);
   res.send(JSON.stringify(analysis.getOverview()));
-});
-
-router.get('/history', function (req, res) {
-  var analysis = new Analysis(req.account.budgets, req.account.credits, req.account.debits);
-  res.send(JSON.stringify(analysis.getHistory()));
 });
 
 module.exports = router;

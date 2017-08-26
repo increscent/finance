@@ -1,5 +1,3 @@
-var Budget = require('./budget');
-
 class Analysis {
   constructor(budgets, credits, debits) {
     this.budgets = budgets;
@@ -8,15 +6,20 @@ class Analysis {
   }
 
   getOverview() {
-    var overview = [];
-    for (var i = 0; i < this.budgets.length; i++) {
-      var category = this.budgets[i].category;
-      var debits = this.totalBudgetDebits(this.budgets[i]);
-      var allowance = this.calcBudgetAllowance(this.budgets[i]);
-      var balance = allowance - debits;
-      var category_allowance = (this.budgets[i].allowance_type == '$'?'$':'') + this.budgets[i].allowance.toString() + (this.budgets[i].allowance_type == '%'?'%':'');
-      overview.push({category: category, category_allowance: category_allowance, debits: debits, allowance: allowance, balance: balance});
-    }
+    var overview = this.budgets.map(budget => {
+      var debits = this.totalBudgetDebits(budget);
+      var allowance = this.calcBudgetAllowance(budget);
+      var allowance_string = '$' + budget.allowance;
+      if (budget.allowance_type == '%') allowance_string = budget.allowance + '%';
+      return {
+        id: budget._id,
+        category: budget.category,
+        debits: debits,
+        allowance: allowance,
+        balance: allowance - debits,
+        category_allowance: allowance_string
+      };
+    });
 
     var totalCredits = this.sumCollection(this.credits);
     var totalDebits = this.sumCollection(this.debits);
@@ -40,6 +43,7 @@ class Analysis {
   getHistory() {
     var credits = this.credits.map(x => {
       var credit = {
+        id: x._id,
         category: x.category,
         motive: x.motive,
         amount: x.amount,
@@ -50,6 +54,7 @@ class Analysis {
     });
     var debits = this.debits.map(x => {
       var debit = {
+        id: x._id,
         category: x.category,
         motive: x.motive,
         amount: x.amount,

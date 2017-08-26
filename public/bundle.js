@@ -24521,18 +24521,18 @@ var AnalysisService = function (_ListenerService) {
   function AnalysisService() {
     _classCallCheck(this, AnalysisService);
 
+    // this.history = [];
     var _this = _possibleConstructorReturn(this, (AnalysisService.__proto__ || Object.getPrototypeOf(AnalysisService)).call(this));
 
-    _this.history = [];
     _this.overview = [];
-    _this.updateOverview();
-    _this.updateHistory();
+    _this.fetchOverview();
+    // this.updateHistory();
     return _this;
   }
 
   _createClass(AnalysisService, [{
-    key: 'updateOverview',
-    value: function updateOverview() {
+    key: 'fetchOverview',
+    value: function fetchOverview() {
       var _this2 = this;
 
       _api_service2.default.getRequest('/api/analysis/overview').then(function (data) {
@@ -24542,18 +24542,19 @@ var AnalysisService = function (_ListenerService) {
         console.log(error);
       });
     }
-  }, {
-    key: 'updateHistory',
-    value: function updateHistory() {
-      var _this3 = this;
 
-      _api_service2.default.getRequest('/api/analysis/history').then(function (data) {
-        _this3.history = data;
-        _this3.notifyListeners();
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }
+    // updateHistory() {
+    //   ApiService.getRequest('/api/analysis/history')
+    //   .then(data => {
+    //     this.history = data;
+    //     this.notifyListeners();
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // }
+
+
   }]);
 
   return AnalysisService;
@@ -24582,7 +24583,7 @@ var ApiService = function () {
     value: function getRequest(endpoint) {
       var request_options = {
         method: 'GET',
-        headers: { 'account-id': '598d3551f5468d246bb06fbb' }
+        headers: { 'account-id': '59a10db60ce696239179287b' }
       };
 
       return this.apiRequest(endpoint, request_options, 'json');
@@ -24592,8 +24593,18 @@ var ApiService = function () {
     value: function putRequest(endpoint, body) {
       var request_options = {
         method: 'PUT',
-        headers: { 'account-id': '598d3551f5468d246bb06fbb', 'Content-Type': 'application/json' },
+        headers: { 'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
+      };
+
+      return this.apiRequest(endpoint, request_options, 'json');
+    }
+  }, {
+    key: 'deleteRequest',
+    value: function deleteRequest(endpoint) {
+      var request_options = {
+        method: 'DELETE',
+        headers: { 'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json' }
       };
 
       return this.apiRequest(endpoint, request_options, 'text');
@@ -24603,7 +24614,7 @@ var ApiService = function () {
     value: function apiRequest(endpoint, request_options, response_type) {
       return fetch(endpoint, request_options).then(function (res) {
         if (res.status == 200) return res[response_type]();
-        throw new Error('The model fetch failed.');
+        throw new Error('This happened: ' + res.status);
       });
     }
   }]);
@@ -24630,6 +24641,10 @@ var _listener_service = require('./listener_service.js');
 
 var _listener_service2 = _interopRequireDefault(_listener_service);
 
+var _analysis_service = require('./analysis_service.js');
+
+var _analysis_service2 = _interopRequireDefault(_analysis_service);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24647,26 +24662,31 @@ var BudgetService = function (_ListenerService) {
     var _this = _possibleConstructorReturn(this, (BudgetService.__proto__ || Object.getPrototypeOf(BudgetService)).call(this));
 
     _this.budgets = [];
-    _this.update();
+    _this.fetchBudgets();
     return _this;
   }
 
   _createClass(BudgetService, [{
-    key: 'update',
-    value: function update() {
+    key: 'fetchBudgets',
+    value: function fetchBudgets() {
       var _this2 = this;
 
-      _api_service2.default.getRequest('/api/budget').then(function (data) {
-        _this2.debitCategories = data;
+      _api_service2.default.getRequest('/api/budget/budgets').then(function (data) {
+        _this2.budgets = data;
         _this2.notifyListeners();
       }).catch(function (error) {
         console.log(error);
       });
     }
   }, {
-    key: 'addNew',
-    value: function addNew(budget, callback) {
+    key: 'addBudget',
+    value: function addBudget(budget, callback) {
+      var _this3 = this;
+
       _api_service2.default.putRequest('/api/budget', budget).then(function (data) {
+        insertBudget(data, _this3.budgets);
+        _this3.notifyListeners();
+        _analysis_service2.default.fetchOverview();
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
@@ -24679,7 +24699,12 @@ var BudgetService = function (_ListenerService) {
 
 exports.default = new BudgetService();
 
-},{"./api_service.js":226,"./listener_service.js":228}],228:[function(require,module,exports){
+
+function insertBudget(budget, collection) {
+  collection.push(budget);
+}
+
+},{"./analysis_service.js":225,"./api_service.js":226,"./listener_service.js":228}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24740,6 +24765,14 @@ var _listener_service = require('./listener_service.js');
 
 var _listener_service2 = _interopRequireDefault(_listener_service);
 
+var _analysis_service = require('./analysis_service.js');
+
+var _analysis_service2 = _interopRequireDefault(_analysis_service);
+
+var _budget_service = require('./budget_service.js');
+
+var _budget_service2 = _interopRequireDefault(_budget_service);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24756,32 +24789,78 @@ var TransactionService = function (_ListenerService) {
 
     var _this = _possibleConstructorReturn(this, (TransactionService.__proto__ || Object.getPrototypeOf(TransactionService)).call(this));
 
-    _this.debitCategories = [];
+    _this.credits = [];
+    _this.debits = [];
+    _this.readableDebits = [];
     _this.creditCategories = [];
-    _this.update();
+    _this.fetchCredits();
+    _this.fetchDebits();
+
+    _this.onBudgetEvent = _this.onBudgetEvent.bind(_this);
+    _budget_service2.default.registerListener(_this.onBudgetEvent);
     return _this;
   }
 
   _createClass(TransactionService, [{
-    key: 'update',
-    value: function update() {
+    key: 'onBudgetEvent',
+    value: function onBudgetEvent() {
+      this.readableDebits = calcReadableDebits(this.debits);
+      this.notifyListeners();
+    }
+  }, {
+    key: 'fetchCredits',
+    value: function fetchCredits() {
       var _this2 = this;
 
-      _api_service2.default.getRequest('/api/transaction/categories').then(function (data) {
-        _this2.debitCategories = data.debitCategories;
-        _this2.creditCategories = data.creditCategories;
+      _api_service2.default.getRequest('/api/transaction/credits').then(function (data) {
+        _this2.credits = data;
+        _this2.creditCategories = calcCreditCategories(_this2.credits);
         _this2.notifyListeners();
       }).catch(function (error) {
         console.log(error);
       });
     }
   }, {
-    key: 'addNew',
-    value: function addNew(transaction, callback) {
-      _api_service2.default.putRequest('/api/transaction/' + transaction.transaction_type, transaction).then(function (data) {
+    key: 'fetchDebits',
+    value: function fetchDebits() {
+      var _this3 = this;
+
+      _api_service2.default.getRequest('/api/transaction/debits').then(function (data) {
+        _this3.debits = data;
+        _this3.readableDebits = calcReadableDebits(_this3.debits);
+        _this3.notifyListeners();
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'addTransaction',
+    value: function addTransaction(transaction, callback) {
+      var _this4 = this;
+
+      _api_service2.default.putRequest('/api/transaction/' + transaction.type, transaction).then(function (data) {
+        insertTransaction(data, transaction.type == 'debit' ? _this4.debits : _this4.credits);
+        if (transaction.type == 'debit') _this4.readableDebits = calcReadableDebits(_this4.debits); // this is ugly !!!
+        _this4.notifyListeners();
+        _analysis_service2.default.fetchOverview();
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
+      });
+    }
+  }, {
+    key: 'deleteTransaction',
+    value: function deleteTransaction(transaction) {
+      var _this5 = this;
+
+      console.log('deleted ' + transaction._id);
+      _api_service2.default.deleteRequest('/api/transaction/' + transaction.type + '/' + transaction._id).then(function (data) {
+        removeTransaction(transaction._id, transaction.type == 'debit' ? _this5.debits : _this5.credits);
+        if (transaction.type == 'debit') _this5.readableDebits = calcReadableDebits(_this5.debits); // this is ugly !!!
+        _this5.notifyListeners();
+        _analysis_service2.default.fetchOverview();
+      }).catch(function (error) {
+        console.log(error);
       });
     }
   }]);
@@ -24791,7 +24870,66 @@ var TransactionService = function (_ListenerService) {
 
 exports.default = new TransactionService();
 
-},{"./api_service.js":226,"./listener_service.js":228}],230:[function(require,module,exports){
+
+function insertTransaction(transaction, collection) {
+  collection.push(transaction);
+}
+
+function removeTransaction(transaction_id, collection) {
+  var index = collection.findIndex(function (x) {
+    return x._id == transaction_id;
+  });
+  if (index >= 0) collection.splice(index, 1);
+}
+
+function calcReadableDebits(debits) {
+  var budgets = calcBudgets();
+  var readableDebits = debits.map(function (x) {
+    return {
+      _id: x._id,
+      category: budgets[x.category],
+      motive: x.motive,
+      amount: x.amount,
+      date: x.date
+    };
+  });
+  return readableDebits;
+}
+
+function calcBudgets() {
+  var budgets = {};
+  _budget_service2.default.budgets.forEach(function (x) {
+    budgets[x._id] = x.category;
+  });
+  return budgets;
+}
+
+function calcCreditCategories(credits) {
+  var categories = credits.map(function (x) {
+    return {
+      id: x.category,
+      category: x.category
+    };
+  });
+  return noDuplicates(categories, function (x) {
+    return x.id;
+  });
+}
+
+function noDuplicates(array, getKey) {
+  var seen = {};
+  return array.filter(function (x) {
+    var key = getKey(x);
+    if (seen[key]) {
+      return false;
+    } else {
+      seen[key] = true;
+      return true;
+    }
+  });
+}
+
+},{"./analysis_service.js":225,"./api_service.js":226,"./budget_service.js":227,"./listener_service.js":228}],230:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24813,10 +24951,6 @@ var _reactRouterDom = require('react-router-dom');
 var _budget_service = require('../services/budget_service.js');
 
 var _budget_service2 = _interopRequireDefault(_budget_service);
-
-var _transaction_service = require('../services/transaction_service.js');
-
-var _transaction_service2 = _interopRequireDefault(_transaction_service);
 
 var _form_class = require('./components/form_class.js');
 
@@ -24849,7 +24983,6 @@ var AddBudget = function (_mixin) {
 
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
     _this.forceUpdate = _this.forceUpdate.bind(_this);
-    _budget_service2.default.update();
     return _this;
   }
 
@@ -24873,7 +25006,7 @@ var AddBudget = function (_mixin) {
       var rules = [{ name: 'category', validate: function validate(x) {
           return x;
         }, error_message: 'Please enter a name' }, { name: 'category', validate: function validate(x) {
-          return !_transaction_service2.default.debitCategories.find(function (budget) {
+          return !_budget_service2.default.budgets.find(function (budget) {
             return x.trim().toLowerCase() == budget.category.trim().toLowerCase();
           });
         }, error_message: 'That name already exists. Please enter a unique budget name.' }, { name: 'allowance_type', validate: function validate(x) {
@@ -24893,7 +25026,7 @@ var AddBudget = function (_mixin) {
         // validation failed
       } else {
         // validation successful
-        _budget_service2.default.addNew({
+        _budget_service2.default.addBudget({
           category: this.state.category.trim(),
           allowance_type: this.state.allowance_type,
           allowance: parseFloat(this.state.allowance)
@@ -24903,7 +25036,7 @@ var AddBudget = function (_mixin) {
               validation_messages: [error]
             });
           } else {
-            _this2.props.history.push('/overview');
+            _this2.props.history.goBack();
           }
         });
       }
@@ -24950,7 +25083,7 @@ var AddBudget = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddBudget);
 
-},{"../services/budget_service.js":227,"../services/transaction_service.js":229,"./components/form_class.js":232,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],231:[function(require,module,exports){
+},{"../services/budget_service.js":227,"./components/form_class.js":232,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],231:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24972,6 +25105,10 @@ var _reactRouterDom = require('react-router-dom');
 var _transaction_service = require('../services/transaction_service.js');
 
 var _transaction_service2 = _interopRequireDefault(_transaction_service);
+
+var _budget_service = require('../services/budget_service.js');
+
+var _budget_service2 = _interopRequireDefault(_budget_service);
 
 var _form_class = require('./components/form_class.js');
 
@@ -25006,7 +25143,6 @@ var AddTransaction = function (_mixin) {
     _this.handleTransactionTypeChange = _this.handleTransactionTypeChange.bind(_this);
     _this.setDefaultCategory = _this.setDefaultCategory.bind(_this);
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
-    _transaction_service2.default.update();
     return _this;
   }
 
@@ -25023,16 +25159,28 @@ var AddTransaction = function (_mixin) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.transactionServiceListenerId = _transaction_service2.default.registerListener(this.setDefaultCategory);
+      this.budgetServiceListenerId = _budget_service2.default.registerListener(this.setDefaultCategory);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       _transaction_service2.default.unRegisterListener(this.transactionServiceListenerId);
+      _budget_service2.default.unRegisterListener(this.budgetServiceListenerId);
+    }
+  }, {
+    key: 'getDebitCategories',
+    value: function getDebitCategories() {
+      return _budget_service2.default.budgets.map(function (x) {
+        return {
+          id: x._id,
+          category: x.category
+        };
+      });
     }
   }, {
     key: 'getDefaultCategory',
     value: function getDefaultCategory(transaction_type) {
-      var categories = transaction_type == 'debit' ? _transaction_service2.default.debitCategories : _transaction_service2.default.creditCategories;
+      var categories = transaction_type == 'debit' ? this.getDebitCategories() : _transaction_service2.default.creditCategories;
       return categories[0] ? categories[0].id : '';
     }
   }, {
@@ -25071,8 +25219,8 @@ var AddTransaction = function (_mixin) {
         // validation failed
       } else {
         // validation successful
-        _transaction_service2.default.addNew({
-          transaction_type: this.state.transaction_type,
+        _transaction_service2.default.addTransaction({
+          type: this.state.transaction_type,
           category: this.state.category.trim(),
           motive: this.state.motive.trim(),
           amount: parseFloat(this.state.amount)
@@ -25082,7 +25230,7 @@ var AddTransaction = function (_mixin) {
               validation_messages: [error]
             });
           } else {
-            _this2.props.history.push('/overview');
+            _this2.props.history.goBack();
           }
         });
       }
@@ -25092,7 +25240,7 @@ var AddTransaction = function (_mixin) {
     value: function render() {
       var _this3 = this;
 
-      var select_categories = this.state.transaction_type == 'debit' ? _transaction_service2.default.debitCategories : _transaction_service2.default.creditCategories;
+      var select_categories = this.state.transaction_type == 'debit' ? this.getDebitCategories() : _transaction_service2.default.creditCategories;
 
       return _react2.default.createElement(
         'form',
@@ -25173,7 +25321,7 @@ function CustomSelectInput(props) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddTransaction);
 
-},{"../services/transaction_service.js":229,"./components/form_class.js":232,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],232:[function(require,module,exports){
+},{"../services/budget_service.js":227,"../services/transaction_service.js":229,"./components/form_class.js":232,"mixin":35,"react":220,"react-dom":43,"react-router-dom":181}],232:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25264,9 +25412,9 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _analysis_service = require('../services/analysis_service.js');
+var _transaction_service = require('../services/transaction_service.js');
 
-var _analysis_service2 = _interopRequireDefault(_analysis_service);
+var _transaction_service2 = _interopRequireDefault(_transaction_service);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25285,23 +25433,28 @@ var History = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (History.__proto__ || Object.getPrototypeOf(History)).call(this, props));
 
     _this.forceUpdate = _this.forceUpdate.bind(_this);
-    _analysis_service2.default.updateHistory();
     return _this;
   }
 
   _createClass(History, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.analysisServiceListenerId = _analysis_service2.default.registerListener(this.forceUpdate);
+      this.transactionServiceListenerId = _transaction_service2.default.registerListener(this.forceUpdate);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _analysis_service2.default.unRegisterListener(this.analysisServiceListenerId);
+      _transaction_service2.default.unRegisterListener(this.transactionServiceListenerId);
     }
   }, {
     key: 'render',
     value: function render() {
+      _transaction_service2.default.readableDebits.forEach(function (x) {
+        return x.type = 'debit';
+      });
+      _transaction_service2.default.credits.forEach(function (x) {
+        return x.type = 'credit';
+      });
       return _react2.default.createElement(
         'table',
         null,
@@ -25309,7 +25462,7 @@ var History = function (_React$Component) {
         _react2.default.createElement(
           'tbody',
           null,
-          _analysis_service2.default.history.map(function (transaction, i) {
+          _transaction_service2.default.readableDebits.concat(_transaction_service2.default.credits).map(function (transaction, i) {
             return _react2.default.createElement(HistoryRow, { key: i, transaction: transaction });
           })
         )
@@ -25322,50 +25475,43 @@ var History = function (_React$Component) {
 
 exports.default = History;
 
-var HistoryRow = function (_React$Component2) {
-  _inherits(HistoryRow, _React$Component2);
 
-  function HistoryRow(props) {
-    _classCallCheck(this, HistoryRow);
-
-    return _possibleConstructorReturn(this, (HistoryRow.__proto__ || Object.getPrototypeOf(HistoryRow)).call(this, props));
-  }
-
-  _createClass(HistoryRow, [{
-    key: 'render',
-    value: function render() {
-      var transaction = this.props.transaction;
-      var isDebit = transaction.type == 'debit';
-      return _react2.default.createElement(
-        'tr',
-        null,
-        _react2.default.createElement(
-          'td',
-          null,
-          transaction.category
-        ),
-        _react2.default.createElement(
-          'td',
-          { style: { color: isDebit ? "red" : "black" } },
-          '$',
-          transaction.amount
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          new Date(transaction.date).toDateString()
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          transaction.motive
-        )
-      );
-    }
-  }]);
-
-  return HistoryRow;
-}(_react2.default.Component);
+function HistoryRow(props) {
+  var transaction = props.transaction;
+  var isDebit = transaction.type == 'debit';
+  return _react2.default.createElement(
+    'tr',
+    null,
+    _react2.default.createElement(
+      'td',
+      null,
+      _react2.default.createElement('span', { className: 'oi oi-x', onClick: function onClick() {
+          return _transaction_service2.default.deleteTransaction(transaction);
+        } })
+    ),
+    _react2.default.createElement(
+      'td',
+      null,
+      transaction.category
+    ),
+    _react2.default.createElement(
+      'td',
+      { style: { color: isDebit ? "red" : "black" } },
+      '$',
+      transaction.amount
+    ),
+    _react2.default.createElement(
+      'td',
+      null,
+      new Date(transaction.date).toDateString()
+    ),
+    _react2.default.createElement(
+      'td',
+      null,
+      transaction.motive
+    )
+  );
+}
 
 function HistoryTableHeader(props) {
   return _react2.default.createElement(
@@ -25374,6 +25520,7 @@ function HistoryTableHeader(props) {
     _react2.default.createElement(
       'tr',
       null,
+      _react2.default.createElement('th', null),
       _react2.default.createElement(
         'th',
         null,
@@ -25398,7 +25545,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"../services/analysis_service.js":225,"react":220,"react-dom":43}],234:[function(require,module,exports){
+},{"../services/transaction_service.js":229,"react":220,"react-dom":43}],234:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25436,7 +25583,6 @@ var Overview = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Overview.__proto__ || Object.getPrototypeOf(Overview)).call(this, props));
 
     _this.forceUpdate = _this.forceUpdate.bind(_this);
-    _analysis_service2.default.updateOverview();
     return _this;
   }
 

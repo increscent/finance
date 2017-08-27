@@ -3415,7 +3415,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":255}],37:[function(require,module,exports){
+},{"util":256}],37:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8487,7 +8487,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":252,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":253,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18049,7 +18049,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":252,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":253,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18420,7 +18420,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":252,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":253,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23938,7 +23938,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":252,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
+},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":253,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24499,7 +24499,7 @@ function App(props) {
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./Views/AddBudget/AddBudgetView.js":233,"./Views/AddTransaction/AddTransactionView.js":235,"./Views/History/HistoryView.js":247,"./Views/Overview/OverviewView.js":251,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
+},{"./Views/AddBudget/AddBudgetView.js":233,"./Views/AddTransaction/AddTransactionView.js":235,"./Views/History/HistoryView.js":248,"./Views/Overview/OverviewView.js":252,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25144,7 +25144,7 @@ var AddBudgetForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddBudgetForm);
 
-},{"../../Services/BudgetService.js":228,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"mixin":36,"react":221,"react-router-dom":182}],233:[function(require,module,exports){
+},{"../../Services/BudgetService.js":228,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"mixin":36,"react":221,"react-router-dom":182}],233:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25170,12 +25170,16 @@ function AddBudgetView(props) {
   return _react2.default.createElement(
     'div',
     null,
-    _react2.default.createElement(_BackNav2.default, null),
-    _react2.default.createElement(_AddBudgetForm2.default, null)
+    _react2.default.createElement(_BackNav2.default, { title: 'Add Budget' }),
+    _react2.default.createElement(
+      'div',
+      { className: 'container' },
+      _react2.default.createElement(_AddBudgetForm2.default, null)
+    )
   );
 }
 
-},{"../Components/BackNav.js":239,"./AddBudgetForm.js":232,"react":221}],234:[function(require,module,exports){
+},{"../Components/BackNav.js":240,"./AddBudgetForm.js":232,"react":221}],234:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25213,6 +25217,10 @@ var _FormValidationMessages2 = _interopRequireDefault(_FormValidationMessages);
 var _mixin2 = require('mixin');
 
 var _mixin3 = _interopRequireDefault(_mixin2);
+
+var _DebitCreditRadioButtons = require('./DebitCreditRadioButtons.js');
+
+var _DebitCreditRadioButtons2 = _interopRequireDefault(_DebitCreditRadioButtons);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25271,8 +25279,7 @@ var AddTransactionForm = function (_mixin) {
     }
   }, {
     key: 'handleTransactionTypeChange',
-    value: function handleTransactionTypeChange(e) {
-      var transaction_type = e.target.value;
+    value: function handleTransactionTypeChange(transaction_type) {
       var default_category = this.getDefaultCategory(transaction_type);
       this.setState({
         transaction_type: transaction_type,
@@ -25331,24 +25338,41 @@ var AddTransactionForm = function (_mixin) {
       return _react2.default.createElement(
         'form',
         { id: 'addTransactionForm', onSubmit: this.handleFormSubmit },
-        _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', value: 'debit', checked: this.state.transaction_type == 'debit', onChange: this.handleTransactionTypeChange }),
-        'Debit',
-        _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', value: 'credit', checked: this.state.transaction_type == 'credit', onChange: this.handleTransactionTypeChange }),
-        'Credit',
-        this.state.transaction_type == 'debit' && _react2.default.createElement(_DebitCategorySelect2.default, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
-            return _this3.handleFormInput('category', e);
-          } }),
-        this.state.transaction_type == 'credit' && _react2.default.createElement(_CreditCategorySelect2.default, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
-            return _this3.handleFormInput('category', e);
-          } }),
-        _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'Note', value: this.state.motive, onChange: function onChange(e) {
-            return _this3.handleFormInput('motive', e);
-          } }),
-        '$',
-        _react2.default.createElement('input', { type: 'text', name: 'amount', value: this.state.amount, onChange: function onChange(e) {
-            return _this3.handleFormInput('amount', e);
-          } }),
-        _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement(_DebitCreditRadioButtons2.default, { transaction_type: this.state.transaction_type, onTransactionTypeChange: this.handleTransactionTypeChange })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          this.state.transaction_type == 'debit' && _react2.default.createElement(_DebitCategorySelect2.default, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
+              return _this3.handleFormInput('category', e);
+            } }),
+          this.state.transaction_type == 'credit' && _react2.default.createElement(_CreditCategorySelect2.default, { categories: select_categories, category: this.state.category, onChange: function onChange(e) {
+              return _this3.handleFormInput('category', e);
+            } })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          '$',
+          _react2.default.createElement('input', { type: 'text', name: 'amount', value: this.state.amount, onChange: function onChange(e) {
+              return _this3.handleFormInput('amount', e);
+            } })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'Note', value: this.state.motive, onChange: function onChange(e) {
+              return _this3.handleFormInput('motive', e);
+            } })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' })
+        ),
         _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
       );
     }
@@ -25359,7 +25383,7 @@ var AddTransactionForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddTransactionForm);
 
-},{"../../Services/TransactionService.js":230,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"./CreditCategorySelect.js":236,"./DebitCategorySelect.js":238,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
+},{"../../Services/TransactionService.js":230,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"./CreditCategorySelect.js":236,"./DebitCategorySelect.js":238,"./DebitCreditRadioButtons.js":239,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25385,12 +25409,16 @@ function AddTransactionView(props) {
   return _react2.default.createElement(
     'div',
     null,
-    _react2.default.createElement(_BackNav2.default, null),
-    _react2.default.createElement(_AddTransactionForm2.default, null)
+    _react2.default.createElement(_BackNav2.default, { title: 'Log Transaction' }),
+    _react2.default.createElement(
+      'div',
+      { className: 'container' },
+      _react2.default.createElement(_AddTransactionForm2.default, null)
+    )
   );
 }
 
-},{"../Components/BackNav.js":239,"./AddTransactionForm.js":234,"react":221}],236:[function(require,module,exports){
+},{"../Components/BackNav.js":240,"./AddTransactionForm.js":234,"react":221}],236:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25417,7 +25445,7 @@ function CreditCategorySelect(props) {
     })) || _react2.default.createElement(_CustomSelectInput2.default, { value: props.category, onChange: props.onChange }),
     _react2.default.createElement(
       'select',
-      { value: props.category, style: { width: "120px" }, onChange: props.onChange },
+      { value: props.category, onChange: props.onChange, className: 'form-control' },
       _react2.default.createElement(
         'option',
         { value: '' },
@@ -25449,7 +25477,7 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function CustomSelectInput(props) {
-  return _react2.default.createElement("input", { type: "text", value: props.value, style: { position: "absolute", zIndex: 1, width: "100px" }, onChange: props.onChange, autoFocus: true });
+  return _react2.default.createElement("input", { type: "text", value: props.value, style: { position: "absolute", zIndex: 1 }, onChange: props.onChange, autoFocus: true, className: "form-control" });
 }
 
 },{"react":221}],238:[function(require,module,exports){
@@ -25472,7 +25500,7 @@ function DebitCategorySelect(props) {
     null,
     _react2.default.createElement(
       "select",
-      { value: props.category, style: { width: "120px" }, onChange: props.onChange },
+      { value: props.category, onChange: props.onChange, className: "form-control" },
       props.categories.map(function (x) {
         return _react2.default.createElement(
           "option",
@@ -25485,6 +25513,43 @@ function DebitCategorySelect(props) {
 }
 
 },{"react":221}],239:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = DebitCreditRadioButtons;
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function DebitCreditRadioButtons(props) {
+  return _react2.default.createElement(
+    "div",
+    { className: "btn-group", "data-toggle": "buttons" },
+    _react2.default.createElement(
+      "label",
+      { className: "btn btn-outline-secondary active", onClick: function onClick() {
+          return props.onTransactionTypeChange('debit');
+        } },
+      _react2.default.createElement("input", { type: "radio", name: "transaction_type", id: "debit", autoComplete: "off" }),
+      " Debit"
+    ),
+    _react2.default.createElement(
+      "label",
+      { className: "btn btn-outline-secondary", onClick: function onClick() {
+          return props.onTransactionTypeChange('credit');
+        } },
+      _react2.default.createElement("input", { type: "radio", name: "transaction_type", id: "credit", autoComplete: "off" }),
+      " Credit"
+    )
+  );
+}
+
+},{"react":221}],240:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25507,14 +25572,23 @@ function BackNav(props) {
 
   return _react2.default.createElement(
     'div',
-    { id: 'back-nav' },
+    { id: 'back-nav', className: 'container' },
     _react2.default.createElement(
-      'span',
-      null,
+      'div',
+      { className: 'row' },
       _react2.default.createElement(
-        'a',
-        { href: '#', onClick: handleClick },
-        'back'
+        'div',
+        { className: 'col-1' },
+        _react2.default.createElement(
+          'a',
+          { href: '#', onClick: handleClick },
+          _react2.default.createElement('span', { className: 'oi oi-arrow-circle-left' })
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'col-10 mr-auto text-center' },
+        props.title
       )
     )
   );
@@ -25522,7 +25596,7 @@ function BackNav(props) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BackNav);
 
-},{"react":221,"react-router-dom":182}],240:[function(require,module,exports){
+},{"react":221,"react-router-dom":182}],241:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25567,7 +25641,7 @@ function BottomNav(props) {
   );
 }
 
-},{"react":221,"react-router-dom":182}],241:[function(require,module,exports){
+},{"react":221,"react-router-dom":182}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25612,7 +25686,7 @@ var Form = function () {
 
 exports.default = Form;
 
-},{}],242:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25644,7 +25718,7 @@ function FormValidationMessages(props) {
   );
 };
 
-},{"react":221}],243:[function(require,module,exports){
+},{"react":221}],244:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25689,7 +25763,7 @@ function TopNav(props) {
   );
 }
 
-},{"classnames":1,"react":221,"react-router-dom":182}],244:[function(require,module,exports){
+},{"classnames":1,"react":221,"react-router-dom":182}],245:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25741,7 +25815,7 @@ function HistoryRow(props) {
   );
 };
 
-},{"react":221}],245:[function(require,module,exports){
+},{"react":221}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25833,7 +25907,7 @@ var HistoryTable = function (_React$Component) {
 
 exports.default = HistoryTable;
 
-},{"../../Services/TransactionService.js":230,"./HistoryRow.js":244,"./HistoryTableHeader.js":246,"react":221}],246:[function(require,module,exports){
+},{"../../Services/TransactionService.js":230,"./HistoryRow.js":245,"./HistoryTableHeader.js":247,"react":221}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25879,7 +25953,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"react":221}],247:[function(require,module,exports){
+},{"react":221}],248:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25915,7 +25989,7 @@ function HistoryView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./HistoryTable.js":245,"react":221}],248:[function(require,module,exports){
+},{"../Components/BottomNav.js":241,"../Components/TopNav.js":244,"./HistoryTable.js":246,"react":221}],249:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25960,7 +26034,7 @@ function BalanceRow(props) {
   );
 }
 
-},{"react":221}],249:[function(require,module,exports){
+},{"react":221}],250:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26038,7 +26112,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = BalanceTable;
 
-},{"../../Services/AnalysisService.js":226,"./BalanceRow.js":248,"./BalanceTableHeader.js":250,"react":221}],250:[function(require,module,exports){
+},{"../../Services/AnalysisService.js":226,"./BalanceRow.js":249,"./BalanceTableHeader.js":251,"react":221}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26083,7 +26157,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":221}],251:[function(require,module,exports){
+},{"react":221}],252:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26119,7 +26193,7 @@ function OverviewView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./BalanceTable.js":249,"react":221}],252:[function(require,module,exports){
+},{"../Components/BottomNav.js":241,"../Components/TopNav.js":244,"./BalanceTable.js":250,"react":221}],253:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -26305,7 +26379,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],253:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -26330,14 +26404,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],254:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],255:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -26927,4 +27001,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":254,"_process":252,"inherits":253}]},{},[225]);
+},{"./support/isBuffer":255,"_process":253,"inherits":254}]},{},[225]);

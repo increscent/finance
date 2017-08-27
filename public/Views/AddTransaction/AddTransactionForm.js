@@ -6,6 +6,7 @@ import CreditCategorySelect from './CreditCategorySelect.js';
 import Form from '../Components/Form.js';
 import FormValidationMessages from '../Components/FormValidationMessages.js';
 import mixin from 'mixin';
+import DebitCreditRadioButtons from './DebitCreditRadioButtons.js';
 
 class AddTransactionForm extends mixin(Form, React.Component) {
   constructor(props) {
@@ -44,8 +45,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
     return categories[0]? categories[0].id:'';
   }
 
-  handleTransactionTypeChange(e) {
-    var transaction_type = e.target.value;
+  handleTransactionTypeChange(transaction_type) {
     var default_category = this.getDefaultCategory(transaction_type);
     this.setState({
       transaction_type: transaction_type,
@@ -94,19 +94,33 @@ class AddTransactionForm extends mixin(Form, React.Component) {
 
     return (
       <form id="addTransactionForm" onSubmit={this.handleFormSubmit}>
-        <input type="radio" name="transaction_type" value="debit" checked={this.state.transaction_type == 'debit'} onChange={this.handleTransactionTypeChange} />Debit
-        <input type="radio" name="transaction_type" value="credit" checked={this.state.transaction_type == 'credit'} onChange={this.handleTransactionTypeChange} />Credit
-        {
-          this.state.transaction_type == 'debit' &&
-          <DebitCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
-        }
-        {
-          this.state.transaction_type == 'credit' &&
-          <CreditCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
-        }
-        <input type="text" name="motive" placeholder="Note" value={this.state.motive} onChange={(e) => this.handleFormInput('motive', e)} />
-        $<input type="text" name="amount" value={this.state.amount} onChange={(e) => this.handleFormInput('amount', e)} />
-        <input type="submit" name="submit" value="save" />
+        <div className="form-group">
+          <DebitCreditRadioButtons transaction_type={this.state.transaction_type} onTransactionTypeChange={this.handleTransactionTypeChange} />
+        </div>
+
+        <div className="form-group">
+          {
+            this.state.transaction_type == 'debit' &&
+            <DebitCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
+          }
+          {
+            this.state.transaction_type == 'credit' &&
+            <CreditCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
+          }
+        </div>
+
+        <div className="form-group">
+          $<input type="text" name="amount" value={this.state.amount} onChange={(e) => this.handleFormInput('amount', e)} />
+        </div>
+
+        <div className="form-group">
+          <input type="text" name="motive" placeholder="Note" value={this.state.motive} onChange={(e) => this.handleFormInput('motive', e)} />
+        </div>
+
+        <div className="form-group">
+          <input type="submit" name="submit" value="save" />
+        </div>
+        
         <FormValidationMessages validationMessages={this.state.validation_messages} />
       </form>
     );

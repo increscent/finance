@@ -8,8 +8,15 @@ function BackNav(props) {
   };
 
   return (
-    <div id="back-nav">
-      <span><a href="#" onClick={handleClick}>back</a></span>
+    <div id="back-nav" className="container">
+      <div className="row">
+        <div className="col-1">
+          <a href="#" onClick={handleClick}><span className="oi oi-arrow-circle-left"></span></a>
+        </div>
+        <div className="col-10 mr-auto text-center">
+          {props.title}
+        </div>
+      </div>
     </div>
   );
 }

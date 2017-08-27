@@ -9,7 +9,7 @@ export default function CreditCategorySelect(props) {
         <CustomSelectInput value={props.category} onChange={props.onChange} />
       }
 
-      <select value={props.category} style={{width: "120px"}} onChange={props.onChange}>
+      <select value={props.category} onChange={props.onChange} className="form-control">
         <option value="">New Category</option>
         {
           props.categories.map(x => {

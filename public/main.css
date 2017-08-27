@@ -1,3 +1,13 @@
 .table th {
   border-top: 0;
 }
+
+#back-nav {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+}
+
+#back-nav .oi {
+  font-size: 18px;
+}

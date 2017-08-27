@@ -5,8 +5,10 @@ import BackNav from '../Components/BackNav.js';
 export default function AddTransactionView(props) {
   return (
     <div>
-      <BackNav />
-      <AddTransactionForm />
+      <BackNav title="Log Transaction"/>
+      <div className="container">
+        <AddTransactionForm />
+      </div>
     </div>
   );
 }

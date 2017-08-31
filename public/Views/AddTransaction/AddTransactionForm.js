@@ -1,55 +1,60 @@
 import React from 'react';
 import {withRouter} from "react-router-dom";
 import TransactionService from '../../Services/TransactionService.js';
-import DebitCategorySelect from './DebitCategorySelect.js';
-import CreditCategorySelect from './CreditCategorySelect.js';
+import BudgetSelect from './BudgetSelect.js';
 import Form from '../Components/Form.js';
 import FormValidationMessages from '../Components/FormValidationMessages.js';
 import mixin from 'mixin';
 import DebitCreditRadioButtons from './DebitCreditRadioButtons.js';
+import BudgetService from '../../Services/BudgetService.js';
 
 class AddTransactionForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
       transaction_type: 'debit',
-      category: this.getDefaultCategory('debit'),
+      from: this.getDefaultFrom(),
+      to: '@Debit',
       motive: '',
       amount: '',
       validation_messages: []
     };
 
     this.handleTransactionTypeChange = this.handleTransactionTypeChange.bind(this);
-    this.setDefaultCategory = this.setDefaultCategory.bind(this);
+    this.setDefaultFrom = this.setDefaultFrom.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  setDefaultCategory() {
-    if (this.state.category) return;
-    var default_category = this.getDefaultCategory(this.state.transaction_type);
+  setDefaultFrom() {
+    if (this.state.from) return;
     this.setState({
-      category: default_category
+      category: this.getDefaultFrom()
     });
   }
 
   componentDidMount() {
-    this.transactionServiceListenerId = TransactionService.registerListener(this.setDefaultCategory);
+    this.transactionServiceListenerId = TransactionService.registerListener(this.setDefaultFrom);
   }
 
   componentWillUnmount() {
     TransactionService.unRegisterListener(this.transactionServiceListenerId);
   }
 
-  getDefaultCategory(transaction_type) {
-    var categories = (transaction_type == 'debit')? TransactionService.debitCategories:TransactionService.creditCategories;
-    return categories[0]? categories[0].id:'';
+  getDefaultFrom() {
+    return BudgetService.budgets[0]? BudgetService.budgets[0].name : '';
   }
 
   handleTransactionTypeChange(transaction_type) {
-    var default_category = this.getDefaultCategory(transaction_type);
+    var from = '@Credit';
+    var to = 'Other';
+    if (transaction_type == 'debit') {
+      var from = this.getDefaultFrom();
+      var to = '@Debit';
+    }
     this.setState({
       transaction_type: transaction_type,
-      category: default_category
+      from: from,
+      to: to
     });
   }
 
@@ -58,7 +63,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
 
     var rules = [
       {name: 'transaction_type', validate: (x) => x == 'debit' || x == 'credit', error_message: 'Please select a transaction type.'},
-      {name: 'category', validate: (x) => x, error_message: 'Please select a category.'},
+      {name: 'from', validate: (x) => x, error_message: 'Please select a category.'},
       {name: 'motive', validate: (x) => true, error_message: 'It doesn\'t matter what note you write.'},
       {name: 'amount', validate: (x) => parseFloat(x), error_message: 'Please enter a valid amount.'}
     ];
@@ -73,8 +78,8 @@ class AddTransactionForm extends mixin(Form, React.Component) {
     } else {
       // validation successful
       TransactionService.addTransaction({
-        type: this.state.transaction_type,
-        category: this.state.category.trim(),
+        from: this.state.from,
+        to: this.state.to,
         motive: this.state.motive.trim(),
         amount: parseFloat(this.state.amount)
       }, error => {
@@ -90,8 +95,6 @@ class AddTransactionForm extends mixin(Form, React.Component) {
   }
 
   render() {
-    var select_categories = (this.state.transaction_type == 'debit')? TransactionService.debitCategories:TransactionService.creditCategories;
-
     return (
       <form id="addTransactionForm" onSubmit={this.handleFormSubmit}>
         <div className="form-group">
@@ -101,11 +104,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
         <div className="form-group">
           {
             this.state.transaction_type == 'debit' &&
-            <DebitCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
-          }
-          {
-            this.state.transaction_type == 'credit' &&
-            <CreditCategorySelect categories={select_categories} category={this.state.category} onChange={(e) => this.handleFormInput('category', e)} />
+            <BudgetSelect budgets={BudgetService.budgets} from={this.state.from} onChange={(e) => this.handleFormInput('from', e)} />
           }
         </div>
 
@@ -120,7 +119,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
         <div className="form-group">
           <input type="submit" name="submit" value="save" />
         </div>
-        
+
         <FormValidationMessages validationMessages={this.state.validation_messages} />
       </form>
     );

@@ -18,16 +18,9 @@ module.exports = {
     });
   },
 
-  getDebits: function (req, res, next) {
-    Models.Debit.find({account_id: req.account_id}, function (err, debits) {
-      req.debits = debits || [];
-      return next();
-    });
-  },
-
-  getCredits: function (req, res, next) {
-    Models.Credit.find({account_id: req.account_id}, function (err, credits) {
-      req.credits = credits || [];
+  getTransactions: function (req, res, next) {
+    Models.Transaction.find({account_id: req.account_id}, function (err, transactions) {
+      req.transactions = transactions || [];
       return next();
     });
   },

@@ -18,7 +18,7 @@ class BudgetService extends ListenerService {
   }
 
   fetchBudgets() {
-    ApiService.getRequest('/api/budget/budgets')
+    ApiService.getRequest('/api/budgets')
     .then(data => {
       Store.setStore('budgets', data);
     })
@@ -28,7 +28,7 @@ class BudgetService extends ListenerService {
   }
 
   addBudget(budget, callback) {
-    ApiService.putRequest('/api/budget', budget)
+    ApiService.putRequest('/api/budgets/' + budget.name, budget)
     .then(data => {
       insertBudget(data, this.budgets);
       Store.setStore('budgets', this.budgets, true);

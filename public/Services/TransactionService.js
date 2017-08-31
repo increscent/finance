@@ -5,41 +5,22 @@ import Store from '../Store.js';
 class TransactionService extends ListenerService {
   constructor() {
     super();
-    this.debits = [];
-    this.credits = [];
-    this.readableDebits = [];
-    this.debitCategories = [];
-    this.creditCategories = [];
-    this.fetchCredits();
-    this.fetchDebits();
+    this.transactions = [];
+    this.fetchTransactions();
 
     this.update = this.update.bind(this);
     Store.registerListener(this.update);
   }
 
   update() {
-    this.debits = Store.debits;
-    this.credits = Store.credits;
-    this.readableDebits = calcReadableDebits(Store.debits);
-    this.debitCategories = calcDebitCategories(Store.budgets);
-    this.creditCategories = calcCreditCategories(Store.credits);
+    this.transactions = Store.transactions;
     this.notifyListeners();
   }
 
-  fetchCredits() {
-    ApiService.getRequest('/api/transaction/credits')
+  fetchTransactions() {
+    ApiService.getRequest('/api/transactions')
     .then(data => {
-      Store.setStore('credits', data);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  }
-
-  fetchDebits() {
-    ApiService.getRequest('/api/transaction/debits')
-    .then(data => {
-      Store.setStore('debits', data);
+      Store.setStore('transactions', data);
     })
     .catch(error => {
       console.log(error);
@@ -47,11 +28,10 @@ class TransactionService extends ListenerService {
   }
 
   addTransaction(transaction, callback) {
-    ApiService.putRequest('/api/transaction/' + transaction.type, transaction)
+    ApiService.postRequest('/api/transactions', transaction)
     .then(data => {
-      var collection = (transaction.type == 'debit')? 'debits':'credits';
-      insertTransaction(data, this[collection]);
-      Store.setStore(collection, this[collection], true);
+      insertTransaction(data, this.transactions);
+      Store.setStore('transactions', this.transactions, true);
       callback(null);
     })
     .catch(error => {
@@ -61,11 +41,10 @@ class TransactionService extends ListenerService {
 
   deleteTransaction(transaction) {
     console.log('deleted ' + transaction._id);
-    ApiService.deleteRequest('/api/transaction/' + transaction.type + '/' + transaction._id)
+    ApiService.deleteRequest('/api/transactions/' + transaction._id)
     .then(data => {
-      var collection = (transaction.type == 'debit')? 'debits':'credits';
-      removeTransaction(transaction._id, this[collection]);
-      Store.setStore(collection, this[collection], true);
+      removeTransaction(transaction._id, this.transactions);
+      Store.setStore('transactions', this.transactions, true);
     })
     .catch(error => {
       console.log(error);
@@ -82,58 +61,4 @@ function insertTransaction(transaction, collection) {
 function removeTransaction(transaction_id, collection) {
   var index = collection.findIndex((x) => x._id == transaction_id);
   if (index >= 0) collection.splice(index, 1);
-}
-
-function calcReadableDebits(debits) {
-  var budgets = calcBudgets();
-  var readableDebits = debits.map(x => {
-    return {
-      _id: x._id,
-      category: budgets[x.category],
-      motive: x.motive,
-      amount: x.amount,
-      date: x.date
-    };
-  });
-  return readableDebits;
-}
-
-function calcBudgets() {
-  var budgets = {};
-  Store.budgets.forEach(x => {
-    budgets[x._id] = x.category;
-  });
-  return budgets;
-}
-
-function calcDebitCategories(budgets) {
-  return budgets.map(x => {
-    return {
-      id: x._id,
-      category: x.category
-    };
-  });
-}
-
-function calcCreditCategories(credits) {
-  var categories = credits.map(x => {
-    return {
-      id: x.category,
-      category: x.category
-    }
-  });
-  return noDuplicates(categories, x => x.id);
-}
-
-function noDuplicates(array, getKey) {
-  var seen = {};
-  return array.filter((x) => {
-    var key = getKey(x);
-    if (seen[key]) {
-      return false;
-    } else {
-      seen[key] = true;
-      return true;
-    }
-  });
 }

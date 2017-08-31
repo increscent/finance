@@ -11,7 +11,8 @@ var accountSchema = {
 };
 
 var transactionSchema = {
-  category: String,
+  from: String,
+  to: String,
   motive: String,
   amount: Number,
   date: Date,
@@ -19,7 +20,7 @@ var transactionSchema = {
 };
 
 var budgetSchema = {
-  category: String,
+  name: String,
   allowance: Number,
   allowance_type: String,
   date: Date,
@@ -27,8 +28,7 @@ var budgetSchema = {
 };
 
 Models.Account = mongoose.model('Account', new Schema(accountSchema));
-Models.Debit = mongoose.model('Debit', new Schema(transactionSchema));
-Models.Credit = mongoose.model('Credit', new Schema(transactionSchema));
+Models.Transaction = mongoose.model('Transaction', new Schema(transactionSchema));
 Models.Budget = mongoose.model('Budget', new Schema(budgetSchema));
 
 module.exports = Models;

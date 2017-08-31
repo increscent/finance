@@ -17,7 +17,7 @@ class AnalysisService extends ListenerService {
   }
 
   fetchOverview() {
-    ApiService.getRequest('/api/analysis/overview')
+    ApiService.getRequest('/api/analyses/overview')
     .then(data => {
       this.overview = data;
       this.notifyListeners();

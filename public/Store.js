@@ -4,8 +4,7 @@ class Store extends ListenerService {
   constructor() {
     super();
     this.budgets = [];
-    this.credits = [];
-    this.debits = [];
+    this.transacitons = [];
   }
 
   setStore(store, value, server_modified) {

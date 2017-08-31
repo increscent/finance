@@ -6,8 +6,8 @@ var Analysis = require('../classes/analysis');
 
 router.use(helpers.verifyAccount);
 
-router.get('/overview', helpers.getBudgets, helpers.getCredits, helpers.getDebits, function (req, res) {
-  var analysis = new Analysis(req.budgets, req.credits, req.debits);
+router.get('/overview', helpers.getBudgets, helpers.getTransactions, function (req, res) {
+  var analysis = new Analysis(req.budgets, req.transactions);
   res.send(JSON.stringify(analysis.getOverview()));
 });
 

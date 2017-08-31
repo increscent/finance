@@ -24,14 +24,12 @@ export default class HistoryTable extends React.Component {
   }
 
   render() {
-    TransactionService.readableDebits.forEach(x => x.type = 'debit');
-    TransactionService.credits.forEach(x => x.type = 'credit');
     return (
       <table className="table table-striped">
         <HistoryTableHeader />
         <tbody>
           {
-            TransactionService.readableDebits.concat(TransactionService.credits).map((transaction, i) => {
+            TransactionService.transactions.map((transaction, i) => {
               return <HistoryRow key={i} transaction={transaction} onDeleteTransaction={this.handleTransactionDelete}/>
             })
           }

@@ -25,7 +25,7 @@ export default class BalanceTable extends React.Component {
         <tbody>
           {
             AnalysisService.overview.map((budget) => {
-              return <BalanceRow key={budget.category} budget={budget}/>
+              return <BalanceRow key={budget.name} budget={budget}/>
             })
           }
         </tbody>

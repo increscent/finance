@@ -3,9 +3,9 @@ var router = express.Router();
 var Models = require('../models');
 var helpers = require('./helpers');
 
-router.put('/new', function (req, res) {
+router.post('/', function (req, res) {
   new Models.Account().save(function (err, account) {
-    res.send(account._id);
+    res.send(JSON.stringify(account));
   });
 });
 

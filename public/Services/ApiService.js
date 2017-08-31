@@ -8,6 +8,16 @@ class ApiService {
     return this.apiRequest(endpoint, request_options, 'json');
   }
 
+  postRequest(endpoint, body) {
+    var request_options = {
+      method: 'POST',
+      headers: {'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    };
+
+    return this.apiRequest(endpoint, request_options, 'json');
+  }
+
   putRequest(endpoint, body) {
     var request_options = {
       method: 'PUT',
@@ -31,7 +41,7 @@ class ApiService {
     return fetch(endpoint, request_options)
     .then(res => {
       if (res.status == 200) return res[response_type]();
-      throw new Error('This happened: ' + res.status);
+      throw new Error('Sorry, we had a server problem. Please try again soon!');
     });
   }
 }

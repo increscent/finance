@@ -24679,7 +24679,9 @@ var BudgetService = function (_ListenerService) {
     var _this = _possibleConstructorReturn(this, (BudgetService.__proto__ || Object.getPrototypeOf(BudgetService)).call(this));
 
     _this.notifyListeners = _this.notifyListeners.bind(_this);
-    _Store2.default.registerListener(_this.notifyListeners);
+    _Store2.default.registerListener(function () {
+      return _this.notifyListeners();
+    });
 
     _this.fetchBudgets();
     return _this;
@@ -24702,11 +24704,9 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'addBudget',
     value: function addBudget(budget, callback) {
-      var _this2 = this;
-
       _ApiService2.default.putRequest('/api/budgets/' + budget.name, budget).then(function (data) {
-        insertBudget(data, _this2.budgets);
-        _Store2.default.setStore('budgets', _this2.budgets, true);
+        insertBudget(data, _Store2.default.budgets);
+        _Store2.default.setStore('budgets', _Store2.default.budgets, true);
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
@@ -24808,7 +24808,9 @@ var TransactionService = function (_ListenerService) {
     _this.transactions = [];
 
     _this.notifyListeners = _this.notifyListeners.bind(_this);
-    _Store2.default.registerListener(_this.notifyListeners);
+    _Store2.default.registerListener(function () {
+      return _this.notifyListeners();
+    });
 
     _this.fetchTransactions();
     return _this;
@@ -24831,11 +24833,9 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'addTransaction',
     value: function addTransaction(transaction, callback) {
-      var _this2 = this;
-
       _ApiService2.default.postRequest('/api/transactions', transaction).then(function (data) {
-        insertTransaction(data, _this2.transactions);
-        _Store2.default.setStore('transactions', _this2.transactions, true);
+        insertTransaction(data, _Store2.default.transactions);
+        _Store2.default.setStore('transactions', _Store2.default.transactions, true);
         callback(null);
       }).catch(function (error) {
         callback(error.toString());
@@ -24844,12 +24844,10 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'deleteTransaction',
     value: function deleteTransaction(transaction) {
-      var _this3 = this;
-
       console.log('deleted ' + transaction._id);
       _ApiService2.default.deleteRequest('/api/transactions/' + transaction._id).then(function (data) {
-        removeTransaction(transaction._id, _this3.transactions);
-        _Store2.default.setStore('transactions', _this3.transactions, true);
+        removeTransaction(transaction._id, _Store2.default.transactions);
+        _Store2.default.setStore('transactions', _Store2.default.transactions, true);
       }).catch(function (error) {
         console.log(error);
       });

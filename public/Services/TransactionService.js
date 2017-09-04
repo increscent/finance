@@ -8,7 +8,7 @@ class TransactionService extends ListenerService {
     this.transactions = [];
 
     this.notifyListeners = this.notifyListeners.bind(this);
-    Store.registerListener(this.notifyListeners);
+    Store.registerListener(() => this.notifyListeners());
 
     this.fetchTransactions();
   }
@@ -30,8 +30,8 @@ class TransactionService extends ListenerService {
   addTransaction(transaction, callback) {
     ApiService.postRequest('/api/transactions', transaction)
     .then(data => {
-      insertTransaction(data, this.transactions);
-      Store.setStore('transactions', this.transactions, true);
+      insertTransaction(data, Store.transactions);
+      Store.setStore('transactions', Store.transactions, true);
       callback(null);
     })
     .catch(error => {
@@ -43,8 +43,8 @@ class TransactionService extends ListenerService {
     console.log('deleted ' + transaction._id);
     ApiService.deleteRequest('/api/transactions/' + transaction._id)
     .then(data => {
-      removeTransaction(transaction._id, this.transactions);
-      Store.setStore('transactions', this.transactions, true);
+      removeTransaction(transaction._id, Store.transactions);
+      Store.setStore('transactions', Store.transactions, true);
     })
     .catch(error => {
       console.log(error);

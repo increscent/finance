@@ -7,7 +7,7 @@ class BudgetService extends ListenerService {
     super();
 
     this.notifyListeners = this.notifyListeners.bind(this);
-    Store.registerListener(this.notifyListeners);
+    Store.registerListener(() => this.notifyListeners());
 
     this.fetchBudgets();
   }
@@ -29,8 +29,8 @@ class BudgetService extends ListenerService {
   addBudget(budget, callback) {
     ApiService.putRequest('/api/budgets/' + budget.name, budget)
     .then(data => {
-      insertBudget(data, this.budgets);
-      Store.setStore('budgets', this.budgets, true);
+      insertBudget(data, Store.budgets);
+      Store.setStore('budgets', Store.budgets, true);
       callback(null);
     })
     .catch(error => {

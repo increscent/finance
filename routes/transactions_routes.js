@@ -35,13 +35,3 @@ router.delete('/:id', function (req, res) {
 });
 
 module.exports = router;
-
-function isValidTransactionEndpoint(budget_name, budgets) {
-  if (config.reserved_budget_names.indexOf(budget_name) > -1) {
-    return true;
-  } else if (budgets.findIndex(x => x.name == budget_name) > -1) {
-    return true;
-  } else {
-    return false;
-  }
-}

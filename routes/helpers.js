@@ -6,20 +6,20 @@ module.exports = {
     Models.Account.findOne({_id: account_id}, function (err, account) {
       if (!account) return module.exports.userError(res, 'Account does not exist: ' + req.headers['account-id']);
 
-      req.account_id = account_id;
+      req.account = account;
       return next();
     });
   },
 
   getBudgets: function (req, res, next) {
-    Models.Budget.find({account_id: req.account_id}, function (err, budgets) {
+    Models.Budget.find({account_id: req.account._id}, function (err, budgets) {
       req.budgets = budgets || [];
       return next();
     });
   },
 
   getTransactions: function (req, res, next) {
-    Models.Transaction.find({account_id: req.account_id}, function (err, transactions) {
+    Models.Transaction.find({account_id: req.account._id}, function (err, transactions) {
       req.transactions = transactions || [];
       return next();
     });
@@ -38,7 +38,7 @@ module.exports = {
           new_document[field] = req.body[field];
         }
       }
-      new_document.account_id = req.account_id;
+      new_document.account_id = req.account._id;
       req.validated_body = new_document;
 
       next();

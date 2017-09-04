@@ -7,7 +7,9 @@ var Models = {};
 
 var accountSchema = {
   first_name: String,
-  last_name: String
+  last_name: String,
+  budget_period_start: Date,
+  budget_period_end: Date
 };
 
 var transactionSchema = {

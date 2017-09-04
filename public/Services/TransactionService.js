@@ -6,15 +6,15 @@ class TransactionService extends ListenerService {
   constructor() {
     super();
     this.transactions = [];
-    this.fetchTransactions();
 
-    this.update = this.update.bind(this);
-    Store.registerListener(this.update);
+    this.notifyListeners = this.notifyListeners.bind(this);
+    Store.registerListener(this.notifyListeners);
+
+    this.fetchTransactions();
   }
 
-  update() {
-    this.transactions = Store.transactions;
-    this.notifyListeners();
+  getTransactions() {
+    return Store.transactions;
   }
 
   fetchTransactions() {

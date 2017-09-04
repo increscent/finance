@@ -3,6 +3,7 @@ var router = express.Router();
 var Models = require('../models');
 var helpers = require('./helpers');
 var config = require('../config');
+var Transaction = require('../classes/Transaction');
 
 router.use(helpers.verifyAccount);
 
@@ -11,16 +12,11 @@ router.get('/', helpers.getTransactions, function (req, res) {
 });
 
 router.post('/', helpers.validateRequestBody(config.transaction_required_fields), helpers.getBudgets, function (req, res) {
-  if (!isValidTransactionEndpoint(req.validated_body.from, req.budgets) || !isValidTransactionEndpoint(req.validated_body.to, req.budgets)) {
-    return helpers.userError(res, '"to" and "from" properties must be valid.');
-  }
-  var new_transaction = new Models.Transaction(req.validated_body);
-  new_transaction.save()
-  .then(transaction => {
+  var new_transaction = new Transaction(req.account, req.budgets, req.validated_body);
+  new_transaction.save((error, transaction) => {
+    if (error) return helpers.serverError(res, error);
+
     res.send(JSON.stringify(transaction));
-  })
-  .catch(error => {
-    helpers.serverError(res, 'Database Error :(');
   });
 });
 

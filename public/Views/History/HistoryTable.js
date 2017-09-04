@@ -29,7 +29,9 @@ export default class HistoryTable extends React.Component {
         <HistoryTableHeader />
         <tbody>
           {
-            TransactionService.transactions.map((transaction, i) => {
+            TransactionService.getTransactions()
+            .filter(x => x.from == '@Credit' || x.to == '@Debit')
+            .map((transaction, i) => {
               return <HistoryRow key={i} transaction={transaction} onDeleteTransaction={this.handleTransactionDelete}/>
             })
           }

@@ -7,9 +7,7 @@ var config = require('../config');
 router.use(helpers.verifyAccount);
 
 router.get('/', helpers.getBudgets, function (req, res) {
-  req.budgets.push({
-    name: 'Other'
-  });
+  req.budgets.push({name: 'Other'});
   res.send(JSON.stringify(req.budgets));
 });
 

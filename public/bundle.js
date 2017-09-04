@@ -24678,19 +24678,17 @@ var BudgetService = function (_ListenerService) {
 
     var _this = _possibleConstructorReturn(this, (BudgetService.__proto__ || Object.getPrototypeOf(BudgetService)).call(this));
 
-    _this.budgets = [];
-    _this.fetchBudgets();
+    _this.notifyListeners = _this.notifyListeners.bind(_this);
+    _Store2.default.registerListener(_this.notifyListeners);
 
-    _this.update = _this.update.bind(_this);
-    _Store2.default.registerListener(_this.update);
+    _this.fetchBudgets();
     return _this;
   }
 
   _createClass(BudgetService, [{
-    key: 'update',
-    value: function update() {
-      this.budgets = _Store2.default.budgets;
-      this.notifyListeners();
+    key: 'getBudgets',
+    value: function getBudgets() {
+      return _Store2.default.budgets;
     }
   }, {
     key: 'fetchBudgets',
@@ -24808,18 +24806,18 @@ var TransactionService = function (_ListenerService) {
     var _this = _possibleConstructorReturn(this, (TransactionService.__proto__ || Object.getPrototypeOf(TransactionService)).call(this));
 
     _this.transactions = [];
-    _this.fetchTransactions();
 
-    _this.update = _this.update.bind(_this);
-    _Store2.default.registerListener(_this.update);
+    _this.notifyListeners = _this.notifyListeners.bind(_this);
+    _Store2.default.registerListener(_this.notifyListeners);
+
+    _this.fetchTransactions();
     return _this;
   }
 
   _createClass(TransactionService, [{
-    key: 'update',
-    value: function update() {
-      this.transactions = _Store2.default.transactions;
-      this.notifyListeners();
+    key: 'getTransactions',
+    value: function getTransactions() {
+      return _Store2.default.transactions;
     }
   }, {
     key: 'fetchTransactions',
@@ -25001,7 +24999,7 @@ var AddBudgetForm = function (_mixin) {
       var rules = [{ name: 'name', validate: function validate(x) {
           return x;
         }, error_message: 'Please enter a name' }, { name: 'name', validate: function validate(x) {
-          return !_BudgetService2.default.budgets.find(function (budget) {
+          return !_BudgetService2.default.getBudgets().find(function (budget) {
             return x.trim().toLowerCase() == budget.name.trim().toLowerCase();
           });
         }, error_message: 'That name already exists. Please enter a unique budget name.' }, { name: 'allowance_type', validate: function validate(x) {
@@ -25010,7 +25008,9 @@ var AddBudgetForm = function (_mixin) {
           return parseFloat(x);
         }, error_message: 'Please enter a valid amount.' }, { name: 'allowance', validate: function validate(x) {
           return _this2.state.allowance_type == '$' || x >= 0 && x <= 100;
-        }, error_message: 'The allowance percentage must be between 0 and 100.' }];
+        }, error_message: 'The allowance percentage must be between 0 and 100.' }, { name: 'allowance', validate: function validate(x) {
+          return parseFloat(x) && parseFloat(x) > 0;
+        }, error_message: 'The allowance must be a positive number.' }];
 
       var error_messages = this.validateFormInput(rules);
       this.setState({
@@ -25044,30 +25044,41 @@ var AddBudgetForm = function (_mixin) {
       return _react2.default.createElement(
         'form',
         { id: 'addBudgetForm', onSubmit: this.handleFormSubmit },
-        _react2.default.createElement('input', { type: 'text', name: 'category', placeholder: 'Name', value: this.state.name, onChange: function onChange(e) {
-            return _this3.handleFormInput('name', e);
-          } }),
-        'Monthly Allowance',
         _react2.default.createElement(
-          'select',
-          { value: this.state.allowance_type, onChange: function onChange(e) {
-              return _this3.handleFormInput('allowance_type', e);
-            } },
-          _react2.default.createElement(
-            'option',
-            { value: '$' },
-            '$'
-          ),
-          _react2.default.createElement(
-            'option',
-            { value: '%' },
-            '%'
-          )
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement('input', { type: 'text', name: 'category', placeholder: 'Name', className: 'form-control', value: this.state.name, onChange: function onChange(e) {
+              return _this3.handleFormInput('name', e);
+            } })
         ),
-        _react2.default.createElement('input', { type: 'text', name: 'allowance', value: this.state.allowance, onChange: function onChange(e) {
-            return _this3.handleFormInput('allowance', e);
-          } }),
-        _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement(
+            'select',
+            { value: this.state.allowance_type, onChange: function onChange(e) {
+                return _this3.handleFormInput('allowance_type', e);
+              }, className: 'form-control allowance-type' },
+            _react2.default.createElement(
+              'option',
+              { value: '$' },
+              '$'
+            ),
+            _react2.default.createElement(
+              'option',
+              { value: '%' },
+              '%'
+            )
+          ),
+          _react2.default.createElement('input', { type: 'text', name: 'allowance', placeholder: 'Amount', className: 'form-control amount', value: this.state.allowance, onChange: function onChange(e) {
+              return _this3.handleFormInput('allowance', e);
+            } })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save', className: 'btn btn-primary' })
+        ),
         _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
       );
     }
@@ -25128,6 +25139,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
 
+var _BudgetService = require('../../Services/BudgetService.js');
+
+var _BudgetService2 = _interopRequireDefault(_BudgetService);
+
 var _TransactionService = require('../../Services/TransactionService.js');
 
 var _TransactionService2 = _interopRequireDefault(_TransactionService);
@@ -25151,10 +25166,6 @@ var _mixin3 = _interopRequireDefault(_mixin2);
 var _DebitCreditRadioButtons = require('./DebitCreditRadioButtons.js');
 
 var _DebitCreditRadioButtons2 = _interopRequireDefault(_DebitCreditRadioButtons);
-
-var _BudgetService = require('../../Services/BudgetService.js');
-
-var _BudgetService2 = _interopRequireDefault(_BudgetService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25192,7 +25203,7 @@ var AddTransactionForm = function (_mixin) {
     value: function setDefaultFrom() {
       if (this.state.from) return;
       this.setState({
-        category: this.getDefaultFrom()
+        from: this.getDefaultFrom()
       });
     }
   }, {
@@ -25208,7 +25219,7 @@ var AddTransactionForm = function (_mixin) {
   }, {
     key: 'getDefaultFrom',
     value: function getDefaultFrom() {
-      return _BudgetService2.default.budgets[0] ? _BudgetService2.default.budgets[0].name : '';
+      return _BudgetService2.default.getBudgets()[0] ? _BudgetService2.default.getBudgets()[0].name : '';
     }
   }, {
     key: 'handleTransactionTypeChange',
@@ -25240,7 +25251,9 @@ var AddTransactionForm = function (_mixin) {
           return true;
         }, error_message: 'It doesn\'t matter what note you write.' }, { name: 'amount', validate: function validate(x) {
           return parseFloat(x);
-        }, error_message: 'Please enter a valid amount.' }];
+        }, error_message: 'Please enter a valid amount.' }, { name: 'amount', validate: function validate(x) {
+          return parseFloat(x) && parseFloat(x) > 0;
+        }, error_message: 'Transaction amount must be a positive number.' }];
 
       var error_messages = this.validateFormInput(rules);
       this.setState({
@@ -25283,7 +25296,7 @@ var AddTransactionForm = function (_mixin) {
         _react2.default.createElement(
           'div',
           { className: 'form-group' },
-          this.state.transaction_type == 'debit' && _react2.default.createElement(_BudgetSelect2.default, { budgets: _BudgetService2.default.budgets, from: this.state.from, onChange: function onChange(e) {
+          this.state.transaction_type == 'debit' && _react2.default.createElement(_BudgetSelect2.default, { budgets: _BudgetService2.default.getBudgets(), from: this.state.from, onChange: function onChange(e) {
               return _this3.handleFormInput('from', e);
             } })
         ),
@@ -25291,21 +25304,21 @@ var AddTransactionForm = function (_mixin) {
           'div',
           { className: 'form-group' },
           '$',
-          _react2.default.createElement('input', { type: 'text', name: 'amount', value: this.state.amount, onChange: function onChange(e) {
+          _react2.default.createElement('input', { type: 'text', name: 'amount', placeholder: 'Amount', className: 'form-control amount', value: this.state.amount, onChange: function onChange(e) {
               return _this3.handleFormInput('amount', e);
             } })
         ),
         _react2.default.createElement(
           'div',
           { className: 'form-group' },
-          _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'Note', value: this.state.motive, onChange: function onChange(e) {
+          _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'Note', className: 'form-control', value: this.state.motive, onChange: function onChange(e) {
               return _this3.handleFormInput('motive', e);
             } })
         ),
         _react2.default.createElement(
           'div',
           { className: 'form-group' },
-          _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save' })
+          _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save', className: 'btn btn-primary' })
         ),
         _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
       );
@@ -25576,17 +25589,13 @@ function FormValidationMessages(props) {
   return _react2.default.createElement(
     "div",
     { className: "errorMessages" },
-    _react2.default.createElement(
-      "ul",
-      null,
-      props.validationMessages.map(function (x, i) {
-        return _react2.default.createElement(
-          "li",
-          { key: i },
-          x
-        );
-      })
-    )
+    props.validationMessages.map(function (x, i) {
+      return _react2.default.createElement(
+        "div",
+        { key: i, className: "alert alert-warning", role: "alert" },
+        x
+      );
+    })
   );
 };
 
@@ -25760,7 +25769,9 @@ var HistoryTable = function (_React$Component) {
         _react2.default.createElement(
           'tbody',
           null,
-          _TransactionService2.default.transactions.map(function (transaction, i) {
+          _TransactionService2.default.getTransactions().filter(function (x) {
+            return x.from == '@Credit' || x.to == '@Debit';
+          }).map(function (transaction, i) {
             return _react2.default.createElement(_HistoryRow2.default, { key: i, transaction: transaction, onDeleteTransaction: _this2.handleTransactionDelete });
           })
         )

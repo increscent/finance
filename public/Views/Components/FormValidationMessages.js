@@ -3,11 +3,9 @@ import React from 'react';
 export default function FormValidationMessages(props) {
   return (
     <div className="errorMessages">
-      <ul>
-        {
-          props.validationMessages.map((x, i) => <li key={i}>{x}</li>)
-        }
-      </ul>
+      {
+        props.validationMessages.map((x, i) => <div key={i} className="alert alert-warning" role="alert">{x}</div>)
+      }
     </div>
   );
 };

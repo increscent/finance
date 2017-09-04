@@ -5,16 +5,15 @@ import Store from '../Store.js';
 class BudgetService extends ListenerService {
   constructor() {
     super();
-    this.budgets = [];
-    this.fetchBudgets();
 
-    this.update = this.update.bind(this);
-    Store.registerListener(this.update);
+    this.notifyListeners = this.notifyListeners.bind(this);
+    Store.registerListener(this.notifyListeners);
+
+    this.fetchBudgets();
   }
 
-  update() {
-    this.budgets = Store.budgets;
-    this.notifyListeners();
+  getBudgets() {
+    return Store.budgets;
   }
 
   fetchBudgets() {

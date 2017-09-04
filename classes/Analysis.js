@@ -1,43 +1,64 @@
 class Analysis {
   constructor(budgets, transactions) {
     this.budgets = budgets;
-    this.budgets.push({
-      name: 'Other'
-    });
     this.transactions = transactions;
   }
 
   getOverview() {
-    return this.budgets.map(budget => {
-      var debits = this.getTotalBudgetDebits(budget);
+    var overview = this.budgets.map(budget => {
+      var name = budget.name + ' (' + (budget.allowance_type == '$'?'$':'') + budget.allowance + (budget.allowance_type == '%'?'%':'') + ')'
       var credits = this.getTotalBudgetCredits(budget);
+      var debits = this.getTotalBudgetDebits(budget);
       return {
-        name: budget.name,
-        debits: debits,
+        name: name,
         credits: credits,
+        debits: debits,
         balance: credits - debits
       };
     });
+
+    var otherCredits = this.getOtherBudgetCredits();
+    var otherDebits = this.getOtherBudgetDebits();
+    overview.push({
+      name: 'Other',
+      credits: otherCredits,
+      debits: otherDebits,
+      balance: otherCredits - otherDebits
+    });
+
+    var totalCredits = this.sumTransactions(this.transactions.filter(x => x.from == '@Credit'));
+    var totalDebits = this.sumTransactions(this.transactions.filter(x => x.to == '@Debit'));
+    overview.push({
+      name: 'Total',
+      credits: totalCredits,
+      debits: totalDebits,
+      balance: totalCredits - totalDebits
+    });
+
+    return overview;
   }
 
-  getTotalBudgetDebits(budget) {
-    return this.transactions.reduce((sum, transaction) => {
-      if (transaction.from == budget.name) {
-        return sum + transaction.amount;
-      } else {
-        return sum;
-      }
+  sumTransactions(transactions) {
+    return transactions.reduce((sum, transaction) => {
+      return sum + transaction.amount;
     }, 0);
   }
 
   getTotalBudgetCredits(budget) {
-    return this.transactions.reduce((sum, transaction) => {
-      if (transaction.to == budget.name) {
-        return sum + transaction.amount;
-      } else {
-        return sum;
-      }
-    }, 0);
+    return this.sumTransactions(this.transactions.filter(x => x.to == budget.name));
+  }
+
+  getTotalBudgetDebits(budget) {
+    return this.sumTransactions(this.transactions.filter(x => x.from == budget.name));
+  }
+
+  getOtherBudgetCredits() {
+    return (this.sumTransactions(this.transactions.filter(x => x.to == 'Other'))
+      - this.sumTransactions(this.transactions.filter(x => x.from == 'Other' && x.to != '@Debit')));
+  }
+
+  getOtherBudgetDebits() {
+    return this.sumTransactions(this.transactions.filter(x => x.from == 'Other' && x.to == '@Debit'));
   }
 }
 

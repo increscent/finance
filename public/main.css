@@ -11,3 +11,14 @@
 #back-nav .oi {
   font-size: 18px;
 }
+
+.amount {
+  display: inline-block;
+  width: 200px;
+  margin-left: 10px;
+}
+
+.allowance-type {
+  display: inline-block;
+  width: 80px;
+}

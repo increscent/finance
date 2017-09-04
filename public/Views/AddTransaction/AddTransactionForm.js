@@ -1,12 +1,12 @@
 import React from 'react';
 import {withRouter} from "react-router-dom";
+import BudgetService from '../../Services/BudgetService.js';
 import TransactionService from '../../Services/TransactionService.js';
 import BudgetSelect from './BudgetSelect.js';
 import Form from '../Components/Form.js';
 import FormValidationMessages from '../Components/FormValidationMessages.js';
 import mixin from 'mixin';
 import DebitCreditRadioButtons from './DebitCreditRadioButtons.js';
-import BudgetService from '../../Services/BudgetService.js';
 
 class AddTransactionForm extends mixin(Form, React.Component) {
   constructor(props) {
@@ -28,7 +28,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
   setDefaultFrom() {
     if (this.state.from) return;
     this.setState({
-      category: this.getDefaultFrom()
+      from: this.getDefaultFrom()
     });
   }
 
@@ -41,7 +41,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
   }
 
   getDefaultFrom() {
-    return BudgetService.budgets[0]? BudgetService.budgets[0].name : '';
+    return BudgetService.getBudgets()[0]? BudgetService.getBudgets()[0].name : '';
   }
 
   handleTransactionTypeChange(transaction_type) {
@@ -65,7 +65,8 @@ class AddTransactionForm extends mixin(Form, React.Component) {
       {name: 'transaction_type', validate: (x) => x == 'debit' || x == 'credit', error_message: 'Please select a transaction type.'},
       {name: 'from', validate: (x) => x, error_message: 'Please select a category.'},
       {name: 'motive', validate: (x) => true, error_message: 'It doesn\'t matter what note you write.'},
-      {name: 'amount', validate: (x) => parseFloat(x), error_message: 'Please enter a valid amount.'}
+      {name: 'amount', validate: (x) => parseFloat(x), error_message: 'Please enter a valid amount.'},
+      {name: 'amount', validate: (x) => parseFloat(x) && parseFloat(x) > 0, error_message: 'Transaction amount must be a positive number.'}
     ];
 
     var error_messages = this.validateFormInput(rules);
@@ -104,20 +105,20 @@ class AddTransactionForm extends mixin(Form, React.Component) {
         <div className="form-group">
           {
             this.state.transaction_type == 'debit' &&
-            <BudgetSelect budgets={BudgetService.budgets} from={this.state.from} onChange={(e) => this.handleFormInput('from', e)} />
+            <BudgetSelect budgets={BudgetService.getBudgets()} from={this.state.from} onChange={(e) => this.handleFormInput('from', e)} />
           }
         </div>
 
         <div className="form-group">
-          $<input type="text" name="amount" value={this.state.amount} onChange={(e) => this.handleFormInput('amount', e)} />
+          $<input type="text" name="amount" placeholder="Amount" className="form-control amount" value={this.state.amount} onChange={(e) => this.handleFormInput('amount', e)} />
         </div>
 
         <div className="form-group">
-          <input type="text" name="motive" placeholder="Note" value={this.state.motive} onChange={(e) => this.handleFormInput('motive', e)} />
+          <input type="text" name="motive" placeholder="Note" className="form-control" value={this.state.motive} onChange={(e) => this.handleFormInput('motive', e)} />
         </div>
 
         <div className="form-group">
-          <input type="submit" name="submit" value="save" />
+          <input type="submit" name="submit" value="save" className="btn btn-primary" />
         </div>
 
         <FormValidationMessages validationMessages={this.state.validation_messages} />

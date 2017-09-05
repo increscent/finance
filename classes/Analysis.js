@@ -52,6 +52,10 @@ class Analysis {
     return this.sumTransactions(this.transactions.filter(x => x.from == budget.name));
   }
 
+  getTotalAccountCredits() {
+    return this.sumTransactions(this.transactions.filter(x => x.from == '@Credit' && x.to == 'Other'));
+  }
+
   getOtherBudgetCredits() {
     return (this.sumTransactions(this.transactions.filter(x => x.to == 'Other'))
       - this.sumTransactions(this.transactions.filter(x => x.from == 'Other' && x.to != '@Debit')));

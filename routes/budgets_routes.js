@@ -3,6 +3,7 @@ var router = express.Router();
 var Models = require('../models');
 var helpers = require('./helpers');
 var config = require('../config');
+var Budget = require('../classes/Budget');
 
 router.use(helpers.verifyAccount);
 
@@ -11,55 +12,19 @@ router.get('/', helpers.getBudgets, function (req, res) {
   res.send(JSON.stringify(req.budgets));
 });
 
-// router.post('/', helpers.validateRequestBody(config.budget_required_fields), function (req, res) {
-//   Models.Budget.findOne({category: req.validated_body.category})
-//   .then(budget => {
-//     if (budget) {
-//       return helpers.userError(res, 'Budget category already exists: ' + budget.category);
-//     } else {
-//       var new_budget = new Models.Budget(req.validated_body);
-//       return new_budget.save();
-//     }
-//   })
-//   .then(budget => {
-//     res.send(JSON.stringify(budget));
-//   })
-//   .catch(error => {
-//     helpers.serverError(res, 'Database Error :(');
-//   });
-// });
-
-router.put('/:name', helpers.validateRequestBody(config.budget_required_fields), function (req, res) {
-  req.validated_body.name = req.params.name; // The budget name may not be changed -- a budget must be deleted and then created
-  if (!isSafeBudgetName(req.params.name)) {
-    return helpers.userError(res, 'You cannot modify that budget!');
-  }
-  Models.Budget.findOne({name: req.params.name})
-  .then(budget => {
-    if (budget) {
-      budget.allowance = req.validated_body.allowance;
-      budget.allowance_type = req.validated_body.allowance_type;
-      return budget.save();
-    } else {
-      var new_budget = Models.Budget(req.validated_body);
-      return new_budget.save();
-    }
-  })
-  .then(budget => {
+router.put('/:name', helpers.validateRequestBody(config.budget_required_fields), helpers.getBudgets, helpers.getTransactions, function (req, res) {
+  var budget = new Budget(req.account, req.budgets, req.transactions, req.params.name);
+  budget.save(req.validated_body, (error, budget) => {
+    if (error) return helpers.serverError(res, error);
     res.send(JSON.stringify(budget));
-  })
-  .catch(error => {
-    helpers.serverError(res, 'Database Error :(');
   });
 });
 
-router.delete('/:name', function (req, res) {
-  Models.Budget.findOne({name: req.params.name}).remove().exec()
-  .then(() => {
+router.delete('/:name', helpers.getBudgets, helpers.getTransactions, function (req, res) {
+  var budget = new Budget(req.account, req.budgets, req.transactions, req.params.name);
+  budget.delete(error => {
+    if (error) return helpers.serverError(res, error);
     res.send('Budget deleted successfully!');
-  })
-  .catch(error => {
-    helpers.serverError(res, 'Database Error :(');
   });
 });
 

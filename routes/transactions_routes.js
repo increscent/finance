@@ -21,7 +21,7 @@ router.post('/', helpers.validateRequestBody(config.transaction_required_fields)
 });
 
 router.delete('/:id', function (req, res) {
-  Models.Transaction.findOne({_id: req.params.id}).remove().exec()
+  Models.Transaction.findOne({_id: req.params.id}).remove()
   .then(() => {
     res.send('Transaction deleted successfully!');
   })

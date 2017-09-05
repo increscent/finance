@@ -7,9 +7,6 @@ class Transaction {
     this.account = account;
     this.budgets = budgets;
     this.transaction = new Models.Transaction(transaction);
-
-    // make list of available endpoints
-    this.availableEndpoints = config.reserved_budget_names.map(x => {return {name: x}}).concat(this.budgets);
   }
 
   save(callback) {
@@ -38,8 +35,11 @@ class Transaction {
   }
 
   hasValidEndpoints() {
-    return (this.availableEndpoints.findIndex(x => x.name == this.transaction.to) > -1
-      && this.availableEndpoints.findIndex(x => x.name == this.transaction.from) > -1);
+    // make list of available endpoints
+    var availableEndpoints = config.reserved_budget_names.map(x => {return {name: x}}).concat(this.budgets);
+    
+    return (availableEndpoints.findIndex(x => x.name == this.transaction.to) > -1
+      && availableEndpoints.findIndex(x => x.name == this.transaction.from) > -1);
   }
 }
 

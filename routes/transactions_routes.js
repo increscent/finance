@@ -12,22 +12,25 @@ router.get('/', helpers.getTransactions, function (req, res) {
 });
 
 router.post('/', helpers.validateRequestBody(config.transaction_required_fields), helpers.getBudgets, function (req, res) {
-  var new_transaction = new Transaction(req.account, req.budgets, req.validated_body);
-  new_transaction.save((error, transaction) => {
-    if (error) return helpers.serverError(res, error);
-
-    res.send(JSON.stringify(transaction));
+  var transaction = new Transaction(req.account, req.budgets);
+  transaction.create(req.validated_body)
+  .then(newTransaction => {
+    res.send(JSON.stringify(newTransaction));
+  })
+  .catch(error => {
+    helpers.errorResponse(res, error.message);
   });
 });
 
 router.delete('/:id', function (req, res) {
-  Models.Transaction.findOne({_id: req.params.id}).remove()
+  var existingTransaction = new Transaction(req.account);
+  existingTransaction.delete(req.params.id)
   .then(() => {
-    res.send('Transaction deleted successfully!');
+    res.send(JSON.stringify({success: true}));
   })
   .catch(error => {
-    helpers.serverError(res, 'Database Error :(');
-  });
+    helpers.errorResponse(res, error.message);
+  })
 });
 
 module.exports = router;

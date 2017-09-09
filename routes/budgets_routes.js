@@ -19,24 +19,21 @@ router.put('/:name', helpers.validateRequestBody(config.budget_required_fields),
     res.send(JSON.stringify(budget));
   })
   .catch(error => {
-    helpers.serverError(res, error.toString());
+    helpers.errorResponse(res, error.message);
+    console.log(error);
   });
 });
 
 router.delete('/:name', helpers.getBudgets, helpers.getTransactions, function (req, res) {
-  var budget = new Budget(req.account, req.budgets, req.transactions, req.params.name);
-  budget.delete(error => {
-    if (error) return helpers.serverError(res, error);
-    res.send('Budget deleted successfully!');
-  });
+  var budget = new Budget(req.account, req.budgets, req.params.name, req.transactions);
+  budget.delete()
+  .then(() => {
+    res.send(JSON.stringify({success: true}));
+  })
+  .catch(error => {
+    helpers.errorResponse(res, error.message);
+    console.log(error);
+  })
 });
 
 module.exports = router;
-
-function isSafeBudgetName(budget_name) {
-  if (config.reserved_budget_names.indexOf(budget_name) > -1) {
-    return false;
-  } else {
-    return true;
-  }
-}

@@ -45,11 +45,17 @@ class Analysis {
   }
 
   getTotalBudgetCredits(budget) {
-    return this.sumTransactions(this.transactions.filter(x => x.to == budget.name));
+    return (this.sumTransactions(this.transactions.filter(x => x.to == budget.name))
+      - this.getTotalRemovedFunds(budget));
   }
 
   getTotalBudgetDebits(budget) {
-    return this.sumTransactions(this.transactions.filter(x => x.from == budget.name));
+    return (this.sumTransactions(this.transactions.filter(x => x.from == budget.name))
+      - this.getTotalRemovedFunds(budget));
+  }
+
+  getTotalRemovedFunds(budget) {
+    return this.sumTransactions(this.transactions.filter(x => x.from == budget.name && x.to == 'Other'));
   }
 
   getTotalAccountCredits() {

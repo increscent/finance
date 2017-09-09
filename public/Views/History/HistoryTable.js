@@ -1,7 +1,7 @@
 import React from 'react';
-import TransactionService from '../../Services/TransactionService.js';
 import HistoryTableHeader from './HistoryTableHeader.js';
 import HistoryRow from './HistoryRow.js';
+import TransactionService from '../../Services/TransactionService.js';
 
 export default class HistoryTable extends React.Component {
   constructor(props) {

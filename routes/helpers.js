@@ -61,5 +61,18 @@ module.exports = {
     res.send(JSON.stringify({
       error: text
     }));
+  },
+
+  errorResponse: function (res, text) {
+    var statusCode = parseInt(text.substr(0, 3));
+    if (!statusCode) {
+      res.statusCode = 500;
+    } else {
+      res.statusCode = statusCode;
+      text = text.substr(3);
+    }
+    res.send(JSON.stringify({
+      error: text
+    }))
   }
 };

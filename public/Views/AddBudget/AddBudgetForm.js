@@ -32,7 +32,7 @@ class AddBudgetForm extends mixin(Form, React.Component) {
 
     var rules = [
       {name: 'name', validate: (x) => x, error_message: 'Please enter a name'},
-      {name: 'name', validate: (x) => !BudgetService.getBudgets().find((budget) => x.trim().toLowerCase() == budget.name.trim().toLowerCase()), error_message: 'That name already exists. Please enter a unique budget name.'},
+      {name: 'name', validate: (x) => BudgetService.getBudgets().find((budget) => x.trim().toLowerCase() != budget.name.trim().toLowerCase()), error_message: 'That name already exists. Please enter a unique budget name.'},
       {name: 'allowance_type', validate: (x) => x == '%' || x == '$', error_message: 'Please select an allowance type ($ or %).'},
       {name: 'allowance', validate: (x) => parseFloat(x), error_message: 'Please enter a valid amount.'},
       {name: 'allowance', validate: (x) => this.state.allowance_type == '$' || (x >= 0 && x <= 100), error_message: 'The allowance percentage must be between 0 and 100.'},

@@ -1,5 +1,5 @@
 var Models = require('../models');
-var Analysis = require('../classes/Analysis');
+var Transaction = require('../classes/Transaction');
 var config = require('../config');
 
 class Budget {
@@ -13,136 +13,171 @@ class Budget {
   updateOrCreate(newBudget) {
     var existingBudget = this.budgets.find(x => x.name == this.name);
     if (existingBudget) {
-      // update
+      return this.update(existingBudget, newBudget);
     } else {
       return this.create(newBudget);
     }
   }
 
-  create(newBudget) {
-    return Promise.resolve().then(() => {
-      if (!this.isValidName(newBudget.name)) throw new Error("Invalid Budget Name");
+  delete() {
+    var existingBudget = this.budgets.find(x => x.name == this.name);
 
-      return (new Models.Budget(newBudget)).save();
+    return Promise.resolve()
+    .then(() => {
+      if (!existingBudget) throw new Error("400Budget Not Found");
+
+      // change all transaction associated with this budget
+      let filterTransaction = transaction => {
+        return transaction.to == existingBudget.name || transaction.from == existingBudget.name;
+      };
+
+      let updateTransaction = transaction => {
+        if (transaction.to == existingBudget.name) {
+          transaction.to = 'Other';
+        }
+        if (transaction.from == existingBudget.name) {
+          transaction.from = 'Other';
+        }
+        if (transaction.from == transaction.to) {
+          return transaction.remove();
+        } else {
+          return transaction.save();
+        }
+      };
+
+      return Promise.all(this.transactions
+        .filter(filterTransaction)
+        .map(updateTransaction)
+      );
+    })
+    .then(() => {
+      // remove budget
+      return existingBudget.remove();
     });
   }
 
-  // save(new_budget, callback) {
-  //   if (this.budget) {
-  //   } else {
-  //     // budget must be created
-  //     if (!this.isValidName(new_budget.name)) return callback('Invalid Name');
-  //     this.budget = new Models.Budget(new_budget);
-  //     budget.save()
-  //     .then(budget => {
-  //       callback(null, budget);
-  //     })
-  //     .catch(() => callback('Database Error.'));
-  //   }
-  // }
-  //
-  // handleChangedBudgetName(current_budget, new_budget, callback) {
-  //   if (new_budget.name != current_budget.name && this.isValidName(new_budget.name)) {
-  //     // name has changed
-  //     current_budget.name = new_budget.name;
-  //     current_budget.save()
-  //     .then(budget => {
-  //       console.log(budget);
-  //       console.log(current_budget);
-  //       for (var i = 0; i < this.transactions.length; i++) {
-  //         if (this.transactions[i].from == current_budget.name) {
-  //           this.transactions[i].from = new_budget.name;
-  //           this.transactions[i].save();
-  //         } else if (this.transactions[i].to == current_budget.name) {
-  //           this.transactions[i].to = new_budget.name;
-  //           this.transactions[i].save();
-  //         }
-  //       }
-  //       callback(null, budget);
-  //     })
-  //     .catch(() => callback('Database Error.'));
-  //   } else {
-  //     // name has not changed
-  //     return callback(null, current_budget)
-  //   }
-  // }
-  //
-  // handleChangedBudgetAllowance(current_budget, new_budget, callback) {
-  //   if (new_budget.allowance_type != current_budget.allowance_type || new_budget.allowance != current_budget.allowance) {
-  //     // allowance has changed
-  //     var amountBudgetHasReceived = current_budget.allowance;
-  //     var analysis = new Analysis(this.budgets, this.transactions);
-  //     var totalAccountCredits = analysis.getTotalAccountCredits();
-  //     if (current_budget.allowance_type == '%') {
-  //       amountBudgetHasReceived = totalAccountCredits * current_budget.allowance / 100;
-  //     }
-  //
-  //     var amountBudgetShouldReceive = new_budget.allowance;
-  //     if (new_budget.allowance_type == '%') {
-  //       amountBudgetShouldReceive = totalAccountCredits * new_budget.allowance / 100;
-  //     }
-  //
-  //     current_budget.allowance_type = new_budget.allowance_type == '%'? '%':'$';
-  //     current_budget.allowance = new_budget.allowance;
-  //     current_budget.save()
-  //     .then(budget => {
-  //       this.balanceNewBudget(budget, amountBudgetHasReceived, amountBudgetShouldReceive, error => {
-  //         if (error) return callback(error);
-  //         return callback(null, budget);
-  //       });
-  //     })
-  //     .catch(() => callback('Database Error.'));
-  //   } else {
-  //     // allowance has not changed
-  //     return callback(null, current_budget);
-  //   }
-  // }
-  //
-  // balanceNewBudget(budget, amountBudgetHasReceived, amountBudgetShouldReceive, callback){
-  //   // amount must always be positive
-  //   var from = (amountBudgetShouldReceive > amountBudgetHasReceived)? 'Other':budget.name;
-  //   var to = (from == 'Other')? budget.name:'Other';
-  //   var amount = amountBudgetShouldReceive - amountBudgetHasReceived;
-  //   if (amount < 0) amount *= -1;
-  //   var offsetTransaction = new Transaction(this.account, this.budgets, {
-  //     from: from,
-  //     to: to,
-  //     motive: 'Budget Allocations',
-  //     amount: amount,
-  //     date: Date.now(),
-  //     account_id: this.account.id
-  //   });
-  //   offsetTransaction.save()
-  //   .then(transaction => callback(null, transaction))
-  //   .catch(() => callback('Database Error.'));
-  // }
-  //
-  // delete(callback) {
-  //   if (!this.budget) return callback('Budget Does Not Exist.');
-  //
-  //   this.budget.remove()
-  //   .then(() => {
-  //     for (var i = 0; i < this.transactions.length; i++) {
-  //       // All debits will be accredited to 'Other'
-  //       if (this.transactions[i].from == this.budget.name) {
-  //         this.transactions[i].from = 'Other';
-  //         this.transactions[i].save();
-  //       }
-  //       // All credits will go to 'Other' (unless they come from 'Other', in which case they are removed)
-  //       else if (this.transactions[i].to == this.budget.name) {
-  //         if (this.transactions[i].from == 'Other') {
-  //           this.transactions[i].remove();
-  //         } else {
-  //           this.transactions[i].to = 'Other';
-  //           this.transactions[i].save();
-  //         }
-  //       }
-  //     }
-  //
-  //     callback(null);
-  //   })
-  //   .catch(() => callback('Database Error.'));
-  // }
+  create(newBudget) {
+    return Promise.resolve()
+    .then(() => {
+      if (!this.isValidName(newBudget.name)) throw new Error("400Invalid Budget Name");
+
+      var budget = new Models.Budget(newBudget);
+      this.budgets.push(budget);
+      return budget;
+    })
+    .then(budget => {
+      // add beginning funds
+      var shouldReceive = this.calcShouldReceive(budget);
+      return this.balanceBudgetTransaction(budget.name, 0, shouldReceive).then(() => budget); // make sure the original budget is returned after it is balanced
+    })
+    .then(budget => {
+      return budget.save();
+    });
+  }
+
+  update(existingBudget, newBudget) {
+    return Promise.resolve()
+    .then(() => {
+      // check for changed budget name
+      if (existingBudget.name == newBudget.name) return;
+      if (!this.isValidName(newBudget.name)) throw new Error("400Invalid Budget Name");
+
+      let filterTransaction = transaction => {
+        return transaction.to == existingBudget.name || transaction.from == existingBudget.name;
+      };
+
+      let updateTransaction = transaction => {
+        if (transaction.to == existingBudget.name) {
+          transaction.to = newBudget.name;
+        }
+        if (transaction.from == existingBudget.name) {
+          transaction.from = newBudget.name;
+        }
+        return transaction.save();
+      };
+
+      return Promise.all(this.transactions
+        .filter(filterTransaction)
+        .map(updateTransaction)
+      );
+    })
+    .then(() => {
+      // change the budget's name after all transactions have been updated
+      existingBudget.name = newBudget.name;
+    })
+    .then(() => {
+      // check for changed budget amount
+      if (existingBudget.allowance_type == newBudget.allowance_type && existingBudget.allowance == newBudget.allowance) return;
+
+      // calculate credit difference from 'Other' for current period
+      var hasReceived = this.calcHasReceived(existingBudget);
+      var shouldReceive = this.calcShouldReceive(newBudget);
+
+      return this.balanceBudgetTransaction(existingBudget.name, hasReceived, shouldReceive);
+    })
+    .then(() => {
+      // change budget allowance
+      existingBudget.allowance_type = newBudget.allowance_type;
+      existingBudget.allowance = newBudget.allowance;
+    })
+    .then(() => {
+      // save budget
+      return existingBudget.save();
+    });
+  }
+
+  calcHasReceived(budget) {
+    var hasReceived = this.transactions
+    .filter(transaction => {
+      return transaction.from == 'Other' && transaction.to == budget.name;
+    })
+    .reduce((sum, transaction) => {
+      return sum + transaction.amount;
+    }, 0);
+    return hasReceived;
+  }
+
+  calcShouldReceive(budget) {
+    var shouldReceive;
+    if (budget.allowance_type == '$') {
+      shouldReceive = budget.allowance;
+    } else {
+      shouldReceive = budget.allowance / 100 * this.transactions
+      .filter(transaction => {
+        return transaction.from == '@Credit' && transaction.to == 'Other';
+      })
+      .reduce((sum, transaction) => {
+        return sum + transaction.amount
+      }, 0);
+    }
+    return shouldReceive;
+  }
+
+  balanceBudgetTransaction(name, hasReceived, shouldReceive) {
+    return Promise.resolve().then(() => {
+      if (shouldReceive == hasReceived) return;
+
+      var balancingTransaction = new Transaction(this.account, this.budgets);
+      var from, to, amount;
+
+      if (shouldReceive - hasReceived > 0) {
+        from = 'Other';
+        to = name;
+        amount = shouldReceive - hasReceived;
+      } else {
+        from = name;
+        to = 'Other';
+        amount = hasReceived - shouldReceive;
+      }
+
+      return balancingTransaction.create({
+        from: from,
+        to: to,
+        amount: amount,
+        motive: 'Budget Balancing'
+      });
+    });
+  }
 
   isValidName(budgetName) {
     // make list of current budgets

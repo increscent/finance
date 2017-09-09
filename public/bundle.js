@@ -24901,7 +24901,7 @@ var Store = function (_ListenerService) {
     var _this = _possibleConstructorReturn(this, (Store.__proto__ || Object.getPrototypeOf(Store)).call(this));
 
     _this.budgets = [];
-    _this.transacitons = [];
+    _this.transactions = [];
     return _this;
   }
 
@@ -24997,8 +24997,8 @@ var AddBudgetForm = function (_mixin) {
       var rules = [{ name: 'name', validate: function validate(x) {
           return x;
         }, error_message: 'Please enter a name' }, { name: 'name', validate: function validate(x) {
-          return !_BudgetService2.default.getBudgets().find(function (budget) {
-            return x.trim().toLowerCase() == budget.name.trim().toLowerCase();
+          return _BudgetService2.default.getBudgets().find(function (budget) {
+            return x.trim().toLowerCase() != budget.name.trim().toLowerCase();
           });
         }, error_message: 'That name already exists. Please enter a unique budget name.' }, { name: 'allowance_type', validate: function validate(x) {
           return x == '%' || x == '$';
@@ -25707,10 +25707,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TransactionService = require('../../Services/TransactionService.js');
-
-var _TransactionService2 = _interopRequireDefault(_TransactionService);
-
 var _HistoryTableHeader = require('./HistoryTableHeader.js');
 
 var _HistoryTableHeader2 = _interopRequireDefault(_HistoryTableHeader);
@@ -25718,6 +25714,10 @@ var _HistoryTableHeader2 = _interopRequireDefault(_HistoryTableHeader);
 var _HistoryRow = require('./HistoryRow.js');
 
 var _HistoryRow2 = _interopRequireDefault(_HistoryRow);
+
+var _TransactionService = require('../../Services/TransactionService.js');
+
+var _TransactionService2 = _interopRequireDefault(_TransactionService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

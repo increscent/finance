@@ -19,7 +19,13 @@ module.exports = {
   },
 
   getTransactions: function (req, res, next) {
-    Models.Transaction.find({account_id: req.account._id}, function (err, transactions) {
+    Models.Transaction.find({
+      account_id: req.account._id,
+      date: {
+        $gt: req.account.budget_period_start,
+        $lt: req.account.budget_period_end
+      }
+    }, function (err, transactions) {
       req.transactions = transactions || [];
       return next();
     });
@@ -52,6 +58,8 @@ module.exports = {
 
   serverError: function (res, text) {
     res.statusCode = 500;
-    res.send(text);
+    res.send(JSON.stringify({
+      error: text
+    }));
   }
 };

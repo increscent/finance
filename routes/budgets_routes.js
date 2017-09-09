@@ -13,10 +13,13 @@ router.get('/', helpers.getBudgets, function (req, res) {
 });
 
 router.put('/:name', helpers.validateRequestBody(config.budget_required_fields), helpers.getBudgets, helpers.getTransactions, function (req, res) {
-  var budget = new Budget(req.account, req.budgets, req.transactions, req.params.name);
-  budget.save(req.validated_body, (error, budget) => {
-    if (error) return helpers.serverError(res, error);
+  var budget = new Budget(req.account, req.budgets, req.params.name, req.transactions);
+  budget.updateOrCreate(req.validated_body)
+  .then(budget => {
     res.send(JSON.stringify(budget));
+  })
+  .catch(error => {
+    helpers.serverError(res, error.toString());
   });
 });
 

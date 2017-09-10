@@ -6,7 +6,7 @@ class Analysis {
 
   getOverview() {
     var overview = this.budgets.map(budget => {
-      var name = budget.name + ' (' + (budget.allowance_type == '$'?'$':'') + budget.allowance + (budget.allowance_type == '%'?'%':'') + ')'
+      var name = budget.name;
       var credits = this.getTotalBudgetCredits(budget);
       var debits = this.getTotalBudgetDebits(budget);
       return {

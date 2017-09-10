@@ -5,7 +5,7 @@ class ApiService {
       headers: {'account-id': '59a10db60ce696239179287b'}
     };
 
-    return this.apiRequest(endpoint, request_options, 'json');
+    return this.apiRequest(endpoint, request_options);
   }
 
   postRequest(endpoint, body) {
@@ -15,7 +15,7 @@ class ApiService {
       body: JSON.stringify(body)
     };
 
-    return this.apiRequest(endpoint, request_options, 'json');
+    return this.apiRequest(endpoint, request_options);
   }
 
   putRequest(endpoint, body) {
@@ -25,7 +25,7 @@ class ApiService {
       body: JSON.stringify(body)
     };
 
-    return this.apiRequest(endpoint, request_options, 'json');
+    return this.apiRequest(endpoint, request_options);
   }
 
   deleteRequest(endpoint) {
@@ -34,14 +34,15 @@ class ApiService {
       headers: {'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json'}
     };
 
-    return this.apiRequest(endpoint, request_options, 'text');
+    return this.apiRequest(endpoint, request_options);
   }
 
   apiRequest(endpoint, request_options, response_type) {
     return fetch(endpoint, request_options)
-    .then(res => {
-      if (res.status == 200) return res[response_type]();
-      throw new Error('Sorry, we had a server problem. Please try again soon!');
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) throw new Error(data.error);
+      return data;
     });
   }
 }

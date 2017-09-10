@@ -28,26 +28,19 @@ class TransactionService extends ListenerService {
   }
 
   addTransaction(transaction, callback) {
-    ApiService.postRequest('/api/transactions', transaction)
+    return ApiService.postRequest('/api/transactions', transaction)
     .then(data => {
       insertTransaction(data, Store.transactions);
       Store.setStore('transactions', Store.transactions, true);
-      callback(null);
-    })
-    .catch(error => {
-      callback(error.toString());
     });
   }
 
   deleteTransaction(transaction) {
-    console.log('deleted ' + transaction._id);
-    ApiService.deleteRequest('/api/transactions/' + transaction._id)
+    return ApiService.deleteRequest('/api/transactions/' + transaction._id)
     .then(data => {
       removeTransaction(transaction._id, Store.transactions);
       Store.setStore('transactions', Store.transactions, true);
-    })
-    .catch(error => {
-      console.log(error);
+      console.log('deleted ' + transaction._id);
     });
   }
 }

@@ -16,6 +16,15 @@ class BudgetService extends ListenerService {
     return Store.budgets;
   }
 
+  prettifyBudgetName(name) {
+    var budget = Store.budgets.find(x => x.name == name) || {};
+    if (budget.allowance_type) {
+       return name + ' (' + (budget.allowance_type == '$'?'$':'') + budget.allowance + (budget.allowance_type == '%'?'%':'') + ')';
+    } else {
+      return name;
+    }
+  }
+
   fetchBudgets() {
     ApiService.getRequest('/api/budgets')
     .then(data => {
@@ -26,15 +35,20 @@ class BudgetService extends ListenerService {
     });
   }
 
-  addBudget(budget, callback) {
-    ApiService.putRequest('/api/budgets/' + budget.name, budget)
+  addBudget(budget) {
+    return ApiService.putRequest('/api/budgets/' + budget.uri, budget)
     .then(data => {
       insertBudget(data, Store.budgets);
       Store.setStore('budgets', Store.budgets, true);
-      callback(null);
-    })
-    .catch(error => {
-      callback(error.toString());
+    });
+  }
+
+  deleteBudget(budgetName) {
+    return ApiService.deleteRequest('/api/budgets/' + budgetName)
+    .then(data => {
+      removeBudget(budgetName, Store.budgets);
+      Store.setStore('budgets', Store.budgets, true);
+      console.log('deleted ' + budgetName);
     });
   }
 }
@@ -43,4 +57,9 @@ export default new BudgetService();
 
 function insertBudget(budget, collection) {
   collection.push(budget);
+}
+
+function removeBudget(budgetName, collection) {
+  var index = collection.findIndex((x) => x.name == budgetName);
+  if (index >= 0) collection.splice(index, 1);
 }

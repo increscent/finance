@@ -9,14 +9,15 @@ class AddBudgetForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      allowance: '',
-      allowance_type: '$',
+      name: props.name || '',
+      allowance: props.allowance || '',
+      allowance_type: props.allowance_type || '$',
       validation_messages: []
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.forceUpdate = this.forceUpdate.bind(this);
+    this.handleBudgetDelete = this.handleBudgetDelete.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +26,19 @@ class AddBudgetForm extends mixin(Form, React.Component) {
 
   componentWillUnmount() {
     BudgetService.unRegisterListener(this.budgetServiceListenerId);
+  }
+
+  handleBudgetDelete(e) {
+    e.preventDefault();
+    BudgetService.deleteBudget(this.props.uri)
+    .then(() => {
+      this.props.history.goBack();
+    })
+    .catch(error => {
+      this.setState({
+        validation_messages: [error.toString()]
+      });
+    });
   }
 
   handleFormSubmit(e) {
@@ -44,22 +58,22 @@ class AddBudgetForm extends mixin(Form, React.Component) {
       validation_messages: error_messages
     });
 
-    if (error_messages.length) {
-      // validation failed
-    } else {
+    if (!error_messages.length) {
       // validation successful
+      var name = this.state.name.trim();
       BudgetService.addBudget({
-        name: this.state.name.trim(),
+        uri: this.props.uri || name,
+        name: name,
         allowance_type: this.state.allowance_type,
         allowance: parseFloat(this.state.allowance)
-      }, error => {
-        if (error) {
-          this.setState({
-            validation_messages: [error]
-          });
-        } else {
-          this.props.history.goBack();
-        }
+      })
+      .then(() => {
+        this.props.history.goBack();
+      })
+      .catch(error => {
+        this.setState({
+          validation_messages: [error.toString()]
+        });
       });
     }
   }
@@ -82,6 +96,13 @@ class AddBudgetForm extends mixin(Form, React.Component) {
         <div className="form-group">
           <input type="submit" name="submit" value="save" className="btn btn-primary" />
         </div>
+
+        {
+          this.props.uri &&
+          <div className="form-group">
+            <a href="#" className="text-danger" onClick={this.handleBudgetDelete}>delete budget</a>
+          </div>
+        }
 
         <FormValidationMessages validationMessages={this.state.validation_messages} />
       </form>

@@ -74,23 +74,21 @@ class AddTransactionForm extends mixin(Form, React.Component) {
       validation_messages: error_messages
     });
 
-    if (error_messages.length) {
-      // validation failed
-    } else {
+    if (!error_messages.length) {
       // validation successful
       TransactionService.addTransaction({
         from: this.state.from,
         to: this.state.to,
         motive: this.state.motive.trim(),
         amount: parseFloat(this.state.amount)
-      }, error => {
-        if (error) {
-          this.setState({
-            validation_messages: [error]
-          })
-        } else {
-          this.props.history.goBack();
-        }
+      })
+      .then(() => {
+        this.props.history.goBack();
+      })
+      .catch(error => {
+        this.setState({
+          validation_messages: [error.toString()]
+        })
       });
     }
   }

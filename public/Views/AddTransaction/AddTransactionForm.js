@@ -13,16 +13,17 @@ class AddTransactionForm extends mixin(Form, React.Component) {
     super(props);
     this.state = {
       transaction_type: 'debit',
-      from: this.getDefaultFrom(),
-      to: '@Debit',
-      motive: '',
-      amount: '',
+      from: props.from || this.getDefaultFrom(),
+      to: props.to || '@Debit',
+      motive: props.motive || '',
+      amount: props.amount || '',
       validation_messages: []
     };
 
     this.handleTransactionTypeChange = this.handleTransactionTypeChange.bind(this);
     this.setDefaultFrom = this.setDefaultFrom.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleTransactionDelete = this.handleTransactionDelete.bind(this);
   }
 
   setDefaultFrom() {
@@ -38,6 +39,19 @@ class AddTransactionForm extends mixin(Form, React.Component) {
 
   componentWillUnmount() {
     TransactionService.unRegisterListener(this.transactionServiceListenerId);
+  }
+
+  handleTransactionDelete(e) {
+    e.preventDefault();
+    TransactionService.deleteTransaction(this.props.uri)
+    .then(() => {
+      this.props.history.goBack();
+    })
+    .catch(error => {
+      this.setState({
+        validation_messages: [error.toString()]
+      });
+    });
   }
 
   getDefaultFrom() {
@@ -76,12 +90,22 @@ class AddTransactionForm extends mixin(Form, React.Component) {
 
     if (!error_messages.length) {
       // validation successful
-      TransactionService.addTransaction({
+      var transaction = {
         from: this.state.from,
         to: this.state.to,
         motive: this.state.motive.trim(),
         amount: parseFloat(this.state.amount)
-      })
+      };
+
+      var request;
+      if (this.props.uri) {
+        transaction._id = this.props.uri;
+        request = TransactionService.updateTransaction(transaction);
+      } else {
+        request = TransactionService.addTransaction(transaction);
+      }
+
+      request
       .then(() => {
         this.props.history.goBack();
       })
@@ -118,6 +142,13 @@ class AddTransactionForm extends mixin(Form, React.Component) {
         <div className="form-group">
           <input type="submit" name="submit" value="save" className="btn btn-primary" />
         </div>
+
+        {
+          this.props.uri &&
+          <div className="form-group">
+            <a href="#" className="text-danger" onClick={this.handleTransactionDelete}>delete transaction</a>
+          </div>
+        }
 
         <FormValidationMessages validationMessages={this.state.validation_messages} />
       </form>

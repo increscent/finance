@@ -11,8 +11,20 @@ class Transaction {
   delete(transaction_id) {
     return Models.Transaction.findOne({_id: transaction_id, account_id: this.account.id})
     .then(transaction => {
-      if (!transaction) throw new Error('400Transaction Not Found');
+      if (!transaction) throw new Error('404Transaction Not Found');
       return transaction.remove();
+    });
+  }
+
+  update(newTransaction) {
+    return Models.Transaction.findOne({_id: newTransaction._id, account_id: this.account.id})
+    .then(transaction => {
+      if (!transaction) throw new Error('404Transaction Not Found');
+      transaction.from = newTransaction.from;
+      transaction.to = newTransaction.to;
+      transaction.amount = newTransaction.amount;
+      transaction.motive = newTransaction.motive;
+      return transaction.save();
     });
   }
 

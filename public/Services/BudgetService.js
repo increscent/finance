@@ -35,9 +35,10 @@ class BudgetService extends ListenerService {
     });
   }
 
-  addBudget(budget) {
+  addOrUpdateBudget(budget) {
     return ApiService.putRequest('/api/budgets/' + budget.uri, budget)
     .then(data => {
+      removeBudget(budget.uri, Store.budgets);
       insertBudget(data, Store.budgets);
       Store.setStore('budgets', Store.budgets, true);
     });

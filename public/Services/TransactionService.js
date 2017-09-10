@@ -27,7 +27,7 @@ class TransactionService extends ListenerService {
     });
   }
 
-  addTransaction(transaction, callback) {
+  addTransaction(transaction) {
     return ApiService.postRequest('/api/transactions', transaction)
     .then(data => {
       insertTransaction(data, Store.transactions);
@@ -35,12 +35,21 @@ class TransactionService extends ListenerService {
     });
   }
 
-  deleteTransaction(transaction) {
-    return ApiService.deleteRequest('/api/transactions/' + transaction._id)
+  updateTransaction(transaction) {
+    return ApiService.putRequest('/api/transactions/' + transaction._id, transaction)
     .then(data => {
       removeTransaction(transaction._id, Store.transactions);
+      insertTransaction(data, Store.transactions);
       Store.setStore('transactions', Store.transactions, true);
-      console.log('deleted ' + transaction._id);
+    })
+  }
+
+  deleteTransaction(transaction_id) {
+    return ApiService.deleteRequest('/api/transactions/' + transaction_id)
+    .then(data => {
+      removeTransaction(transaction_id, Store.transactions);
+      Store.setStore('transactions', Store.transactions, true);
+      console.log('deleted ' + transaction_id);
     });
   }
 }

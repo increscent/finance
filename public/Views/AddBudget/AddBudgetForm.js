@@ -61,7 +61,7 @@ class AddBudgetForm extends mixin(Form, React.Component) {
     if (!error_messages.length) {
       // validation successful
       var name = this.state.name.trim();
-      BudgetService.addBudget({
+      BudgetService.addOrUpdateBudget({
         uri: this.props.uri || name,
         name: name,
         allowance_type: this.state.allowance_type,

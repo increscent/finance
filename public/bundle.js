@@ -3415,7 +3415,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":255}],37:[function(require,module,exports){
+},{"util":256}],37:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8487,7 +8487,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":252,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":253,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18049,7 +18049,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":252,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":253,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18420,7 +18420,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":252,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":253,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23938,7 +23938,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":252,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
+},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":253,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24484,6 +24484,10 @@ var _EditBudgetView = require('./Views/EditBudget/EditBudgetView.js');
 
 var _EditBudgetView2 = _interopRequireDefault(_EditBudgetView);
 
+var _EditTransactionView = require('./Views/EditTransaction/EditTransactionView.js');
+
+var _EditTransactionView2 = _interopRequireDefault(_EditTransactionView);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App(props) {
@@ -24497,14 +24501,15 @@ function App(props) {
       _react2.default.createElement(_reactRouterDom.Route, { path: '/history', component: _HistoryView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/addTransaction', component: _AddTransactionView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/addBudget', component: _AddBudgetView2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/editBudget/:name?', component: _EditBudgetView2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/editBudget/:name?', component: _EditBudgetView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/editTransaction/:id?', component: _EditTransactionView2.default })
     )
   );
 }
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./Views/AddBudget/AddBudgetView.js":233,"./Views/AddTransaction/AddTransactionView.js":235,"./Views/EditBudget/EditBudgetView.js":243,"./Views/History/HistoryView.js":247,"./Views/Overview/OverviewView.js":251,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
+},{"./Views/AddBudget/AddBudgetView.js":233,"./Views/AddTransaction/AddTransactionView.js":235,"./Views/EditBudget/EditBudgetView.js":243,"./Views/EditTransaction/EditTransactionView.js":244,"./Views/History/HistoryView.js":248,"./Views/Overview/OverviewView.js":252,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24721,9 +24726,10 @@ var BudgetService = function (_ListenerService) {
       });
     }
   }, {
-    key: 'addBudget',
-    value: function addBudget(budget) {
+    key: 'addOrUpdateBudget',
+    value: function addOrUpdateBudget(budget) {
       return _ApiService2.default.putRequest('/api/budgets/' + budget.uri, budget).then(function (data) {
+        removeBudget(budget.uri, _Store2.default.budgets);
         insertBudget(data, _Store2.default.budgets);
         _Store2.default.setStore('budgets', _Store2.default.budgets, true);
       });
@@ -24864,19 +24870,28 @@ var TransactionService = function (_ListenerService) {
     }
   }, {
     key: 'addTransaction',
-    value: function addTransaction(transaction, callback) {
+    value: function addTransaction(transaction) {
       return _ApiService2.default.postRequest('/api/transactions', transaction).then(function (data) {
         insertTransaction(data, _Store2.default.transactions);
         _Store2.default.setStore('transactions', _Store2.default.transactions, true);
       });
     }
   }, {
-    key: 'deleteTransaction',
-    value: function deleteTransaction(transaction) {
-      return _ApiService2.default.deleteRequest('/api/transactions/' + transaction._id).then(function (data) {
+    key: 'updateTransaction',
+    value: function updateTransaction(transaction) {
+      return _ApiService2.default.putRequest('/api/transactions/' + transaction._id, transaction).then(function (data) {
         removeTransaction(transaction._id, _Store2.default.transactions);
+        insertTransaction(data, _Store2.default.transactions);
         _Store2.default.setStore('transactions', _Store2.default.transactions, true);
-        console.log('deleted ' + transaction._id);
+      });
+    }
+  }, {
+    key: 'deleteTransaction',
+    value: function deleteTransaction(transaction_id) {
+      return _ApiService2.default.deleteRequest('/api/transactions/' + transaction_id).then(function (data) {
+        removeTransaction(transaction_id, _Store2.default.transactions);
+        _Store2.default.setStore('transactions', _Store2.default.transactions, true);
+        console.log('deleted ' + transaction_id);
       });
     }
   }]);
@@ -25060,7 +25075,7 @@ var AddBudgetForm = function (_mixin) {
       if (!error_messages.length) {
         // validation successful
         var name = this.state.name.trim();
-        _BudgetService2.default.addBudget({
+        _BudgetService2.default.addOrUpdateBudget({
           uri: this.props.uri || name,
           name: name,
           allowance_type: this.state.allowance_type,
@@ -25232,16 +25247,17 @@ var AddTransactionForm = function (_mixin) {
 
     _this.state = {
       transaction_type: 'debit',
-      from: _this.getDefaultFrom(),
-      to: '@Debit',
-      motive: '',
-      amount: '',
+      from: props.from || _this.getDefaultFrom(),
+      to: props.to || '@Debit',
+      motive: props.motive || '',
+      amount: props.amount || '',
       validation_messages: []
     };
 
     _this.handleTransactionTypeChange = _this.handleTransactionTypeChange.bind(_this);
     _this.setDefaultFrom = _this.setDefaultFrom.bind(_this);
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
+    _this.handleTransactionDelete = _this.handleTransactionDelete.bind(_this);
     return _this;
   }
 
@@ -25262,6 +25278,20 @@ var AddTransactionForm = function (_mixin) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       _TransactionService2.default.unRegisterListener(this.transactionServiceListenerId);
+    }
+  }, {
+    key: 'handleTransactionDelete',
+    value: function handleTransactionDelete(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      _TransactionService2.default.deleteTransaction(this.props.uri).then(function () {
+        _this2.props.history.goBack();
+      }).catch(function (error) {
+        _this2.setState({
+          validation_messages: [error.toString()]
+        });
+      });
     }
   }, {
     key: 'getDefaultFrom',
@@ -25286,7 +25316,7 @@ var AddTransactionForm = function (_mixin) {
   }, {
     key: 'handleFormSubmit',
     value: function handleFormSubmit(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
 
@@ -25309,15 +25339,25 @@ var AddTransactionForm = function (_mixin) {
 
       if (!error_messages.length) {
         // validation successful
-        _TransactionService2.default.addTransaction({
+        var transaction = {
           from: this.state.from,
           to: this.state.to,
           motive: this.state.motive.trim(),
           amount: parseFloat(this.state.amount)
-        }).then(function () {
-          _this2.props.history.goBack();
+        };
+
+        var request;
+        if (this.props.uri) {
+          transaction._id = this.props.uri;
+          request = _TransactionService2.default.updateTransaction(transaction);
+        } else {
+          request = _TransactionService2.default.addTransaction(transaction);
+        }
+
+        request.then(function () {
+          _this3.props.history.goBack();
         }).catch(function (error) {
-          _this2.setState({
+          _this3.setState({
             validation_messages: [error.toString()]
           });
         });
@@ -25326,7 +25366,7 @@ var AddTransactionForm = function (_mixin) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _react2.default.createElement(
         'form',
@@ -25340,7 +25380,7 @@ var AddTransactionForm = function (_mixin) {
           'div',
           { className: 'form-group' },
           this.state.transaction_type == 'debit' && _react2.default.createElement(_BudgetSelect2.default, { budgets: _BudgetService2.default.getBudgets(), from: this.state.from, onChange: function onChange(e) {
-              return _this3.handleFormInput('from', e);
+              return _this4.handleFormInput('from', e);
             } })
         ),
         _react2.default.createElement(
@@ -25348,20 +25388,29 @@ var AddTransactionForm = function (_mixin) {
           { className: 'form-group' },
           '$',
           _react2.default.createElement('input', { type: 'text', name: 'amount', placeholder: 'Amount', className: 'form-control amount', value: this.state.amount, onChange: function onChange(e) {
-              return _this3.handleFormInput('amount', e);
+              return _this4.handleFormInput('amount', e);
             } })
         ),
         _react2.default.createElement(
           'div',
           { className: 'form-group' },
           _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'Note', className: 'form-control', value: this.state.motive, onChange: function onChange(e) {
-              return _this3.handleFormInput('motive', e);
+              return _this4.handleFormInput('motive', e);
             } })
         ),
         _react2.default.createElement(
           'div',
           { className: 'form-group' },
           _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save', className: 'btn btn-primary' })
+        ),
+        this.props.uri && _react2.default.createElement(
+          'div',
+          { className: 'form-group' },
+          _react2.default.createElement(
+            'a',
+            { href: '#', className: 'text-danger', onClick: this.handleTransactionDelete },
+            'delete transaction'
+          )
         ),
         _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
       );
@@ -25778,6 +25827,91 @@ exports.default = EditBudgetView;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _AddTransactionForm = require('../AddTransaction/AddTransactionForm.js');
+
+var _AddTransactionForm2 = _interopRequireDefault(_AddTransactionForm);
+
+var _BackNav = require('../Components/BackNav.js');
+
+var _BackNav2 = _interopRequireDefault(_BackNav);
+
+var _TransactionService = require('../../Services/TransactionService.js');
+
+var _TransactionService2 = _interopRequireDefault(_TransactionService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EditTransactionView = function (_React$Component) {
+  _inherits(EditTransactionView, _React$Component);
+
+  function EditTransactionView(props) {
+    _classCallCheck(this, EditTransactionView);
+
+    var _this = _possibleConstructorReturn(this, (EditTransactionView.__proto__ || Object.getPrototypeOf(EditTransactionView)).call(this, props));
+
+    _this.forceUpdate = _this.forceUpdate.bind(_this);
+    return _this;
+  }
+
+  _createClass(EditTransactionView, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.transactionServiceListenerId = _TransactionService2.default.registerListener(this.forceUpdate);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _TransactionService2.default.unRegisterListener(this.transactionServiceListenerId);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var id = this.props.match.params.id;
+      var transaction = _TransactionService2.default.getTransactions().find(function (x) {
+        return x._id == id;
+      });
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_BackNav2.default, { title: "Edit Transaction" }),
+        _react2.default.createElement(
+          'div',
+          { className: 'container' },
+          transaction ? // transaction must be set in order to edit it
+          _react2.default.createElement(_AddTransactionForm2.default, { uri: transaction._id, from: transaction.from, to: transaction.to, amount: transaction.amount, motive: transaction.motive }) : _react2.default.createElement(
+            'div',
+            { className: 'alert alert-warning', role: 'alert' },
+            'The specified transaction was not found :('
+          )
+        )
+      );
+    }
+  }]);
+
+  return EditTransactionView;
+}(_react2.default.Component);
+
+exports.default = EditTransactionView;
+
+},{"../../Services/TransactionService.js":230,"../AddTransaction/AddTransactionForm.js":234,"../Components/BackNav.js":238,"react":221}],245:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = HistoryRow;
 
 var _react = require('react');
@@ -25795,8 +25929,8 @@ function HistoryRow(props) {
     _react2.default.createElement(
       'td',
       null,
-      _react2.default.createElement('span', { className: 'oi oi-circle-x', onClick: function onClick() {
-          return props.onDeleteTransaction(transaction);
+      _react2.default.createElement('span', { className: 'oi oi-pencil', onClick: function onClick() {
+          return props.onEditTransaction(transaction);
         } })
     ),
     _react2.default.createElement(
@@ -25824,7 +25958,7 @@ function HistoryRow(props) {
   );
 };
 
-},{"react":221}],245:[function(require,module,exports){
+},{"react":221}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25853,6 +25987,8 @@ var _FormValidationMessages = require('../Components/FormValidationMessages.js')
 
 var _FormValidationMessages2 = _interopRequireDefault(_FormValidationMessages);
 
+var _reactRouterDom = require('react-router-dom');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25874,7 +26010,7 @@ var HistoryTable = function (_React$Component) {
     };
 
     _this.forceUpdate = _this.forceUpdate.bind(_this);
-    _this.handleTransactionDelete = _this.handleTransactionDelete.bind(_this);
+    _this.handleEditTransaction = _this.handleEditTransaction.bind(_this);
     return _this;
   }
 
@@ -25889,20 +26025,14 @@ var HistoryTable = function (_React$Component) {
       _TransactionService2.default.unRegisterListener(this.transactionServiceListenerId);
     }
   }, {
-    key: 'handleTransactionDelete',
-    value: function handleTransactionDelete(transaction) {
-      var _this2 = this;
-
-      _TransactionService2.default.deleteTransaction(transaction).catch(function (error) {
-        _this2.setState({
-          validation_messages: [error.toString()]
-        });
-      });
+    key: 'handleEditTransaction',
+    value: function handleEditTransaction(transaction) {
+      this.props.history.push('/editTransaction/' + transaction._id);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _react2.default.createElement(
         'div',
@@ -25917,7 +26047,7 @@ var HistoryTable = function (_React$Component) {
             _TransactionService2.default.getTransactions().filter(function (x) {
               return x.from == '@Credit' || x.to == '@Debit';
             }).map(function (transaction, i) {
-              return _react2.default.createElement(_HistoryRow2.default, { key: i, transaction: transaction, onDeleteTransaction: _this3.handleTransactionDelete });
+              return _react2.default.createElement(_HistoryRow2.default, { key: i, transaction: transaction, onEditTransaction: _this2.handleEditTransaction });
             })
           )
         ),
@@ -25929,9 +26059,9 @@ var HistoryTable = function (_React$Component) {
   return HistoryTable;
 }(_react2.default.Component);
 
-exports.default = HistoryTable;
+exports.default = (0, _reactRouterDom.withRouter)(HistoryTable);
 
-},{"../../Services/TransactionService.js":230,"../Components/FormValidationMessages.js":241,"./HistoryRow.js":244,"./HistoryTableHeader.js":246,"react":221}],246:[function(require,module,exports){
+},{"../../Services/TransactionService.js":230,"../Components/FormValidationMessages.js":241,"./HistoryRow.js":245,"./HistoryTableHeader.js":247,"react":221,"react-router-dom":182}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25977,7 +26107,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"react":221}],247:[function(require,module,exports){
+},{"react":221}],248:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26013,7 +26143,7 @@ function HistoryView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":239,"../Components/TopNav.js":242,"./HistoryTable.js":245,"react":221}],248:[function(require,module,exports){
+},{"../Components/BottomNav.js":239,"../Components/TopNav.js":242,"./HistoryTable.js":246,"react":221}],249:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26066,7 +26196,7 @@ function BalanceRow(props) {
   );
 }
 
-},{"../../Services/BudgetService.js":228,"react":221}],249:[function(require,module,exports){
+},{"../../Services/BudgetService.js":228,"react":221}],250:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26154,7 +26284,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Services/AnalysisService.js":226,"./BalanceRow.js":248,"./BalanceTableHeader.js":250,"react":221,"react-router-dom":182}],250:[function(require,module,exports){
+},{"../../Services/AnalysisService.js":226,"./BalanceRow.js":249,"./BalanceTableHeader.js":251,"react":221,"react-router-dom":182}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26200,7 +26330,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":221}],251:[function(require,module,exports){
+},{"react":221}],252:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26236,7 +26366,7 @@ function OverviewView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":239,"../Components/TopNav.js":242,"./BalanceTable.js":249,"react":221}],252:[function(require,module,exports){
+},{"../Components/BottomNav.js":239,"../Components/TopNav.js":242,"./BalanceTable.js":250,"react":221}],253:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -26422,7 +26552,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],253:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -26447,14 +26577,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],254:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],255:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -27044,4 +27174,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":254,"_process":252,"inherits":253}]},{},[225]);
+},{"./support/isBuffer":255,"_process":253,"inherits":254}]},{},[225]);

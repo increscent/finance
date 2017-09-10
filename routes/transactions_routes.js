@@ -22,6 +22,14 @@ router.post('/', helpers.validateRequestBody(config.transaction_required_fields)
   });
 });
 
+router.put('/:id', helpers.validateRequestBody(config.transaction_required_fields), function (req, res) {
+  var transaction = new Transaction(req.account);
+  req.validated_body._id = req.params.id;
+  transaction.update(req.validated_body)
+  .then(newTransaction => res.send(JSON.stringify(newTransaction)))
+  .catch(error => helpers.errorResponse(res, error.message));
+});
+
 router.delete('/:id', function (req, res) {
   var existingTransaction = new Transaction(req.account);
   existingTransaction.delete(req.params.id)

@@ -3,8 +3,9 @@ import HistoryTableHeader from './HistoryTableHeader.js';
 import HistoryRow from './HistoryRow.js';
 import TransactionService from '../../Services/TransactionService.js';
 import FormValidationMessages from '../Components/FormValidationMessages.js';
+import {withRouter} from 'react-router-dom';
 
-export default class HistoryTable extends React.Component {
+class HistoryTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +13,7 @@ export default class HistoryTable extends React.Component {
     };
 
     this.forceUpdate = this.forceUpdate.bind(this);
-    this.handleTransactionDelete = this.handleTransactionDelete.bind(this);
+    this.handleEditTransaction = this.handleEditTransaction.bind(this);
   }
 
   componentDidMount() {
@@ -23,13 +24,8 @@ export default class HistoryTable extends React.Component {
     TransactionService.unRegisterListener(this.transactionServiceListenerId);
   }
 
-  handleTransactionDelete(transaction) {
-    TransactionService.deleteTransaction(transaction)
-    .catch(error => {
-      this.setState({
-        validation_messages: [error.toString()]
-      });
-    });
+  handleEditTransaction(transaction) {
+    this.props.history.push('/editTransaction/' + transaction._id);
   }
 
   render() {
@@ -42,7 +38,7 @@ export default class HistoryTable extends React.Component {
               TransactionService.getTransactions()
               .filter(x => x.from == '@Credit' || x.to == '@Debit')
               .map((transaction, i) => {
-                return <HistoryRow key={i} transaction={transaction} onDeleteTransaction={this.handleTransactionDelete}/>
+                return <HistoryRow key={i} transaction={transaction} onEditTransaction={this.handleEditTransaction}/>
               })
             }
           </tbody>
@@ -52,3 +48,5 @@ export default class HistoryTable extends React.Component {
     );
   }
 }
+
+export default withRouter(HistoryTable);

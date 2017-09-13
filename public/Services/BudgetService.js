@@ -36,7 +36,7 @@ class BudgetService extends ListenerService {
   }
 
   addOrUpdateBudget(budget) {
-    return ApiService.putRequest('/api/budgets/' + budget.uri, budget)
+    return ApiService.putRequest('/api/budgets/' + encodeURI(budget.uri).replace('/', '%2F'), budget)
     .then(data => {
       removeBudget(budget.uri, Store.budgets);
       insertBudget(data, Store.budgets);
@@ -45,7 +45,7 @@ class BudgetService extends ListenerService {
   }
 
   deleteBudget(budgetName) {
-    return ApiService.deleteRequest('/api/budgets/' + budgetName)
+    return ApiService.deleteRequest('/api/budgets/' + encodeURI(budgetName).replace('/', '%2F'))
     .then(data => {
       removeBudget(budgetName, Store.budgets);
       Store.setStore('budgets', Store.budgets, true);
@@ -57,7 +57,13 @@ class BudgetService extends ListenerService {
 export default new BudgetService();
 
 function insertBudget(budget, collection) {
-  collection.push(budget);
+  for (var i = 0; i < collection.length - 1; i++) { // 'Other' is at the end
+    if (collection[i].name < budget.name) {
+      collection.splice(i + 1, 0, budget); // sort by name
+      return;
+    }
+  }
+  collection.splice(0, 0, budget); // insert at beginning
 }
 
 function removeBudget(budgetName, collection) {

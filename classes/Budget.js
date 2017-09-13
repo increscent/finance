@@ -68,7 +68,7 @@ class Budget {
     .then(budget => {
       // add beginning funds
       var shouldReceive = this.calcShouldReceive(budget);
-      return this.balanceBudgetTransaction(budget.name, 0, shouldReceive).then(() => budget); // make sure the original budget is returned after it is balanced
+      return this.balanceBudgetTransaction(budget.name, shouldReceive).then(() => budget); // make sure the original budget is returned after it is balanced
     })
     .then(budget => {
       return budget.save();
@@ -109,11 +109,19 @@ class Budget {
       // check for changed budget amount
       if (existingBudget.allowance_type == newBudget.allowance_type && existingBudget.allowance == newBudget.allowance) return;
 
-      // calculate credit difference from 'Other' for current period
-      var hasReceived = this.calcHasReceived(existingBudget);
-      var shouldReceive = this.calcShouldReceive(newBudget);
+      // remove other budget additions
+      var transactionsToRemove = this.transactions
+      .filter(transaction => {
+        return transaction.from == 'Other' && transaction.to == existingBudget.name;
+      })
+      .map(transaction => {
+        return transaction.remove();
+      });
 
-      return this.balanceBudgetTransaction(existingBudget.name, hasReceived, shouldReceive);
+      var shouldReceive = this.calcShouldReceive(newBudget);
+      var balanceBudgetTransaction = this.balanceBudgetTransaction(existingBudget.name, shouldReceive);
+
+      return Promise.all(transactionsToRemove.concat([balanceBudgetTransaction]));
     })
     .then(() => {
       // change budget allowance
@@ -153,27 +161,15 @@ class Budget {
     return shouldReceive;
   }
 
-  balanceBudgetTransaction(name, hasReceived, shouldReceive) {
+  balanceBudgetTransaction(name, shouldReceive) {
     return Promise.resolve().then(() => {
-      if (shouldReceive == hasReceived) return;
+      if (shouldReceive == 0) return;
 
       var balancingTransaction = new Transaction(this.account, this.budgets);
-      var from, to, amount;
-
-      if (shouldReceive - hasReceived > 0) {
-        from = 'Other';
-        to = name;
-        amount = shouldReceive - hasReceived;
-      } else {
-        from = name;
-        to = 'Other';
-        amount = hasReceived - shouldReceive;
-      }
-
       return balancingTransaction.create({
-        from: from,
-        to: to,
-        amount: amount,
+        from: 'Other',
+        to: name,
+        amount: shouldReceive,
         motive: 'Budget Balancing'
       });
     });

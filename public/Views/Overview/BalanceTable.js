@@ -1,5 +1,6 @@
 import React from 'react';
 import AnalysisService from '../../Services/AnalysisService.js';
+import BudgetService from '../../Services/BudgetService.js';
 import BalanceTableHeader from './BalanceTableHeader.js';
 import BalanceRow from './BalanceRow.js';
 import {withRouter} from 'react-router-dom';
@@ -14,14 +15,16 @@ class BalanceTable extends React.Component {
 
   componentDidMount() {
     this.analysisServiceListenerId = AnalysisService.registerListener(this.forceUpdate);
+    this.budgetServiceListenerId = BudgetService.registerListener(this.forceUpdate);
   }
 
   componentWillUnmount() {
     AnalysisService.unRegisterListener(this.analysisServiceListenerId);
+    BudgetService.unRegisterListener(this.budgetServiceListenerId);
   }
 
   handleEditBudget(budget) {
-    this.props.history.push('/editBudget/' + budget.name);
+    this.props.history.push('/editBudget/' + encodeURI(budget.name).replace('/', '%2F'));
   }
 
   render() {

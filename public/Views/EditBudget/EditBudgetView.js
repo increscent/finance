@@ -19,7 +19,7 @@ export default class EditBudgetView extends React.Component {
   }
 
   render() {
-    let name = this.props.match.params.name;
+    let name = this.props.match.params.name.replace('%2F', '/');
     let budget = BudgetService.getBudgets().find(x => x.name == name);
     return (
       <div>

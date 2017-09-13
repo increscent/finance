@@ -24728,7 +24728,7 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'addOrUpdateBudget',
     value: function addOrUpdateBudget(budget) {
-      return _ApiService2.default.putRequest('/api/budgets/' + budget.uri, budget).then(function (data) {
+      return _ApiService2.default.putRequest('/api/budgets/' + encodeURI(budget.uri).replace('/', '%2F'), budget).then(function (data) {
         removeBudget(budget.uri, _Store2.default.budgets);
         insertBudget(data, _Store2.default.budgets);
         _Store2.default.setStore('budgets', _Store2.default.budgets, true);
@@ -24737,7 +24737,7 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'deleteBudget',
     value: function deleteBudget(budgetName) {
-      return _ApiService2.default.deleteRequest('/api/budgets/' + budgetName).then(function (data) {
+      return _ApiService2.default.deleteRequest('/api/budgets/' + encodeURI(budgetName).replace('/', '%2F')).then(function (data) {
         removeBudget(budgetName, _Store2.default.budgets);
         _Store2.default.setStore('budgets', _Store2.default.budgets, true);
         console.log('deleted ' + budgetName);
@@ -24752,7 +24752,14 @@ exports.default = new BudgetService();
 
 
 function insertBudget(budget, collection) {
-  collection.push(budget);
+  for (var i = 0; i < collection.length - 1; i++) {
+    // 'Other' is at the end
+    if (collection[i].name < budget.name) {
+      collection.splice(i + 1, 0, budget); // sort by name
+      return;
+    }
+  }
+  collection.splice(0, 0, budget); // insert at beginning
 }
 
 function removeBudget(budgetName, collection) {
@@ -25010,7 +25017,7 @@ var AddBudgetForm = function (_mixin) {
     _this.state = {
       name: props.name || '',
       allowance: props.allowance || '',
-      allowance_type: props.allowance_type || '$',
+      allowance_type: props.allowanceType || '$',
       validation_messages: []
     };
 
@@ -25794,7 +25801,7 @@ var EditBudgetView = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var name = this.props.match.params.name;
+      var name = this.props.match.params.name.replace('%2F', '/');
       var budget = _BudgetService2.default.getBudgets().find(function (x) {
         return x.name == name;
       });
@@ -26159,10 +26166,15 @@ var _BudgetService = require('../../Services/BudgetService.js');
 
 var _BudgetService2 = _interopRequireDefault(_BudgetService);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function BalanceRow(props) {
   var budget = props.budget;
+  var balanceClass = (0, _classnames2.default)({ deficit: budget.balance < 0, surplus: budget.balance >= 0 });
   return _react2.default.createElement(
     'tr',
     null,
@@ -26190,13 +26202,13 @@ function BalanceRow(props) {
     ),
     _react2.default.createElement(
       'td',
-      null,
+      { className: balanceClass },
       budget.balance
     )
   );
 }
 
-},{"../../Services/BudgetService.js":228,"react":221}],250:[function(require,module,exports){
+},{"../../Services/BudgetService.js":228,"classnames":1,"react":221}],250:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26212,6 +26224,10 @@ var _react2 = _interopRequireDefault(_react);
 var _AnalysisService = require('../../Services/AnalysisService.js');
 
 var _AnalysisService2 = _interopRequireDefault(_AnalysisService);
+
+var _BudgetService = require('../../Services/BudgetService.js');
+
+var _BudgetService2 = _interopRequireDefault(_BudgetService);
 
 var _BalanceTableHeader = require('./BalanceTableHeader.js');
 
@@ -26248,16 +26264,18 @@ var BalanceTable = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.analysisServiceListenerId = _AnalysisService2.default.registerListener(this.forceUpdate);
+      this.budgetServiceListenerId = _BudgetService2.default.registerListener(this.forceUpdate);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       _AnalysisService2.default.unRegisterListener(this.analysisServiceListenerId);
+      _BudgetService2.default.unRegisterListener(this.budgetServiceListenerId);
     }
   }, {
     key: 'handleEditBudget',
     value: function handleEditBudget(budget) {
-      this.props.history.push('/editBudget/' + budget.name);
+      this.props.history.push('/editBudget/' + encodeURI(budget.name).replace('/', '%2F'));
     }
   }, {
     key: 'render',
@@ -26284,7 +26302,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Services/AnalysisService.js":226,"./BalanceRow.js":249,"./BalanceTableHeader.js":251,"react":221,"react-router-dom":182}],251:[function(require,module,exports){
+},{"../../Services/AnalysisService.js":226,"../../Services/BudgetService.js":228,"./BalanceRow.js":249,"./BalanceTableHeader.js":251,"react":221,"react-router-dom":182}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

@@ -22,3 +22,11 @@
   display: inline-block;
   width: 80px;
 }
+
+.surplus {
+  color: green;
+}
+
+.deficit {
+  color: red;
+}

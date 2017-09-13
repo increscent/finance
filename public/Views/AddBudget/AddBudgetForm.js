@@ -11,7 +11,7 @@ class AddBudgetForm extends mixin(Form, React.Component) {
     this.state = {
       name: props.name || '',
       allowance: props.allowance || '',
-      allowance_type: props.allowance_type || '$',
+      allowance_type: props.allowanceType || '$',
       validation_messages: []
     };
 

@@ -7,6 +7,28 @@ class Account {
     this.budgets = budgets;
   }
 
+  find(googleId) {
+    return Models.Account.findOne({google_id: googleId});
+  }
+
+  findOrCreate(googleId, firstName, lastName) {
+    return Models.Account.findOne({google_id: googleId})
+    .then(account => {
+      if (account) {
+        return account;
+      } else {
+        let newAccount = new Models.Account({
+          first_name: firstName,
+          last_name: lastName,
+          budget_period_start: DateHelper.startOfThisMonth(),
+          budget_period_end: DateHelper.startOfNextMonth(),
+          google_id: googleId
+        });
+        return newAccount.save();
+      }
+    });
+  }
+
   startNewPeriod(callback) {
     this.account.budget_period_start = DateHelper.startOfThisMonth();
     this.account.budget_period_end = DateHelper.startOfNextMonth();

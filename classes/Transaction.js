@@ -1,6 +1,6 @@
 var Models = require('../models');
 var DateHelper = require('../classes/DateHelper');
-var config = require('../config');
+var config = require('../config/route_config');
 
 class Transaction {
   constructor(account, budgets) {

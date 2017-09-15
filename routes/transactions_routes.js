@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Models = require('../models');
 var helpers = require('./helpers');
-var config = require('../config');
+var config = require('../config/route_config');
 var Transaction = require('../classes/Transaction');
 
 router.use(helpers.verifyAccount);

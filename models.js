@@ -9,7 +9,8 @@ var accountSchema = {
   first_name: String,
   last_name: String,
   budget_period_start: Date,
-  budget_period_end: Date
+  budget_period_end: Date,
+  google_id: String
 };
 
 var transactionSchema = {

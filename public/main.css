@@ -30,3 +30,13 @@
 .deficit {
   color: red;
 }
+
+.logout-button {
+  position: absolute;
+  right: 0;
+  line-height: 1.5;
+}
+
+.login-button {
+  margin-top: 3rem;
+}

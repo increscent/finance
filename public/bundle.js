@@ -3415,7 +3415,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":256}],37:[function(require,module,exports){
+},{"util":258}],37:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8487,7 +8487,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":253,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":255,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18049,7 +18049,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":253,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":255,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18420,7 +18420,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":253,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":255,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23938,7 +23938,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":253,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
+},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":255,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24488,13 +24488,21 @@ var _EditTransactionView = require('./Views/EditTransaction/EditTransactionView.
 
 var _EditTransactionView2 = _interopRequireDefault(_EditTransactionView);
 
+var _LoginView = require('./Views/Login/LoginView.js');
+
+var _LoginView2 = _interopRequireDefault(_LoginView);
+
+var _AccountService = require('./Services/AccountService.js');
+
+var _AccountService2 = _interopRequireDefault(_AccountService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App(props) {
   return _react2.default.createElement(
     _reactRouterDom.HashRouter,
     null,
-    _react2.default.createElement(
+    _AccountService2.default.isLoggedIn ? _react2.default.createElement(
       'div',
       null,
       _react2.default.createElement(_reactRouterDom.Route, { path: '/(|overview)/', component: _OverviewView2.default }),
@@ -24503,13 +24511,37 @@ function App(props) {
       _react2.default.createElement(_reactRouterDom.Route, { path: '/addBudget', component: _AddBudgetView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/editBudget/:name?', component: _EditBudgetView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/editTransaction/:id?', component: _EditTransactionView2.default })
+    ) : _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(_reactRouterDom.Route, { path: '*', component: _LoginView2.default })
     )
   );
 }
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./Views/AddBudget/AddBudgetView.js":233,"./Views/AddTransaction/AddTransactionView.js":235,"./Views/EditBudget/EditBudgetView.js":243,"./Views/EditTransaction/EditTransactionView.js":244,"./Views/History/HistoryView.js":248,"./Views/Overview/OverviewView.js":252,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
+},{"./Services/AccountService.js":226,"./Views/AddBudget/AddBudgetView.js":234,"./Views/AddTransaction/AddTransactionView.js":236,"./Views/EditBudget/EditBudgetView.js":244,"./Views/EditTransaction/EditTransactionView.js":245,"./Views/History/HistoryView.js":249,"./Views/Login/LoginView.js":250,"./Views/Overview/OverviewView.js":254,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AccountService = function AccountService() {
+  _classCallCheck(this, AccountService);
+
+  var cookieName = 'is-logged-in';
+  var i = document.cookie.indexOf(cookieName);
+  var cookieValue = document.cookie.substr(i + cookieName.length);
+  this.isLoggedIn = cookieValue.startsWith('=true') ? true : false;
+};
+
+exports.default = new AccountService();
+
+},{}],227:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24530,6 +24562,10 @@ var _Store = require('../Store.js');
 
 var _Store2 = _interopRequireDefault(_Store);
 
+var _AccountService = require('./AccountService.js');
+
+var _AccountService2 = _interopRequireDefault(_AccountService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24547,7 +24583,7 @@ var AnalysisService = function (_ListenerService) {
     var _this = _possibleConstructorReturn(this, (AnalysisService.__proto__ || Object.getPrototypeOf(AnalysisService)).call(this));
 
     _this.overview = [];
-    _this.fetchOverview();
+    if (_AccountService2.default.isLoggedIn) _this.fetchOverview();
 
     _this.update = _this.update.bind(_this);
     _Store2.default.registerListener(_this.update);
@@ -24578,7 +24614,7 @@ var AnalysisService = function (_ListenerService) {
 
 exports.default = new AnalysisService();
 
-},{"../Store.js":231,"./ApiService.js":227,"./ListenerService.js":229}],227:[function(require,module,exports){
+},{"../Store.js":232,"./AccountService.js":226,"./ApiService.js":228,"./ListenerService.js":230}],228:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24598,8 +24634,7 @@ var ApiService = function () {
     key: 'getRequest',
     value: function getRequest(endpoint) {
       var request_options = {
-        method: 'GET',
-        headers: { 'account-id': '59a10db60ce696239179287b' }
+        method: 'GET'
       };
 
       return this.apiRequest(endpoint, request_options);
@@ -24609,7 +24644,7 @@ var ApiService = function () {
     value: function postRequest(endpoint, body) {
       var request_options = {
         method: 'POST',
-        headers: { 'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       };
 
@@ -24620,7 +24655,7 @@ var ApiService = function () {
     value: function putRequest(endpoint, body) {
       var request_options = {
         method: 'PUT',
-        headers: { 'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       };
 
@@ -24631,7 +24666,7 @@ var ApiService = function () {
     value: function deleteRequest(endpoint) {
       var request_options = {
         method: 'DELETE',
-        headers: { 'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' }
       };
 
       return this.apiRequest(endpoint, request_options);
@@ -24639,6 +24674,7 @@ var ApiService = function () {
   }, {
     key: 'apiRequest',
     value: function apiRequest(endpoint, request_options, response_type) {
+      request_options.credentials = 'same-origin';
       return fetch(endpoint, request_options).then(function (res) {
         return res.json();
       }).then(function (data) {
@@ -24653,7 +24689,7 @@ var ApiService = function () {
 
 exports.default = new ApiService();
 
-},{}],228:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24673,6 +24709,10 @@ var _ListenerService3 = _interopRequireDefault(_ListenerService2);
 var _Store = require('../Store.js');
 
 var _Store2 = _interopRequireDefault(_Store);
+
+var _AccountService = require('./AccountService.js');
+
+var _AccountService2 = _interopRequireDefault(_AccountService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24695,7 +24735,7 @@ var BudgetService = function (_ListenerService) {
       return _this.notifyListeners();
     });
 
-    _this.fetchBudgets();
+    if (_AccountService2.default.isLoggedIn) _this.fetchBudgets();
     return _this;
   }
 
@@ -24769,7 +24809,7 @@ function removeBudget(budgetName, collection) {
   if (index >= 0) collection.splice(index, 1);
 }
 
-},{"../Store.js":231,"./ApiService.js":227,"./ListenerService.js":229}],229:[function(require,module,exports){
+},{"../Store.js":232,"./AccountService.js":226,"./ApiService.js":228,"./ListenerService.js":230}],230:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24813,7 +24853,7 @@ var ListenerService = function () {
 
 exports.default = ListenerService;
 
-},{}],230:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24833,6 +24873,10 @@ var _ListenerService3 = _interopRequireDefault(_ListenerService2);
 var _Store = require('../Store.js');
 
 var _Store2 = _interopRequireDefault(_Store);
+
+var _AccountService = require('./AccountService.js');
+
+var _AccountService2 = _interopRequireDefault(_AccountService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24857,7 +24901,7 @@ var TransactionService = function (_ListenerService) {
       return _this.notifyListeners();
     });
 
-    _this.fetchTransactions();
+    if (_AccountService2.default.isLoggedIn) _this.fetchTransactions();
     return _this;
   }
 
@@ -24920,7 +24964,7 @@ function removeTransaction(transaction_id, collection) {
   if (index >= 0) collection.splice(index, 1);
 }
 
-},{"../Store.js":231,"./ApiService.js":227,"./ListenerService.js":229}],231:[function(require,module,exports){
+},{"../Store.js":232,"./AccountService.js":226,"./ApiService.js":228,"./ListenerService.js":230}],232:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24967,7 +25011,7 @@ var Store = function (_ListenerService) {
 
 exports.default = new Store();
 
-},{"./Services/ListenerService.js":229}],232:[function(require,module,exports){
+},{"./Services/ListenerService.js":230}],233:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25158,7 +25202,7 @@ var AddBudgetForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddBudgetForm);
 
-},{"../../Services/BudgetService.js":228,"../Components/Form.js":240,"../Components/FormValidationMessages.js":241,"mixin":36,"react":221,"react-router-dom":182}],233:[function(require,module,exports){
+},{"../../Services/BudgetService.js":229,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"mixin":36,"react":221,"react-router-dom":182}],234:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25193,7 +25237,7 @@ function AddBudgetView(props) {
   );
 }
 
-},{"../Components/BackNav.js":238,"./AddBudgetForm.js":232,"react":221}],234:[function(require,module,exports){
+},{"../Components/BackNav.js":239,"./AddBudgetForm.js":233,"react":221}],235:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25429,7 +25473,7 @@ var AddTransactionForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddTransactionForm);
 
-},{"../../Services/BudgetService.js":228,"../../Services/TransactionService.js":230,"../Components/Form.js":240,"../Components/FormValidationMessages.js":241,"./BudgetSelect.js":236,"./DebitCreditRadioButtons.js":237,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
+},{"../../Services/BudgetService.js":229,"../../Services/TransactionService.js":231,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"./BudgetSelect.js":237,"./DebitCreditRadioButtons.js":238,"mixin":36,"react":221,"react-router-dom":182}],236:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25464,7 +25508,7 @@ function AddTransactionView(props) {
   );
 }
 
-},{"../Components/BackNav.js":238,"./AddTransactionForm.js":234,"react":221}],236:[function(require,module,exports){
+},{"../Components/BackNav.js":239,"./AddTransactionForm.js":235,"react":221}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25496,7 +25540,7 @@ function BudgetSelect(props) {
   );
 }
 
-},{"react":221}],237:[function(require,module,exports){
+},{"react":221}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25533,7 +25577,7 @@ function DebitCreditRadioButtons(props) {
   );
 }
 
-},{"react":221}],238:[function(require,module,exports){
+},{"react":221}],239:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25580,7 +25624,7 @@ function BackNav(props) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BackNav);
 
-},{"react":221,"react-router-dom":182}],239:[function(require,module,exports){
+},{"react":221,"react-router-dom":182}],240:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25625,7 +25669,7 @@ function BottomNav(props) {
   );
 }
 
-},{"react":221,"react-router-dom":182}],240:[function(require,module,exports){
+},{"react":221,"react-router-dom":182}],241:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25670,7 +25714,7 @@ var Form = function () {
 
 exports.default = Form;
 
-},{}],241:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25698,7 +25742,7 @@ function FormValidationMessages(props) {
   );
 };
 
-},{"react":221}],242:[function(require,module,exports){
+},{"react":221}],243:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25739,11 +25783,17 @@ function TopNav(props) {
         { to: '/history', className: (0, _classnames2.default)('nav-link', { 'active': props.page == 'history' }) },
         'History'
       )
+    ),
+    _react2.default.createElement(
+      'a',
+      { role: 'button', href: '/logout', className: 'btn btn-link logout-button' },
+      'Logout ',
+      _react2.default.createElement('i', { className: 'fa fa-sign-out', 'aria-hidden': 'true' })
     )
   );
 }
 
-},{"classnames":1,"react":221,"react-router-dom":182}],243:[function(require,module,exports){
+},{"classnames":1,"react":221,"react-router-dom":182}],244:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25828,7 +25878,7 @@ var EditBudgetView = function (_React$Component) {
 
 exports.default = EditBudgetView;
 
-},{"../../Services/BudgetService.js":228,"../AddBudget/AddBudgetForm.js":232,"../Components/BackNav.js":238,"react":221}],244:[function(require,module,exports){
+},{"../../Services/BudgetService.js":229,"../AddBudget/AddBudgetForm.js":233,"../Components/BackNav.js":239,"react":221}],245:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25913,7 +25963,7 @@ var EditTransactionView = function (_React$Component) {
 
 exports.default = EditTransactionView;
 
-},{"../../Services/TransactionService.js":230,"../AddTransaction/AddTransactionForm.js":234,"../Components/BackNav.js":238,"react":221}],245:[function(require,module,exports){
+},{"../../Services/TransactionService.js":231,"../AddTransaction/AddTransactionForm.js":235,"../Components/BackNav.js":239,"react":221}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25965,7 +26015,7 @@ function HistoryRow(props) {
   );
 };
 
-},{"react":221}],246:[function(require,module,exports){
+},{"react":221}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26068,7 +26118,7 @@ var HistoryTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(HistoryTable);
 
-},{"../../Services/TransactionService.js":230,"../Components/FormValidationMessages.js":241,"./HistoryRow.js":245,"./HistoryTableHeader.js":247,"react":221,"react-router-dom":182}],247:[function(require,module,exports){
+},{"../../Services/TransactionService.js":231,"../Components/FormValidationMessages.js":242,"./HistoryRow.js":246,"./HistoryTableHeader.js":248,"react":221,"react-router-dom":182}],248:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26114,7 +26164,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"react":221}],248:[function(require,module,exports){
+},{"react":221}],249:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26150,7 +26200,42 @@ function HistoryView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":239,"../Components/TopNav.js":242,"./HistoryTable.js":246,"react":221}],249:[function(require,module,exports){
+},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./HistoryTable.js":247,"react":221}],250:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = LoginView;
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function LoginView(props) {
+  return _react2.default.createElement(
+    "div",
+    { className: "container" },
+    _react2.default.createElement(
+      "div",
+      { className: "row" },
+      _react2.default.createElement(
+        "div",
+        { className: "col-6 ml-auto mr-auto text-center" },
+        _react2.default.createElement(
+          "a",
+          { role: "button", className: "btn btn-outline-primary login-button", href: "/auth/google" },
+          _react2.default.createElement("i", { className: "fa fa-google" }),
+          " Login with Google"
+        )
+      )
+    )
+  );
+}
+
+},{"react":221}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26208,7 +26293,7 @@ function BalanceRow(props) {
   );
 }
 
-},{"../../Services/BudgetService.js":228,"classnames":1,"react":221}],250:[function(require,module,exports){
+},{"../../Services/BudgetService.js":229,"classnames":1,"react":221}],252:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26302,7 +26387,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Services/AnalysisService.js":226,"../../Services/BudgetService.js":228,"./BalanceRow.js":249,"./BalanceTableHeader.js":251,"react":221,"react-router-dom":182}],251:[function(require,module,exports){
+},{"../../Services/AnalysisService.js":227,"../../Services/BudgetService.js":229,"./BalanceRow.js":251,"./BalanceTableHeader.js":253,"react":221,"react-router-dom":182}],253:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26348,7 +26433,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":221}],252:[function(require,module,exports){
+},{"react":221}],254:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26384,7 +26469,7 @@ function OverviewView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":239,"../Components/TopNav.js":242,"./BalanceTable.js":250,"react":221}],253:[function(require,module,exports){
+},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./BalanceTable.js":252,"react":221}],255:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -26570,7 +26655,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],254:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -26595,14 +26680,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],255:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],256:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -27192,4 +27277,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":255,"_process":253,"inherits":254}]},{},[225]);
+},{"./support/isBuffer":257,"_process":255,"inherits":256}]},{},[225]);

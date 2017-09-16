@@ -1,6 +1,7 @@
 import ApiService from './ApiService.js';
 import ListenerService from './ListenerService.js';
 import Store from '../Store.js';
+import AccountService from './AccountService.js';
 
 class BudgetService extends ListenerService {
   constructor() {
@@ -9,7 +10,7 @@ class BudgetService extends ListenerService {
     this.notifyListeners = this.notifyListeners.bind(this);
     Store.registerListener(() => this.notifyListeners());
 
-    this.fetchBudgets();
+    if (AccountService.isLoggedIn) this.fetchBudgets();
   }
 
   getBudgets() {

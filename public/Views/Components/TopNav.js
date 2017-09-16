@@ -11,6 +11,9 @@ export default function TopNav(props) {
       <li className="nav-item">
         <Link to="/history" className={classnames('nav-link', {'active': props.page == 'history'})}>History</Link>
       </li>
+      <a role="button" href="/logout" className="btn btn-link logout-button">
+        Logout <i className="fa fa-sign-out" aria-hidden="true"></i>
+      </a>
     </ul>
   );
 }

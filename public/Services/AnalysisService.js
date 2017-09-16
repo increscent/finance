@@ -1,12 +1,13 @@
 import ApiService from './ApiService.js';
 import ListenerService from './ListenerService.js';
 import Store from '../Store.js';
+import AccountService from './AccountService.js';
 
 class AnalysisService extends ListenerService {
   constructor() {
     super();
     this.overview = [];
-    this.fetchOverview();
+    if (AccountService.isLoggedIn) this.fetchOverview();
 
     this.update = this.update.bind(this);
     Store.registerListener(this.update);

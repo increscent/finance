@@ -33,5 +33,6 @@ var budgetSchema = {
 Models.Account = mongoose.model('Account', new Schema(accountSchema));
 Models.Transaction = mongoose.model('Transaction', new Schema(transactionSchema));
 Models.Budget = mongoose.model('Budget', new Schema(budgetSchema));
+Models.mongoose = mongoose;
 
 module.exports = Models;

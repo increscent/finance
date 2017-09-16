@@ -2,13 +2,10 @@ var Models = require('../models');
 
 module.exports = {
   verifyAccount: function (req, res, next) {
-    var account_id = req.headers['account-id'];
-    Models.Account.findOne({_id: account_id}, function (err, account) {
-      if (!account) return module.exports.userError(res, 'Account does not exist: ' + req.headers['account-id']);
-
-      req.account = account;
-      return next();
-    });
+    if (!req.user) return res.redirect('/');
+    req.account = req.user;
+    console.log(req.user);
+    return next();
   },
 
   getBudgets: function (req, res, next) {

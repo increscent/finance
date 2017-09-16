@@ -7,10 +7,14 @@ import AddTransactionView from './Views/AddTransaction/AddTransactionView.js';
 import AddBudgetView from './Views/AddBudget/AddBudgetView.js';
 import EditBudgetView from './Views/EditBudget/EditBudgetView.js';
 import EditTransactionView from './Views/EditTransaction/EditTransactionView.js';
+import LoginView from './Views/Login/LoginView.js';
+import AccountService from './Services/AccountService.js';
 
 function App(props) {
   return (
     <Router>
+    {
+      AccountService.isLoggedIn?
       <div>
         <Route path="/(|overview)/" component={OverviewView}/>
         <Route path="/history" component={HistoryView}/>
@@ -19,6 +23,11 @@ function App(props) {
         <Route path="/editBudget/:name?" component={EditBudgetView}/>
         <Route path="/editTransaction/:id?" component={EditTransactionView}/>
       </div>
+      :
+      <div>
+        <Route path="*" component={LoginView}/>
+      </div>
+    }
     </Router>
   );
 }

@@ -8,9 +8,9 @@ module.exports = function (app) {
   app.use(passport.session());
 
   passport.use(new GoogleStrategy({
-      clientID: secrets.google_client_id,
-      clientSecret: secrets.google_client_secret,
-      callbackURL: "http://localhost:45678/auth/google/callback"
+      clientID: secrets.GOOGLE_CLIENT_ID,
+      clientSecret: secrets.GOOGLE_CLIENT_SECRET,
+      callbackURL: secrets.GOOGLE_CALLBACK_URL
     },
     function(accessToken, refreshToken, profile, callback) {
       var account = new Account();
@@ -41,15 +41,23 @@ module.exports = function (app) {
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
 
   app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/test' }),
+    passport.authenticate('google', { failureRedirect: '/' }),
     function(req, res) {
-      // Successful authentication, redirect home.
-      res.redirect('/test');
+      res.redirect('/');
     }
   );
 
-  app.get('/test', function (req, res) {
-    console.log(req.user);
-    res.send('yay!');
+  app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+  });
+
+  app.use('/', function (req, res, next) {
+    if (req.user) {
+      res.cookie('is-logged-in', true);
+    } else {
+      res.cookie('is-logged-in', false);
+    }
+    next();
   });
 }

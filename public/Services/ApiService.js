@@ -1,8 +1,7 @@
 class ApiService {
   getRequest(endpoint) {
     var request_options = {
-      method: 'GET',
-      headers: {'account-id': '59a10db60ce696239179287b'}
+      method: 'GET'
     };
 
     return this.apiRequest(endpoint, request_options);
@@ -11,7 +10,7 @@ class ApiService {
   postRequest(endpoint, body) {
     var request_options = {
       method: 'POST',
-      headers: {'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     };
 
@@ -21,7 +20,7 @@ class ApiService {
   putRequest(endpoint, body) {
     var request_options = {
       method: 'PUT',
-      headers: {'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     };
 
@@ -31,13 +30,14 @@ class ApiService {
   deleteRequest(endpoint) {
     var request_options = {
       method: 'DELETE',
-      headers: {'account-id': '59a10db60ce696239179287b', 'Content-Type': 'application/json'}
+      headers: {'Content-Type': 'application/json'}
     };
 
     return this.apiRequest(endpoint, request_options);
   }
 
   apiRequest(endpoint, request_options, response_type) {
+    request_options.credentials = 'same-origin';
     return fetch(endpoint, request_options)
     .then(res => res.json())
     .then(data => {

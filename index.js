@@ -1,20 +1,27 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-var session = require('express-session');
-var secrets = require('./config/secrets');
-app.use(session({ secret: secrets.session_secret}));
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const mongoose = require('./models').mongoose;
+const secrets = require('./config/secrets');
+app.use(session({
+    secret: secrets.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({mongooseConnection: mongoose.connection})
+}));
 
-var passportConfig = require('./config/passport_config');
+const passportConfig = require('./config/passport_config');
 passportConfig(app);
 
-var route_config = require('./config/route_config');
+const route_config = require('./config/route_config');
 for (var i in route_config.route_types) {
   var route = route_config.route_types[i];
   var router = require('./routes/' + route + '_routes');

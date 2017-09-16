@@ -1,6 +1,7 @@
 import ApiService from './ApiService.js';
 import ListenerService from './ListenerService.js';
 import Store from '../Store.js';
+import AccountService from './AccountService.js';
 
 class TransactionService extends ListenerService {
   constructor() {
@@ -10,7 +11,7 @@ class TransactionService extends ListenerService {
     this.notifyListeners = this.notifyListeners.bind(this);
     Store.registerListener(() => this.notifyListeners());
 
-    this.fetchTransactions();
+    if (AccountService.isLoggedIn) this.fetchTransactions();
   }
 
   getTransactions() {

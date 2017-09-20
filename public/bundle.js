@@ -3415,7 +3415,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":258}],37:[function(require,module,exports){
+},{"util":261}],37:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8487,7 +8487,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":255,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":258,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18049,7 +18049,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":255,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":258,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18420,7 +18420,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":255,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":258,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23938,7 +23938,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":255,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
+},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":258,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24521,7 +24521,7 @@ function App(props) {
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./Services/AccountService.js":226,"./Views/AddBudget/AddBudgetView.js":234,"./Views/AddTransaction/AddTransactionView.js":236,"./Views/EditBudget/EditBudgetView.js":244,"./Views/EditTransaction/EditTransactionView.js":245,"./Views/History/HistoryView.js":249,"./Views/Login/LoginView.js":250,"./Views/Overview/OverviewView.js":254,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
+},{"./Services/AccountService.js":226,"./Views/AddBudget/AddBudgetView.js":234,"./Views/AddTransaction/AddTransactionView.js":236,"./Views/EditBudget/EditBudgetView.js":244,"./Views/EditTransaction/EditTransactionView.js":245,"./Views/History/HistoryView.js":249,"./Views/Login/LoginView.js":250,"./Views/Overview/OverviewView.js":257,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26241,7 +26241,7 @@ function LoginView(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = BalanceRow;
+exports.default = BalanceCard;
 
 var _react = require('react');
 
@@ -26255,45 +26255,135 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var _BalanceCardHeader = require('./BalanceCardHeader.js');
+
+var _BalanceCardHeader2 = _interopRequireDefault(_BalanceCardHeader);
+
+var _BalanceCardBlock = require('./BalanceCardBlock.js');
+
+var _BalanceCardBlock2 = _interopRequireDefault(_BalanceCardBlock);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function BalanceRow(props) {
+function BalanceCard(props) {
   var budget = props.budget;
   var balanceClass = (0, _classnames2.default)({ deficit: budget.balance < 0, surplus: budget.balance >= 0 });
   return _react2.default.createElement(
-    'tr',
-    null,
+    'div',
+    { className: 'card' },
+    _react2.default.createElement(_BalanceCardHeader2.default, { budget: budget }),
+    _react2.default.createElement(_BalanceCardBlock2.default, { budget: budget })
+  );
+
+  // <tr>
+  //   <td>
+  //     {
+  //       budget.name != 'Other' && budget.name != 'Total' &&
+  //       <span className="oi oi-pencil" onClick={() => props.onEditBudget(budget)}></span>
+  //     }
+  //   </td>
+  //   <td>{BudgetService.prettifyBudgetName(budget.name)}</td>
+  //   <td>{budget.credits}</td>
+  //   <td>{budget.debits}</td>
+  //   <td className={balanceClass}>{budget.balance}</td>
+  // </tr>
+}
+
+},{"../../Services/BudgetService.js":229,"./BalanceCardBlock.js":252,"./BalanceCardHeader.js":253,"classnames":1,"react":221}],252:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = BalanceCardBlock;
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BalanceCardBlock(props) {
+  var budget = props.budget;
+  return _react2.default.createElement(
+    "div",
+    { id: "collapse" + budget.name, className: "collapse", role: "tabpanel" },
     _react2.default.createElement(
-      'td',
-      null,
-      budget.name != 'Other' && budget.name != 'Total' && _react2.default.createElement('span', { className: 'oi oi-pencil', onClick: function onClick() {
-          return props.onEditBudget(budget);
-        } })
-    ),
-    _react2.default.createElement(
-      'td',
-      null,
-      _BudgetService2.default.prettifyBudgetName(budget.name)
-    ),
-    _react2.default.createElement(
-      'td',
-      null,
-      budget.credits
-    ),
-    _react2.default.createElement(
-      'td',
-      null,
-      budget.debits
-    ),
-    _react2.default.createElement(
-      'td',
-      { className: balanceClass },
-      budget.balance
+      "div",
+      { className: "card-block" },
+      "Hi, I\"'\"m in here"
     )
   );
 }
 
-},{"../../Services/BudgetService.js":229,"classnames":1,"react":221}],252:[function(require,module,exports){
+},{"react":221}],253:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = BalanceCardHeader;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _BalanceCardTitle = require('./BalanceCardTitle.js');
+
+var _BalanceCardTitle2 = _interopRequireDefault(_BalanceCardTitle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BalanceCardHeader(props) {
+  var budget = props.budget;
+  var title = _react2.default.createElement(_BalanceCardTitle2.default, { budget: budget });
+  var bootstrapToggleA = _react2.default.createElement('a', {
+    'data-toggle': 'collapse',
+    'data-parent': 'accordion',
+    'href': '#collapse' + budget.name,
+    'aria-expanded': 'true'
+  }, title);
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'card-header', role: 'tab' },
+    bootstrapToggleA
+  );
+}
+
+},{"./BalanceCardTitle.js":254,"react":221}],254:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = BalanceCardTitle;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BalanceCardTitle(props) {
+  var budget = props.budget;
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'span',
+      null,
+      budget.name != 'Other' && budget.name != 'Total' && _react2.default.createElement('span', { className: 'oi oi-pencil', onClick: budget.onEditBudget })
+    ),
+    _react2.default.createElement(
+      'span',
+      null,
+      budget.pretty_name
+    )
+  );
+}
+
+},{"react":221}],255:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26318,9 +26408,9 @@ var _BalanceTableHeader = require('./BalanceTableHeader.js');
 
 var _BalanceTableHeader2 = _interopRequireDefault(_BalanceTableHeader);
 
-var _BalanceRow = require('./BalanceRow.js');
+var _BalanceCard = require('./BalanceCard.js');
 
-var _BalanceRow2 = _interopRequireDefault(_BalanceRow);
+var _BalanceCard2 = _interopRequireDefault(_BalanceCard);
 
 var _reactRouterDom = require('react-router-dom');
 
@@ -26368,16 +26458,15 @@ var BalanceTable = function (_React$Component) {
       var _this2 = this;
 
       return _react2.default.createElement(
-        'table',
-        { className: 'table' },
-        _react2.default.createElement(_BalanceTableHeader2.default, null),
-        _react2.default.createElement(
-          'tbody',
-          null,
-          _AnalysisService2.default.overview.map(function (budget) {
-            return _react2.default.createElement(_BalanceRow2.default, { key: budget.name, budget: budget, onEditBudget: _this2.handleEditBudget });
-          })
-        )
+        'div',
+        { id: 'accordion', role: 'tablist', 'aria-multiselectable': 'true' },
+        _AnalysisService2.default.overview.map(function (budget) {
+          budget.onEditBudget = function () {
+            return _this2.handleEditBudget(budget);
+          };
+          budget.pretty_name = _BudgetService2.default.prettifyBudgetName(budget.name);
+          return _react2.default.createElement(_BalanceCard2.default, { key: budget.name, budget: budget });
+        })
       );
     }
   }]);
@@ -26387,7 +26476,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Services/AnalysisService.js":227,"../../Services/BudgetService.js":229,"./BalanceRow.js":251,"./BalanceTableHeader.js":253,"react":221,"react-router-dom":182}],253:[function(require,module,exports){
+},{"../../Services/AnalysisService.js":227,"../../Services/BudgetService.js":229,"./BalanceCard.js":251,"./BalanceTableHeader.js":256,"react":221,"react-router-dom":182}],256:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26433,7 +26522,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":221}],254:[function(require,module,exports){
+},{"react":221}],257:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26469,7 +26558,7 @@ function OverviewView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./BalanceTable.js":252,"react":221}],255:[function(require,module,exports){
+},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./BalanceTable.js":255,"react":221}],258:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -26655,7 +26744,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],256:[function(require,module,exports){
+},{}],259:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -26680,14 +26769,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],257:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],258:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -27277,4 +27366,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":257,"_process":255,"inherits":256}]},{},[225]);
+},{"./support/isBuffer":260,"_process":258,"inherits":259}]},{},[225]);

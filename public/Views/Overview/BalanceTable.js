@@ -2,7 +2,7 @@ import React from 'react';
 import AnalysisService from '../../Services/AnalysisService.js';
 import BudgetService from '../../Services/BudgetService.js';
 import BalanceTableHeader from './BalanceTableHeader.js';
-import BalanceRow from './BalanceRow.js';
+import BalanceCard from './BalanceCard.js';
 import {withRouter} from 'react-router-dom';
 
 class BalanceTable extends React.Component {
@@ -29,16 +29,15 @@ class BalanceTable extends React.Component {
 
   render() {
     return (
-      <table className="table">
-        <BalanceTableHeader />
-        <tbody>
-          {
-            AnalysisService.overview.map((budget) => {
-              return <BalanceRow key={budget.name} budget={budget} onEditBudget={this.handleEditBudget}/>
-            })
-          }
-        </tbody>
-      </table>
+      <div id="accordion" role="tablist" aria-multiselectable="true">
+        {
+          AnalysisService.overview.map((budget) => {
+            budget.onEditBudget = () => this.handleEditBudget(budget);
+            budget.pretty_name = BudgetService.prettifyBudgetName(budget.name);
+            return <BalanceCard key={budget.name} budget={budget}/>
+          })
+        }
+      </div>
     );
   }
 }

@@ -4,7 +4,6 @@ module.exports = {
   verifyAccount: function (req, res, next) {
     if (!req.user) return res.redirect('/');
     req.account = req.user;
-    console.log(req.user);
     return next();
   },
 

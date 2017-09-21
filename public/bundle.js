@@ -3415,7 +3415,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":261}],37:[function(require,module,exports){
+},{"util":264}],37:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8487,7 +8487,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":258,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":261,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18049,7 +18049,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":258,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":261,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18420,7 +18420,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":258,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":261,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23938,7 +23938,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":258,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
+},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":261,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24507,7 +24507,7 @@ function App(props) {
       null,
       _react2.default.createElement(_reactRouterDom.Route, { path: '/(|overview)/', component: _OverviewView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/history', component: _HistoryView2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/addTransaction', component: _AddTransactionView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/addTransaction/:from?', component: _AddTransactionView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/addBudget', component: _AddBudgetView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/editBudget/:name?', component: _EditBudgetView2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/editTransaction/:id?', component: _EditTransactionView2.default })
@@ -24521,7 +24521,7 @@ function App(props) {
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./Services/AccountService.js":226,"./Views/AddBudget/AddBudgetView.js":234,"./Views/AddTransaction/AddTransactionView.js":236,"./Views/EditBudget/EditBudgetView.js":244,"./Views/EditTransaction/EditTransactionView.js":245,"./Views/History/HistoryView.js":249,"./Views/Login/LoginView.js":250,"./Views/Overview/OverviewView.js":257,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
+},{"./Services/AccountService.js":226,"./Views/AddBudget/AddBudgetView.js":234,"./Views/AddTransaction/AddTransactionView.js":236,"./Views/EditBudget/EditBudgetView.js":246,"./Views/EditTransaction/EditTransactionView.js":247,"./Views/History/HistoryView.js":252,"./Views/Login/LoginView.js":253,"./Views/Overview/OverviewView.js":260,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24909,6 +24909,13 @@ var TransactionService = function (_ListenerService) {
     key: 'getTransactions',
     value: function getTransactions() {
       return _Store2.default.transactions;
+    }
+  }, {
+    key: 'getDebitTransactionsForBudget',
+    value: function getDebitTransactionsForBudget(budget) {
+      return _Store2.default.transactions.filter(function (transaction) {
+        return transaction.from == budget.name && transaction.to == '@Debit';
+      });
     }
   }, {
     key: 'fetchTransactions',
@@ -25315,7 +25322,7 @@ var AddTransactionForm = function (_mixin) {
   _createClass(AddTransactionForm, [{
     key: 'setDefaultFrom',
     value: function setDefaultFrom() {
-      if (this.state.from) return;
+      if (this.state.from) this.forceUpdate();
       this.setState({
         from: this.getDefaultFrom()
       });
@@ -25323,12 +25330,12 @@ var AddTransactionForm = function (_mixin) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.transactionServiceListenerId = _TransactionService2.default.registerListener(this.setDefaultFrom);
+      this.budgetServiceListenerId = _BudgetService2.default.registerListener(this.setDefaultFrom);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _TransactionService2.default.unRegisterListener(this.transactionServiceListenerId);
+      _BudgetService2.default.unRegisterListener(this.budgetServiceListenerId);
     }
   }, {
     key: 'handleTransactionDelete',
@@ -25493,9 +25500,15 @@ var _BackNav = require('../Components/BackNav.js');
 
 var _BackNav2 = _interopRequireDefault(_BackNav);
 
+var _Helpers = require('../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function AddTransactionView(props) {
+  var from = _Helpers2.default.decodeURIParam(props.match.params.from);
+
   return _react2.default.createElement(
     'div',
     null,
@@ -25503,12 +25516,12 @@ function AddTransactionView(props) {
     _react2.default.createElement(
       'div',
       { className: 'container' },
-      _react2.default.createElement(_AddTransactionForm2.default, null)
+      _react2.default.createElement(_AddTransactionForm2.default, { from: from })
     )
   );
 }
 
-},{"../Components/BackNav.js":239,"./AddTransactionForm.js":235,"react":221}],237:[function(require,module,exports){
+},{"../Components/BackNav.js":239,"../Helpers.js":248,"./AddTransactionForm.js":235,"react":221}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25799,6 +25812,77 @@ function TopNav(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = TransactionList;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TransactionListItem = require('./TransactionListItem.js');
+
+var _TransactionListItem2 = _interopRequireDefault(_TransactionListItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function TransactionList(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'container' },
+    props.transactions.map(function (transaction, i) {
+      return _react2.default.createElement(_TransactionListItem2.default, { key: i, transaction: transaction });
+    })
+  );
+}
+
+},{"./TransactionListItem.js":245,"react":221}],245:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = TransactionListItem;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Helpers = require('../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function TransactionListItem(props) {
+  var transaction = props.transaction;
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'row' },
+    _react2.default.createElement(
+      'div',
+      { className: 'col-3' },
+      '$',
+      _Helpers2.default.round(transaction.amount, 2)
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'col-3' },
+      _Helpers2.default.readableDate(transaction.date)
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'col-6' },
+      transaction.motive
+    )
+  );
+}
+
+},{"../Helpers.js":248,"react":221}],246:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -25817,6 +25901,10 @@ var _BackNav2 = _interopRequireDefault(_BackNav);
 var _BudgetService = require('../../Services/BudgetService.js');
 
 var _BudgetService2 = _interopRequireDefault(_BudgetService);
+
+var _Helpers = require('../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25851,7 +25939,7 @@ var EditBudgetView = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var name = this.props.match.params.name.replace('%2F', '/');
+      var name = _Helpers2.default.decodeURIParam(this.props.match.params.name);
       var budget = _BudgetService2.default.getBudgets().find(function (x) {
         return x.name == name;
       });
@@ -25878,7 +25966,7 @@ var EditBudgetView = function (_React$Component) {
 
 exports.default = EditBudgetView;
 
-},{"../../Services/BudgetService.js":229,"../AddBudget/AddBudgetForm.js":233,"../Components/BackNav.js":239,"react":221}],245:[function(require,module,exports){
+},{"../../Services/BudgetService.js":229,"../AddBudget/AddBudgetForm.js":233,"../Components/BackNav.js":239,"../Helpers.js":248,"react":221}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25963,7 +26051,57 @@ var EditTransactionView = function (_React$Component) {
 
 exports.default = EditTransactionView;
 
-},{"../../Services/TransactionService.js":231,"../AddTransaction/AddTransactionForm.js":235,"../Components/BackNav.js":239,"react":221}],246:[function(require,module,exports){
+},{"../../Services/TransactionService.js":231,"../AddTransaction/AddTransactionForm.js":235,"../Components/BackNav.js":239,"react":221}],248:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Helpers = function () {
+  function Helpers() {
+    _classCallCheck(this, Helpers);
+  }
+
+  _createClass(Helpers, [{
+    key: 'round',
+    value: function round(value, decimals) {
+      return Number(Math.round(parseFloat(value) + 'e' + decimals) + 'e-' + decimals).toFixed(decimals);
+    }
+  }, {
+    key: 'readableDate',
+    value: function readableDate(dateString) {
+      var date = new Date(dateString);
+      var currentDate = new Date();
+      var readableMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var month = readableMonths[date.getMonth()];
+      var day = ' ' + date.getDate();
+      var year = date.getFullYear() != currentDate.getFullYear() ? ' ' + date.getFullYear() : '';
+      return month + day + year;
+    }
+  }, {
+    key: 'encodeURIParam',
+    value: function encodeURIParam(name) {
+      return encodeURI(name).replace('/', '%2F');
+    }
+  }, {
+    key: 'decodeURIParam',
+    value: function decodeURIParam(uri) {
+      if (!uri) return '';
+      return uri.replace('%2F', '/');
+    }
+  }]);
+
+  return Helpers;
+}();
+
+exports.default = new Helpers();
+
+},{}],249:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26015,7 +26153,7 @@ function HistoryRow(props) {
   );
 };
 
-},{"react":221}],247:[function(require,module,exports){
+},{"react":221}],250:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26118,7 +26256,7 @@ var HistoryTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(HistoryTable);
 
-},{"../../Services/TransactionService.js":231,"../Components/FormValidationMessages.js":242,"./HistoryRow.js":246,"./HistoryTableHeader.js":248,"react":221,"react-router-dom":182}],248:[function(require,module,exports){
+},{"../../Services/TransactionService.js":231,"../Components/FormValidationMessages.js":242,"./HistoryRow.js":249,"./HistoryTableHeader.js":251,"react":221,"react-router-dom":182}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26164,7 +26302,7 @@ function HistoryTableHeader(props) {
   );
 }
 
-},{"react":221}],249:[function(require,module,exports){
+},{"react":221}],252:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26200,7 +26338,7 @@ function HistoryView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./HistoryTable.js":247,"react":221}],250:[function(require,module,exports){
+},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./HistoryTable.js":250,"react":221}],253:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26235,7 +26373,7 @@ function LoginView(props) {
   );
 }
 
-},{"react":221}],251:[function(require,module,exports){
+},{"react":221}],254:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26259,9 +26397,9 @@ var _BalanceCardHeader = require('./BalanceCardHeader.js');
 
 var _BalanceCardHeader2 = _interopRequireDefault(_BalanceCardHeader);
 
-var _BalanceCardBlock = require('./BalanceCardBlock.js');
+var _BalanceCardBody = require('./BalanceCardBody.js');
 
-var _BalanceCardBlock2 = _interopRequireDefault(_BalanceCardBlock);
+var _BalanceCardBody2 = _interopRequireDefault(_BalanceCardBody);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26272,7 +26410,7 @@ function BalanceCard(props) {
     'div',
     { className: 'card' },
     _react2.default.createElement(_BalanceCardHeader2.default, { budget: budget }),
-    _react2.default.createElement(_BalanceCardBlock2.default, { budget: budget })
+    _react2.default.createElement(_BalanceCardBody2.default, { budget: budget })
   );
 
   // <tr>
@@ -26289,13 +26427,49 @@ function BalanceCard(props) {
   // </tr>
 }
 
-},{"../../Services/BudgetService.js":229,"./BalanceCardBlock.js":252,"./BalanceCardHeader.js":253,"classnames":1,"react":221}],252:[function(require,module,exports){
+},{"../../Services/BudgetService.js":229,"./BalanceCardBody.js":255,"./BalanceCardHeader.js":256,"classnames":1,"react":221}],255:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = BalanceCardBody;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TransactionList = require('../Components/TransactionList.js');
+
+var _TransactionList2 = _interopRequireDefault(_TransactionList);
+
+var _BudgetControls = require('./BudgetControls.js');
+
+var _BudgetControls2 = _interopRequireDefault(_BudgetControls);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BalanceCardBody(props) {
+  var budget = props.budget;
+  return _react2.default.createElement(
+    'div',
+    { id: "collapse" + budget.name, className: 'collapse', role: 'tabpanel', 'aria-labelledby': 'heading' + budget.name, 'data-parent': '#accordion' },
+    _react2.default.createElement(
+      'div',
+      { className: 'card-body' },
+      _react2.default.createElement(_BudgetControls2.default, { budget: budget }),
+      _react2.default.createElement(_TransactionList2.default, { transactions: budget.transactions })
+    )
+  );
+}
+
+},{"../Components/TransactionList.js":244,"./BudgetControls.js":259,"react":221}],256:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = BalanceCardBlock;
+exports.default = BalanceCardHeader;
 
 var _react = require("react");
 
@@ -26303,87 +26477,31 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function BalanceCardBlock(props) {
-  var budget = props.budget;
-  return _react2.default.createElement(
-    "div",
-    { id: "collapse" + budget.name, className: "collapse", role: "tabpanel" },
-    _react2.default.createElement(
-      "div",
-      { className: "card-block" },
-      "Hi, I\"'\"m in here"
-    )
-  );
-}
-
-},{"react":221}],253:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = BalanceCardHeader;
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _BalanceCardTitle = require('./BalanceCardTitle.js');
-
-var _BalanceCardTitle2 = _interopRequireDefault(_BalanceCardTitle);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function BalanceCardHeader(props) {
   var budget = props.budget;
-  var title = _react2.default.createElement(_BalanceCardTitle2.default, { budget: budget });
-  var bootstrapToggleA = _react2.default.createElement('a', {
-    'data-toggle': 'collapse',
-    'data-parent': 'accordion',
-    'href': '#collapse' + budget.name,
-    'aria-expanded': 'true'
-  }, title);
 
   return _react2.default.createElement(
-    'div',
-    { className: 'card-header', role: 'tab' },
-    bootstrapToggleA
-  );
-}
-
-},{"./BalanceCardTitle.js":254,"react":221}],254:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = BalanceCardTitle;
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function BalanceCardTitle(props) {
-  var budget = props.budget;
-  return _react2.default.createElement(
-    'div',
-    null,
+    "div",
+    { className: "card-header container", role: "tab", id: 'header' + budget.name },
     _react2.default.createElement(
-      'span',
-      null,
-      budget.name != 'Other' && budget.name != 'Total' && _react2.default.createElement('span', { className: 'oi oi-pencil', onClick: budget.onEditBudget })
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      budget.pretty_name
+      "div",
+      { className: "row" },
+      _react2.default.createElement(
+        "a",
+        { className: "col-10", "data-toggle": "collapse", "data-parent": "#accordion", href: '#collapse' + budget.name, "aria-expanded": "false", "aria-controls": 'header' + budget.name },
+        budget.pretty_name
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "col-2 text-right", onClick: budget.onNewTransaction },
+        _react2.default.createElement("i", { className: "fa fa-usd", "aria-hidden": "true" }),
+        _react2.default.createElement("i", { className: "fa fa-chevron-right", "aria-hidden": "true" })
+      )
     )
   );
 }
 
-},{"react":221}],255:[function(require,module,exports){
+},{"react":221}],257:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26404,6 +26522,10 @@ var _BudgetService = require('../../Services/BudgetService.js');
 
 var _BudgetService2 = _interopRequireDefault(_BudgetService);
 
+var _TransactionService = require('../../Services/TransactionService.js');
+
+var _TransactionService2 = _interopRequireDefault(_TransactionService);
+
 var _BalanceTableHeader = require('./BalanceTableHeader.js');
 
 var _BalanceTableHeader2 = _interopRequireDefault(_BalanceTableHeader);
@@ -26413,6 +26535,10 @@ var _BalanceCard = require('./BalanceCard.js');
 var _BalanceCard2 = _interopRequireDefault(_BalanceCard);
 
 var _reactRouterDom = require('react-router-dom');
+
+var _Helpers = require('../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26432,6 +26558,7 @@ var BalanceTable = function (_React$Component) {
 
     _this.forceUpdate = _this.forceUpdate.bind(_this);
     _this.handleEditBudget = _this.handleEditBudget.bind(_this);
+    _this.handleNewTransaction = _this.handleNewTransaction.bind(_this);
     return _this;
   }
 
@@ -26450,7 +26577,12 @@ var BalanceTable = function (_React$Component) {
   }, {
     key: 'handleEditBudget',
     value: function handleEditBudget(budget) {
-      this.props.history.push('/editBudget/' + encodeURI(budget.name).replace('/', '%2F'));
+      this.props.history.push('/editBudget/' + _Helpers2.default.encodeURIParam(budget.name));
+    }
+  }, {
+    key: 'handleNewTransaction',
+    value: function handleNewTransaction(budget) {
+      this.props.history.push('/addTransaction/' + _Helpers2.default.encodeURIParam(budget.name));
     }
   }, {
     key: 'render',
@@ -26459,10 +26591,14 @@ var BalanceTable = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        { id: 'accordion', role: 'tablist', 'aria-multiselectable': 'true' },
+        { id: 'accordion', role: 'tablist' },
         _AnalysisService2.default.overview.map(function (budget) {
+          budget.transactions = _TransactionService2.default.getDebitTransactionsForBudget(budget);
           budget.onEditBudget = function () {
             return _this2.handleEditBudget(budget);
+          };
+          budget.onNewTransaction = function () {
+            return _this2.handleNewTransaction(budget);
           };
           budget.pretty_name = _BudgetService2.default.prettifyBudgetName(budget.name);
           return _react2.default.createElement(_BalanceCard2.default, { key: budget.name, budget: budget });
@@ -26476,7 +26612,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Services/AnalysisService.js":227,"../../Services/BudgetService.js":229,"./BalanceCard.js":251,"./BalanceTableHeader.js":256,"react":221,"react-router-dom":182}],256:[function(require,module,exports){
+},{"../../Services/AnalysisService.js":227,"../../Services/BudgetService.js":229,"../../Services/TransactionService.js":231,"../Helpers.js":248,"./BalanceCard.js":254,"./BalanceTableHeader.js":258,"react":221,"react-router-dom":182}],258:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26522,7 +26658,51 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":221}],257:[function(require,module,exports){
+},{"react":221}],259:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = BudgetControls;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Helpers = require('../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function BudgetControls(props) {
+  var budget = props.budget;
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'row' },
+    _react2.default.createElement(
+      'div',
+      { className: 'col-2' },
+      budget.name != 'Other' && budget.name != 'Total' && _react2.default.createElement('span', { className: 'oi oi-pencil', onClick: budget.onEditBudget })
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'col-5' },
+      'Allowance: $',
+      _Helpers2.default.round(budget.credits, 2)
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'col-5' },
+      'Spent: $',
+      _Helpers2.default.round(budget.debits, 2)
+    )
+  );
+}
+
+},{"../Helpers.js":248,"react":221}],260:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26558,7 +26738,7 @@ function OverviewView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./BalanceTable.js":255,"react":221}],258:[function(require,module,exports){
+},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./BalanceTable.js":257,"react":221}],261:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -26744,7 +26924,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],259:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -26769,14 +26949,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],260:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],261:[function(require,module,exports){
+},{}],264:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -27366,4 +27546,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":260,"_process":258,"inherits":259}]},{},[225]);
+},{"./support/isBuffer":263,"_process":261,"inherits":262}]},{},[225]);

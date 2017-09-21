@@ -18,6 +18,12 @@ class TransactionService extends ListenerService {
     return Store.transactions;
   }
 
+  getDebitTransactionsForBudget(budget) {
+    return Store.transactions.filter(transaction => {
+      return transaction.from == budget.name && transaction.to == '@Debit';
+    });
+  }
+
   fetchTransactions() {
     ApiService.getRequest('/api/transactions')
     .then(data => {

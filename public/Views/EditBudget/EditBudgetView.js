@@ -2,6 +2,7 @@ import React from 'react';
 import AddBudgetForm from '../AddBudget/AddBudgetForm.js';
 import BackNav from '../Components/BackNav.js';
 import BudgetService from '../../Services/BudgetService.js';
+import Helpers from '../Helpers.js';
 
 export default class EditBudgetView extends React.Component {
   constructor(props) {
@@ -19,7 +20,7 @@ export default class EditBudgetView extends React.Component {
   }
 
   render() {
-    let name = this.props.match.params.name.replace('%2F', '/');
+    let name = Helpers.decodeURIParam(this.props.match.params.name);
     let budget = BudgetService.getBudgets().find(x => x.name == name);
     return (
       <div>

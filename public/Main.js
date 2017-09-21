@@ -18,7 +18,7 @@ function App(props) {
       <div>
         <Route path="/(|overview)/" component={OverviewView}/>
         <Route path="/history" component={HistoryView}/>
-        <Route path="/addTransaction" component={AddTransactionView}/>
+        <Route path="/addTransaction/:from?" component={AddTransactionView}/>
         <Route path="/addBudget" component={AddBudgetView}/>
         <Route path="/editBudget/:name?" component={EditBudgetView}/>
         <Route path="/editTransaction/:id?" component={EditTransactionView}/>

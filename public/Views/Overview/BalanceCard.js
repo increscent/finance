@@ -2,7 +2,7 @@ import React from 'react';
 import BudgetService from '../../Services/BudgetService.js';
 import ClassNames from 'classnames';
 import BalanceCardHeader from './BalanceCardHeader.js';
-import BalanceCardBlock from './BalanceCardBlock.js';
+import BalanceCardBody from './BalanceCardBody.js';
 
 export default function BalanceCard(props) {
   var budget = props.budget;
@@ -10,7 +10,7 @@ export default function BalanceCard(props) {
   return (
     <div className="card">
       <BalanceCardHeader budget={budget} />
-      <BalanceCardBlock budget={budget} />
+      <BalanceCardBody budget={budget} />
     </div>
   );
 

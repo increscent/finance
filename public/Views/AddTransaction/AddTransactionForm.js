@@ -27,18 +27,18 @@ class AddTransactionForm extends mixin(Form, React.Component) {
   }
 
   setDefaultFrom() {
-    if (this.state.from) return;
+    if (this.state.from) this.forceUpdate();
     this.setState({
       from: this.getDefaultFrom()
     });
   }
 
   componentDidMount() {
-    this.transactionServiceListenerId = TransactionService.registerListener(this.setDefaultFrom);
+    this.budgetServiceListenerId = BudgetService.registerListener(this.setDefaultFrom);
   }
 
   componentWillUnmount() {
-    TransactionService.unRegisterListener(this.transactionServiceListenerId);
+    BudgetService.unRegisterListener(this.budgetServiceListenerId);
   }
 
   handleTransactionDelete(e) {

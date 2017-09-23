@@ -1,11 +1,11 @@
 import React from 'react';
-import Helpers from '../Helpers.js';
+import Helpers from '../../Helpers.js';
 
 export default function BudgetControls(props) {
   let budget = props.budget;
 
   return (
-    <div className="row">
+    <div className="row no-padding">
       <div className="col-2 no-padding">
         {
           budget.name != 'Other' && budget.name != 'Total' &&

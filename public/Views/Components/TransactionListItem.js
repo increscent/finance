@@ -1,5 +1,5 @@
 import React from 'react';
-import Helpers from '../Helpers.js';
+import Helpers from '../../Helpers.js';
 
 export default function TransactionListItem(props) {
   let transaction = props.transaction;

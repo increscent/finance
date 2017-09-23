@@ -24454,6 +24454,61 @@ module.exports = warning;
 },{}],225:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Helpers = function () {
+  function Helpers() {
+    _classCallCheck(this, Helpers);
+  }
+
+  _createClass(Helpers, [{
+    key: 'round',
+    value: function round(value, decimals) {
+      return Number(Math.round(parseFloat(value) + 'e' + decimals) + 'e-' + decimals).toFixed(decimals);
+    }
+  }, {
+    key: 'readableDate',
+    value: function readableDate(dateString) {
+      var date = new Date(dateString);
+      var currentDate = new Date();
+      var readableMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var month = readableMonths[date.getMonth()];
+      var day = ' ' + date.getDate();
+      var year = date.getFullYear() != currentDate.getFullYear() ? ' ' + date.getFullYear() : '';
+      return month + day + year;
+    }
+  }, {
+    key: 'encodeURIParam',
+    value: function encodeURIParam(name) {
+      return encodeURI(name).replace(/\//g, '%2F');
+    }
+  }, {
+    key: 'decodeURIParam',
+    value: function decodeURIParam(uri) {
+      if (!uri) return '';
+      return uri.replace(/\%2F/g, '/');
+    }
+  }, {
+    key: 'generateSafeName',
+    value: function generateSafeName(name) {
+      return this.encodeURIParam(name).replace(/\W/g, '');
+    }
+  }]);
+
+  return Helpers;
+}();
+
+exports.default = new Helpers();
+
+},{}],226:[function(require,module,exports){
+'use strict';
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -24521,7 +24576,7 @@ function App(props) {
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
 
-},{"./Services/AccountService.js":226,"./Views/AddBudget/AddBudgetView.js":234,"./Views/AddTransaction/AddTransactionView.js":236,"./Views/EditBudget/EditBudgetView.js":246,"./Views/EditTransaction/EditTransactionView.js":247,"./Views/History/HistoryView.js":252,"./Views/Login/LoginView.js":253,"./Views/Overview/OverviewView.js":260,"react":221,"react-dom":44,"react-router-dom":182}],226:[function(require,module,exports){
+},{"./Services/AccountService.js":227,"./Views/AddBudget/AddBudgetView.js":235,"./Views/AddTransaction/AddTransactionView.js":237,"./Views/EditBudget/EditBudgetView.js":247,"./Views/EditTransaction/EditTransactionView.js":248,"./Views/History/HistoryView.js":252,"./Views/Login/LoginView.js":253,"./Views/Overview/OverviewView.js":260,"react":221,"react-dom":44,"react-router-dom":182}],227:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24541,7 +24596,7 @@ var AccountService = function AccountService() {
 
 exports.default = new AccountService();
 
-},{}],227:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24614,7 +24669,7 @@ var AnalysisService = function (_ListenerService) {
 
 exports.default = new AnalysisService();
 
-},{"../Store.js":232,"./AccountService.js":226,"./ApiService.js":228,"./ListenerService.js":230}],228:[function(require,module,exports){
+},{"../Store.js":233,"./AccountService.js":227,"./ApiService.js":229,"./ListenerService.js":231}],229:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24689,7 +24744,7 @@ var ApiService = function () {
 
 exports.default = new ApiService();
 
-},{}],229:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24713,6 +24768,10 @@ var _Store2 = _interopRequireDefault(_Store);
 var _AccountService = require('./AccountService.js');
 
 var _AccountService2 = _interopRequireDefault(_AccountService);
+
+var _Helpers = require('../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24768,7 +24827,7 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'addOrUpdateBudget',
     value: function addOrUpdateBudget(budget) {
-      return _ApiService2.default.putRequest('/api/budgets/' + encodeURI(budget.uri).replace('/', '%2F'), budget).then(function (data) {
+      return _ApiService2.default.putRequest('/api/budgets/' + _Helpers2.default.encodeURIParam(budget.uri), budget).then(function (data) {
         removeBudget(budget.uri, _Store2.default.budgets);
         insertBudget(data, _Store2.default.budgets);
         _Store2.default.setStore('budgets', _Store2.default.budgets, true);
@@ -24777,7 +24836,7 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'deleteBudget',
     value: function deleteBudget(budgetName) {
-      return _ApiService2.default.deleteRequest('/api/budgets/' + encodeURI(budgetName).replace('/', '%2F')).then(function (data) {
+      return _ApiService2.default.deleteRequest('/api/budgets/' + _Helpers2.default.encodeURIParam(budgetName)).then(function (data) {
         removeBudget(budgetName, _Store2.default.budgets);
         _Store2.default.setStore('budgets', _Store2.default.budgets, true);
         console.log('deleted ' + budgetName);
@@ -24809,7 +24868,7 @@ function removeBudget(budgetName, collection) {
   if (index >= 0) collection.splice(index, 1);
 }
 
-},{"../Store.js":232,"./AccountService.js":226,"./ApiService.js":228,"./ListenerService.js":230}],230:[function(require,module,exports){
+},{"../Helpers.js":225,"../Store.js":233,"./AccountService.js":227,"./ApiService.js":229,"./ListenerService.js":231}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24853,7 +24912,7 @@ var ListenerService = function () {
 
 exports.default = ListenerService;
 
-},{}],231:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24971,7 +25030,7 @@ function removeTransaction(transaction_id, collection) {
   if (index >= 0) collection.splice(index, 1);
 }
 
-},{"../Store.js":232,"./AccountService.js":226,"./ApiService.js":228,"./ListenerService.js":230}],232:[function(require,module,exports){
+},{"../Store.js":233,"./AccountService.js":227,"./ApiService.js":229,"./ListenerService.js":231}],233:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25018,7 +25077,7 @@ var Store = function (_ListenerService) {
 
 exports.default = new Store();
 
-},{"./Services/ListenerService.js":230}],233:[function(require,module,exports){
+},{"./Services/ListenerService.js":231}],234:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25209,7 +25268,7 @@ var AddBudgetForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddBudgetForm);
 
-},{"../../Services/BudgetService.js":229,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"mixin":36,"react":221,"react-router-dom":182}],234:[function(require,module,exports){
+},{"../../Services/BudgetService.js":230,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25244,7 +25303,7 @@ function AddBudgetView(props) {
   );
 }
 
-},{"../Components/BackNav.js":239,"./AddBudgetForm.js":233,"react":221}],235:[function(require,module,exports){
+},{"../Components/BackNav.js":240,"./AddBudgetForm.js":234,"react":221}],236:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25480,7 +25539,7 @@ var AddTransactionForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddTransactionForm);
 
-},{"../../Services/BudgetService.js":229,"../../Services/TransactionService.js":231,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"./BudgetSelect.js":237,"./DebitCreditRadioButtons.js":238,"mixin":36,"react":221,"react-router-dom":182}],236:[function(require,module,exports){
+},{"../../Services/BudgetService.js":230,"../../Services/TransactionService.js":232,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"./BudgetSelect.js":238,"./DebitCreditRadioButtons.js":239,"mixin":36,"react":221,"react-router-dom":182}],237:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25500,7 +25559,7 @@ var _BackNav = require('../Components/BackNav.js');
 
 var _BackNav2 = _interopRequireDefault(_BackNav);
 
-var _Helpers = require('../Helpers.js');
+var _Helpers = require('../../Helpers.js');
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
 
@@ -25521,7 +25580,7 @@ function AddTransactionView(props) {
   );
 }
 
-},{"../Components/BackNav.js":239,"../Helpers.js":248,"./AddTransactionForm.js":235,"react":221}],237:[function(require,module,exports){
+},{"../../Helpers.js":225,"../Components/BackNav.js":240,"./AddTransactionForm.js":236,"react":221}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25553,7 +25612,7 @@ function BudgetSelect(props) {
   );
 }
 
-},{"react":221}],238:[function(require,module,exports){
+},{"react":221}],239:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25590,7 +25649,7 @@ function DebitCreditRadioButtons(props) {
   );
 }
 
-},{"react":221}],239:[function(require,module,exports){
+},{"react":221}],240:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25637,7 +25696,7 @@ function BackNav(props) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BackNav);
 
-},{"react":221,"react-router-dom":182}],240:[function(require,module,exports){
+},{"react":221,"react-router-dom":182}],241:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25682,7 +25741,7 @@ function BottomNav(props) {
   );
 }
 
-},{"react":221,"react-router-dom":182}],241:[function(require,module,exports){
+},{"react":221,"react-router-dom":182}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25727,7 +25786,7 @@ var Form = function () {
 
 exports.default = Form;
 
-},{}],242:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25755,7 +25814,7 @@ function FormValidationMessages(props) {
   );
 };
 
-},{"react":221}],243:[function(require,module,exports){
+},{"react":221}],244:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25806,7 +25865,7 @@ function TopNav(props) {
   );
 }
 
-},{"classnames":1,"react":221,"react-router-dom":182}],244:[function(require,module,exports){
+},{"classnames":1,"react":221,"react-router-dom":182}],245:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25834,7 +25893,7 @@ function TransactionList(props) {
   );
 }
 
-},{"./TransactionListItem.js":245,"react":221}],245:[function(require,module,exports){
+},{"./TransactionListItem.js":246,"react":221}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25846,7 +25905,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Helpers = require('../Helpers.js');
+var _Helpers = require('../../Helpers.js');
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
 
@@ -25860,24 +25919,24 @@ function TransactionListItem(props) {
     { className: 'row' },
     _react2.default.createElement(
       'div',
-      { className: 'col-3' },
+      { className: 'col-3 no-padding' },
       '$',
       _Helpers2.default.round(transaction.amount, 2)
     ),
     _react2.default.createElement(
       'div',
-      { className: 'col-3' },
+      { className: 'col-3 no-padding' },
       _Helpers2.default.readableDate(transaction.date)
     ),
     _react2.default.createElement(
       'div',
-      { className: 'col-6' },
+      { className: 'col-6 no-padding' },
       transaction.motive
     )
   );
 }
 
-},{"../Helpers.js":248,"react":221}],246:[function(require,module,exports){
+},{"../../Helpers.js":225,"react":221}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25902,7 +25961,7 @@ var _BudgetService = require('../../Services/BudgetService.js');
 
 var _BudgetService2 = _interopRequireDefault(_BudgetService);
 
-var _Helpers = require('../Helpers.js');
+var _Helpers = require('../../Helpers.js');
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
 
@@ -25966,7 +26025,7 @@ var EditBudgetView = function (_React$Component) {
 
 exports.default = EditBudgetView;
 
-},{"../../Services/BudgetService.js":229,"../AddBudget/AddBudgetForm.js":233,"../Components/BackNav.js":239,"../Helpers.js":248,"react":221}],247:[function(require,module,exports){
+},{"../../Helpers.js":225,"../../Services/BudgetService.js":230,"../AddBudget/AddBudgetForm.js":234,"../Components/BackNav.js":240,"react":221}],248:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26051,57 +26110,7 @@ var EditTransactionView = function (_React$Component) {
 
 exports.default = EditTransactionView;
 
-},{"../../Services/TransactionService.js":231,"../AddTransaction/AddTransactionForm.js":235,"../Components/BackNav.js":239,"react":221}],248:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Helpers = function () {
-  function Helpers() {
-    _classCallCheck(this, Helpers);
-  }
-
-  _createClass(Helpers, [{
-    key: 'round',
-    value: function round(value, decimals) {
-      return Number(Math.round(parseFloat(value) + 'e' + decimals) + 'e-' + decimals).toFixed(decimals);
-    }
-  }, {
-    key: 'readableDate',
-    value: function readableDate(dateString) {
-      var date = new Date(dateString);
-      var currentDate = new Date();
-      var readableMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      var month = readableMonths[date.getMonth()];
-      var day = ' ' + date.getDate();
-      var year = date.getFullYear() != currentDate.getFullYear() ? ' ' + date.getFullYear() : '';
-      return month + day + year;
-    }
-  }, {
-    key: 'encodeURIParam',
-    value: function encodeURIParam(name) {
-      return encodeURI(name).replace('/', '%2F');
-    }
-  }, {
-    key: 'decodeURIParam',
-    value: function decodeURIParam(uri) {
-      if (!uri) return '';
-      return uri.replace('%2F', '/');
-    }
-  }]);
-
-  return Helpers;
-}();
-
-exports.default = new Helpers();
-
-},{}],249:[function(require,module,exports){
+},{"../../Services/TransactionService.js":232,"../AddTransaction/AddTransactionForm.js":236,"../Components/BackNav.js":240,"react":221}],249:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26112,6 +26121,10 @@ exports.default = HistoryRow;
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _Helpers = require('../../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26143,7 +26156,7 @@ function HistoryRow(props) {
     _react2.default.createElement(
       'td',
       null,
-      new Date(transaction.date).toDateString()
+      _Helpers2.default.readableDate(transaction.date)
     ),
     _react2.default.createElement(
       'td',
@@ -26153,7 +26166,7 @@ function HistoryRow(props) {
   );
 };
 
-},{"react":221}],250:[function(require,module,exports){
+},{"../../Helpers.js":225,"react":221}],250:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26256,7 +26269,7 @@ var HistoryTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(HistoryTable);
 
-},{"../../Services/TransactionService.js":231,"../Components/FormValidationMessages.js":242,"./HistoryRow.js":249,"./HistoryTableHeader.js":251,"react":221,"react-router-dom":182}],251:[function(require,module,exports){
+},{"../../Services/TransactionService.js":232,"../Components/FormValidationMessages.js":243,"./HistoryRow.js":249,"./HistoryTableHeader.js":251,"react":221,"react-router-dom":182}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26338,7 +26351,7 @@ function HistoryView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./HistoryTable.js":250,"react":221}],253:[function(require,module,exports){
+},{"../Components/BottomNav.js":241,"../Components/TopNav.js":244,"./HistoryTable.js":250,"react":221}],253:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26427,7 +26440,7 @@ function BalanceCard(props) {
   // </tr>
 }
 
-},{"../../Services/BudgetService.js":229,"./BalanceCardBody.js":255,"./BalanceCardHeader.js":256,"classnames":1,"react":221}],255:[function(require,module,exports){
+},{"../../Services/BudgetService.js":230,"./BalanceCardBody.js":255,"./BalanceCardHeader.js":256,"classnames":1,"react":221}],255:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26453,55 +26466,81 @@ function BalanceCardBody(props) {
   var budget = props.budget;
   return _react2.default.createElement(
     'div',
-    { id: "collapse" + budget.name, className: 'collapse', role: 'tabpanel', 'aria-labelledby': 'heading' + budget.name, 'data-parent': '#accordion' },
+    { id: "collapse" + budget.safe_name, className: 'collapse', role: 'tabpanel', 'aria-labelledby': 'heading' + budget.safe_name, 'data-parent': '#accordion' },
     _react2.default.createElement(
       'div',
-      { className: 'card-body' },
+      { className: 'card-body no-padding' },
       _react2.default.createElement(_BudgetControls2.default, { budget: budget }),
       _react2.default.createElement(_TransactionList2.default, { transactions: budget.transactions })
     )
   );
 }
 
-},{"../Components/TransactionList.js":244,"./BudgetControls.js":259,"react":221}],256:[function(require,module,exports){
-"use strict";
+},{"../Components/TransactionList.js":245,"./BudgetControls.js":259,"react":221}],256:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = BalanceCardHeader;
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function BalanceCardHeader(props) {
   var budget = props.budget;
+  var spentPercent = Math.round(budget.debits / budget.credits * 100);
+  if (spentPercent > 100 || budget.credits < 0) spentPercent = 100;
+  var progressBarClass = (0, _classnames2.default)({
+    'progress-bar': true,
+    'surplus': spentPercent <= 75,
+    'deficit': spentPercent > 75
+  });
 
   return _react2.default.createElement(
-    "div",
-    { className: "card-header container", role: "tab", id: 'header' + budget.name },
+    'div',
+    { className: 'card-header no-padding container', role: 'tab', id: 'header' + budget.safe_name },
     _react2.default.createElement(
-      "div",
-      { className: "row" },
+      'div',
+      { className: 'row card-header-content no-padding' },
       _react2.default.createElement(
-        "a",
-        { className: "col-10", "data-toggle": "collapse", "data-parent": "#accordion", href: '#collapse' + budget.name, "aria-expanded": "false", "aria-controls": 'header' + budget.name },
+        'a',
+        { className: 'col-10 card-header-button', 'data-toggle': 'collapse', 'data-parent': '#accordion', href: '#collapse' + budget.safe_name, 'aria-expanded': 'false', 'aria-controls': 'header' + budget.safe_name },
         budget.pretty_name
       ),
       _react2.default.createElement(
-        "div",
-        { className: "col-2 text-right", onClick: budget.onNewTransaction },
-        _react2.default.createElement("i", { className: "fa fa-usd", "aria-hidden": "true" }),
-        _react2.default.createElement("i", { className: "fa fa-chevron-right", "aria-hidden": "true" })
+        'div',
+        { className: 'col-2 text-right card-header-button', onClick: budget.onNewTransaction },
+        _react2.default.createElement('i', { className: 'fa fa-usd', 'aria-hidden': 'true' }),
+        _react2.default.createElement('i', { className: 'fa fa-chevron-right', 'aria-hidden': 'true' })
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'progress' },
+      _react2.default.createElement(
+        'div',
+        { className: progressBarClass, role: 'progressbar', 'aria-valuenow': spentPercent,
+          'aria-valuemin': '0', 'aria-valuemax': '100', style: { width: spentPercent + "%" } },
+        _react2.default.createElement(
+          'span',
+          { className: 'sr-only' },
+          spentPercent,
+          '% Complete'
+        )
       )
     )
   );
 }
 
-},{"react":221}],257:[function(require,module,exports){
+},{"classnames":1,"react":221}],257:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26536,7 +26575,7 @@ var _BalanceCard2 = _interopRequireDefault(_BalanceCard);
 
 var _reactRouterDom = require('react-router-dom');
 
-var _Helpers = require('../Helpers.js');
+var _Helpers = require('../../Helpers.js');
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
 
@@ -26601,6 +26640,7 @@ var BalanceTable = function (_React$Component) {
             return _this2.handleNewTransaction(budget);
           };
           budget.pretty_name = _BudgetService2.default.prettifyBudgetName(budget.name);
+          budget.safe_name = _Helpers2.default.generateSafeName(budget.name);
           return _react2.default.createElement(_BalanceCard2.default, { key: budget.name, budget: budget });
         })
       );
@@ -26612,7 +26652,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Services/AnalysisService.js":227,"../../Services/BudgetService.js":229,"../../Services/TransactionService.js":231,"../Helpers.js":248,"./BalanceCard.js":254,"./BalanceTableHeader.js":258,"react":221,"react-router-dom":182}],258:[function(require,module,exports){
+},{"../../Helpers.js":225,"../../Services/AnalysisService.js":228,"../../Services/BudgetService.js":230,"../../Services/TransactionService.js":232,"./BalanceCard.js":254,"./BalanceTableHeader.js":258,"react":221,"react-router-dom":182}],258:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26670,7 +26710,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Helpers = require('../Helpers.js');
+var _Helpers = require('../../Helpers.js');
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
 
@@ -26681,28 +26721,28 @@ function BudgetControls(props) {
 
   return _react2.default.createElement(
     'div',
-    { className: 'row' },
+    { className: 'row no-padding' },
     _react2.default.createElement(
       'div',
-      { className: 'col-2' },
+      { className: 'col-2 no-padding' },
       budget.name != 'Other' && budget.name != 'Total' && _react2.default.createElement('span', { className: 'oi oi-pencil', onClick: budget.onEditBudget })
     ),
     _react2.default.createElement(
       'div',
-      { className: 'col-5' },
+      { className: 'col-5 no-padding' },
       'Allowance: $',
       _Helpers2.default.round(budget.credits, 2)
     ),
     _react2.default.createElement(
       'div',
-      { className: 'col-5' },
+      { className: 'col-5 no-padding' },
       'Spent: $',
       _Helpers2.default.round(budget.debits, 2)
     )
   );
 }
 
-},{"../Helpers.js":248,"react":221}],260:[function(require,module,exports){
+},{"../../Helpers.js":225,"react":221}],260:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26731,14 +26771,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function OverviewView(props) {
   return _react2.default.createElement(
     'div',
-    null,
+    { id: 'overview' },
     _react2.default.createElement(_TopNav2.default, { page: 'overview' }),
     _react2.default.createElement(_BalanceTable2.default, null),
     _react2.default.createElement(_BottomNav2.default, null)
   );
 }
 
-},{"../Components/BottomNav.js":240,"../Components/TopNav.js":243,"./BalanceTable.js":257,"react":221}],261:[function(require,module,exports){
+},{"../Components/BottomNav.js":241,"../Components/TopNav.js":244,"./BalanceTable.js":257,"react":221}],261:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -27546,4 +27586,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":263,"_process":261,"inherits":262}]},{},[225]);
+},{"./support/isBuffer":263,"_process":261,"inherits":262}]},{},[226]);

@@ -5,7 +5,7 @@ import TransactionService from '../../Services/TransactionService.js';
 import BalanceTableHeader from './BalanceTableHeader.js';
 import BalanceCard from './BalanceCard.js';
 import {withRouter} from 'react-router-dom';
-import Helpers from '../Helpers.js';
+import Helpers from '../../Helpers.js';
 
 class BalanceTable extends React.Component {
   constructor(props) {
@@ -43,6 +43,7 @@ class BalanceTable extends React.Component {
             budget.onEditBudget = () => this.handleEditBudget(budget);
             budget.onNewTransaction = () => this.handleNewTransaction(budget);
             budget.pretty_name = BudgetService.prettifyBudgetName(budget.name);
+            budget.safe_name = Helpers.generateSafeName(budget.name);
             return <BalanceCard key={budget.name} budget={budget}/>
           })
         }

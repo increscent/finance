@@ -14,12 +14,16 @@ class Helpers {
   }
 
   encodeURIParam(name) {
-    return encodeURI(name).replace('/', '%2F');
+    return encodeURI(name).replace(/\//g, '%2F');
   }
 
   decodeURIParam(uri) {
     if (!uri) return '';
-    return uri.replace('%2F', '/');
+    return uri.replace(/\%2F/g, '/');
+  }
+
+  generateSafeName(name) {
+    return this.encodeURIParam(name).replace(/\W/g, '');
   }
 }
 

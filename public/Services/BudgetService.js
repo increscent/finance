@@ -2,6 +2,7 @@ import ApiService from './ApiService.js';
 import ListenerService from './ListenerService.js';
 import Store from '../Store.js';
 import AccountService from './AccountService.js';
+import Helpers from '../Helpers.js';
 
 class BudgetService extends ListenerService {
   constructor() {
@@ -37,7 +38,7 @@ class BudgetService extends ListenerService {
   }
 
   addOrUpdateBudget(budget) {
-    return ApiService.putRequest('/api/budgets/' + encodeURI(budget.uri).replace('/', '%2F'), budget)
+    return ApiService.putRequest('/api/budgets/' + Helpers.encodeURIParam(budget.uri), budget)
     .then(data => {
       removeBudget(budget.uri, Store.budgets);
       insertBudget(data, Store.budgets);
@@ -46,7 +47,7 @@ class BudgetService extends ListenerService {
   }
 
   deleteBudget(budgetName) {
-    return ApiService.deleteRequest('/api/budgets/' + encodeURI(budgetName).replace('/', '%2F'))
+    return ApiService.deleteRequest('/api/budgets/' + Helpers.encodeURIParam(budgetName))
     .then(data => {
       removeBudget(budgetName, Store.budgets);
       Store.setStore('budgets', Store.budgets, true);

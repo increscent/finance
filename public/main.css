@@ -42,6 +42,53 @@
 }
 
 .no-padding {
-  padding: 0 5px;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#overview .card-header-content {
+  color: #333;
+}
+
+#overview .card-header-content .card-header-button {
+  padding: 20px 10px 10px;
+}
+
+#overview .card-header-content .card-header-button:hover {
+  cursor: pointer;
+}
+
+#overview .card-header a {
+  color: #333;
+}
+
+#overview .card-header a:hover {
+  text-decoration: none;
+}
+
+#overview .progress {
+  border-radius: 0;
+  background-color: #fff;
+}
+
+#overview .progress-bar {
+  height: 3px;
+  background-color: #bbb;
+}
+
+#overview .progress-bar.surplus {
+}
+
+#overview .progress-bar.deficit {
+}
+
+#overview .card {
+  border: 0;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+#overview .card-header {
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  border-radius: 0;
 }

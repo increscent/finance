@@ -36,6 +36,9 @@ class HistoryTable extends React.Component {
           <tbody>
             {
               TransactionService.getTransactions()
+              .sort((transactionA,transactionB) => {
+                return (new Date(transactionA.date)) < (new Date(transactionB.date))? 1:-1;
+              })
               .filter(x => x.from == '@Credit' || x.to == '@Debit')
               .map((transaction, i) => {
                 return <HistoryRow key={i} transaction={transaction} onEditTransaction={this.handleEditTransaction}/>

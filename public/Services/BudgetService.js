@@ -18,15 +18,6 @@ class BudgetService extends ListenerService {
     return Store.budgets;
   }
 
-  prettifyBudgetName(name) {
-    var budget = Store.budgets.find(x => x.name == name) || {};
-    if (budget.allowance_type) {
-       return name + ' (' + (budget.allowance_type == '$'?'$':'') + budget.allowance + (budget.allowance_type == '%'?'%':'') + ')';
-    } else {
-      return name;
-    }
-  }
-
   fetchBudgets() {
     ApiService.getRequest('/api/budgets')
     .then(data => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import Helpers from '../../Helpers.js';
 
 export default function BalanceCardHeader(props) {
   let budget = props.budget;
@@ -14,10 +15,11 @@ export default function BalanceCardHeader(props) {
   return (
     <div className="card-header no-padding container" role="tab" id={'header' + budget.safe_name}>
       <div className="row card-header-content no-padding">
-        <a className="col-10 card-header-button" data-toggle="collapse" data-parent="#accordion" href={'#collapse' + budget.safe_name} aria-expanded="false" aria-controls={'header' + budget.safe_name}>
-          {budget.pretty_name}
+        <a className="col-10 card-header-button div-button" data-toggle="collapse" data-parent="#accordion" href={'#collapse' + budget.safe_name} aria-expanded="false" aria-controls={'header' + budget.safe_name}>
+          {budget.name}
+          <span style={{float: 'right'}}>{Helpers.readableAmount(budget.balance)}</span>
         </a>
-        <div className="col-2 text-right card-header-button" onClick={budget.onNewTransaction}>
+        <div className="col-2 text-right card-header-button div-button" onClick={budget.onNewTransaction}>
           <i className="fa fa-usd" aria-hidden="true"></i>
           <i className="fa fa-chevron-right" aria-hidden="true"></i>
         </div>

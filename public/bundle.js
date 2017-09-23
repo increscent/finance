@@ -24499,6 +24499,16 @@ var Helpers = function () {
     value: function generateSafeName(name) {
       return this.encodeURIParam(name).replace(/\W/g, '');
     }
+  }, {
+    key: 'readableAmount',
+    value: function readableAmount(amount) {
+      var prepend = '$';
+      if (amount < 0) {
+        prepend = '-$';
+        amount *= -1;
+      }
+      return prepend + this.round(amount, 2);
+    }
   }]);
 
   return Helpers;
@@ -24802,18 +24812,6 @@ var BudgetService = function (_ListenerService) {
     key: 'getBudgets',
     value: function getBudgets() {
       return _Store2.default.budgets;
-    }
-  }, {
-    key: 'prettifyBudgetName',
-    value: function prettifyBudgetName(name) {
-      var budget = _Store2.default.budgets.find(function (x) {
-        return x.name == name;
-      }) || {};
-      if (budget.allowance_type) {
-        return name + ' (' + (budget.allowance_type == '$' ? '$' : '') + budget.allowance + (budget.allowance_type == '%' ? '%' : '') + ')';
-      } else {
-        return name;
-      }
     }
   }, {
     key: 'fetchBudgets',
@@ -25886,7 +25884,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function TransactionList(props) {
   return _react2.default.createElement(
     'div',
-    { className: 'container' },
+    { className: 'container no-padding' },
     props.transactions.map(function (transaction, i) {
       return _react2.default.createElement(_TransactionListItem2.default, { key: i, transaction: transaction });
     })
@@ -25916,21 +25914,21 @@ function TransactionListItem(props) {
 
   return _react2.default.createElement(
     'div',
-    { className: 'row' },
+    { className: 'row no-padding transaction-list-item' },
     _react2.default.createElement(
       'div',
-      { className: 'col-3 no-padding' },
+      { className: 'col-3 cell-padding' },
+      _Helpers2.default.readableDate(transaction.date)
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'col-3 cell-padding' },
       '$',
       _Helpers2.default.round(transaction.amount, 2)
     ),
     _react2.default.createElement(
       'div',
-      { className: 'col-3 no-padding' },
-      _Helpers2.default.readableDate(transaction.date)
-    ),
-    _react2.default.createElement(
-      'div',
-      { className: 'col-6 no-padding' },
+      { className: 'col-6 cell-padding' },
       transaction.motive
     )
   );
@@ -26252,7 +26250,9 @@ var HistoryTable = function (_React$Component) {
           _react2.default.createElement(
             'tbody',
             null,
-            _TransactionService2.default.getTransactions().filter(function (x) {
+            _TransactionService2.default.getTransactions().sort(function (transactionA, transactionB) {
+              return new Date(transactionA.date) < new Date(transactionB.date) ? 1 : -1;
+            }).filter(function (x) {
               return x.from == '@Credit' || x.to == '@Debit';
             }).map(function (transaction, i) {
               return _react2.default.createElement(_HistoryRow2.default, { key: i, transaction: transaction, onEditTransaction: _this2.handleEditTransaction });
@@ -26471,6 +26471,11 @@ function BalanceCardBody(props) {
       'div',
       { className: 'card-body no-padding' },
       _react2.default.createElement(_BudgetControls2.default, { budget: budget }),
+      budget.transactions.length > 0 && _react2.default.createElement(
+        'span',
+        null,
+        'Transactions:'
+      ),
       _react2.default.createElement(_TransactionList2.default, { transactions: budget.transactions })
     )
   );
@@ -26492,6 +26497,10 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var _Helpers = require('../../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function BalanceCardHeader(props) {
@@ -26512,12 +26521,17 @@ function BalanceCardHeader(props) {
       { className: 'row card-header-content no-padding' },
       _react2.default.createElement(
         'a',
-        { className: 'col-10 card-header-button', 'data-toggle': 'collapse', 'data-parent': '#accordion', href: '#collapse' + budget.safe_name, 'aria-expanded': 'false', 'aria-controls': 'header' + budget.safe_name },
-        budget.pretty_name
+        { className: 'col-10 card-header-button div-button', 'data-toggle': 'collapse', 'data-parent': '#accordion', href: '#collapse' + budget.safe_name, 'aria-expanded': 'false', 'aria-controls': 'header' + budget.safe_name },
+        budget.name,
+        _react2.default.createElement(
+          'span',
+          { style: { float: 'right' } },
+          _Helpers2.default.readableAmount(budget.balance)
+        )
       ),
       _react2.default.createElement(
         'div',
-        { className: 'col-2 text-right card-header-button', onClick: budget.onNewTransaction },
+        { className: 'col-2 text-right card-header-button div-button', onClick: budget.onNewTransaction },
         _react2.default.createElement('i', { className: 'fa fa-usd', 'aria-hidden': 'true' }),
         _react2.default.createElement('i', { className: 'fa fa-chevron-right', 'aria-hidden': 'true' })
       )
@@ -26540,7 +26554,7 @@ function BalanceCardHeader(props) {
   );
 }
 
-},{"classnames":1,"react":221}],257:[function(require,module,exports){
+},{"../../Helpers.js":225,"classnames":1,"react":221}],257:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26639,7 +26653,6 @@ var BalanceTable = function (_React$Component) {
           budget.onNewTransaction = function () {
             return _this2.handleNewTransaction(budget);
           };
-          budget.pretty_name = _BudgetService2.default.prettifyBudgetName(budget.name);
           budget.safe_name = _Helpers2.default.generateSafeName(budget.name);
           return _react2.default.createElement(_BalanceCard2.default, { key: budget.name, budget: budget });
         })
@@ -26722,22 +26735,22 @@ function BudgetControls(props) {
   return _react2.default.createElement(
     'div',
     { className: 'row no-padding' },
+    budget.name != 'Other' && budget.name != 'Total' ? _react2.default.createElement(
+      'div',
+      { className: 'col-2 cell-padding div-button', onClick: budget.onEditBudget },
+      _react2.default.createElement('span', { className: 'oi oi-pencil' })
+    ) : _react2.default.createElement('div', { className: 'col-2 cell-padding' }),
     _react2.default.createElement(
       'div',
-      { className: 'col-2 no-padding' },
-      budget.name != 'Other' && budget.name != 'Total' && _react2.default.createElement('span', { className: 'oi oi-pencil', onClick: budget.onEditBudget })
+      { className: 'col-5 cell-padding' },
+      'Start: ',
+      _Helpers2.default.readableAmount(budget.credits)
     ),
     _react2.default.createElement(
       'div',
-      { className: 'col-5 no-padding' },
-      'Allowance: $',
-      _Helpers2.default.round(budget.credits, 2)
-    ),
-    _react2.default.createElement(
-      'div',
-      { className: 'col-5 no-padding' },
-      'Spent: $',
-      _Helpers2.default.round(budget.debits, 2)
+      { className: 'col-5 cell-padding' },
+      'Spent: ',
+      _Helpers2.default.readableAmount(budget.debits)
     )
   );
 }

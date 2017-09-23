@@ -12,6 +12,10 @@
   font-size: 18px;
 }
 
+#bottom-nav {
+  margin: 20px 0;
+}
+
 .amount {
   display: inline-block;
   width: 200px;
@@ -46,16 +50,25 @@
   margin: 0 !important;
 }
 
+.div-button:hover {
+  cursor: pointer;
+}
+
+.cell-padding {
+  padding: 10px 5px !important;
+  margin: 0 !important;
+}
+
+.transaction-list-item:nth-child(2n - 1) {
+  background-color: rgba(0,0,0,.05);
+}
+
 #overview .card-header-content {
   color: #333;
 }
 
 #overview .card-header-content .card-header-button {
   padding: 20px 10px 10px;
-}
-
-#overview .card-header-content .card-header-button:hover {
-  cursor: pointer;
 }
 
 #overview .card-header a {

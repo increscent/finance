@@ -25,6 +25,15 @@ class Helpers {
   generateSafeName(name) {
     return this.encodeURIParam(name).replace(/\W/g, '');
   }
+
+  readableAmount(amount) {
+    var prepend = '$';
+    if (amount < 0) {
+      prepend = '-$';
+      amount *= -1;
+    }
+    return prepend + this.round(amount, 2);
+  }
 }
 
 export default new Helpers();

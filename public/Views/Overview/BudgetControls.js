@@ -6,17 +6,19 @@ export default function BudgetControls(props) {
 
   return (
     <div className="row no-padding">
-      <div className="col-2 no-padding">
-        {
-          budget.name != 'Other' && budget.name != 'Total' &&
-          <span className="oi oi-pencil" onClick={budget.onEditBudget}></span>
-        }
+      {
+        (budget.name != 'Other' && budget.name != 'Total')?
+        <div className="col-2 cell-padding div-button" onClick={budget.onEditBudget}>
+            <span className="oi oi-pencil"></span>
+        </div>
+        :
+        <div className="col-2 cell-padding"></div>
+      }
+      <div className="col-5 cell-padding">
+        Start: {Helpers.readableAmount(budget.credits)}
       </div>
-      <div className="col-5 no-padding">
-        Allowance: ${Helpers.round(budget.credits, 2)}
-      </div>
-      <div className="col-5 no-padding">
-        Spent: ${Helpers.round(budget.debits, 2)}
+      <div className="col-5 cell-padding">
+        Spent: {Helpers.readableAmount(budget.debits)}
       </div>
     </div>
   );

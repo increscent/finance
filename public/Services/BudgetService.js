@@ -19,7 +19,7 @@ class BudgetService extends ListenerService {
   }
 
   fetchBudgets() {
-    ApiService.getRequest('/api/budgets')
+    ApiService.getRequest('/api/budget')
     .then(data => {
       Store.setStore('budgets', data);
     })
@@ -29,7 +29,7 @@ class BudgetService extends ListenerService {
   }
 
   addOrUpdateBudget(budget) {
-    return ApiService.putRequest('/api/budgets/' + Helpers.encodeURIParam(budget.uri), budget)
+    return ApiService.putRequest('/api/budget/' + Helpers.encodeURIParam(budget.uri), budget)
     .then(data => {
       removeBudget(budget.uri, Store.budgets);
       insertBudget(data, Store.budgets);
@@ -38,7 +38,7 @@ class BudgetService extends ListenerService {
   }
 
   deleteBudget(budgetName) {
-    return ApiService.deleteRequest('/api/budgets/' + Helpers.encodeURIParam(budgetName))
+    return ApiService.deleteRequest('/api/budget/' + Helpers.encodeURIParam(budgetName))
     .then(data => {
       removeBudget(budgetName, Store.budgets);
       Store.setStore('budgets', Store.budgets, true);

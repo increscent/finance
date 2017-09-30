@@ -35,10 +35,13 @@
   color: red;
 }
 
-.logout-button {
+.menu-dropdown {
   position: absolute;
   right: 0;
-  line-height: 1.5;
+}
+
+.menu-dropdown > .dropdown-toggle::after {
+  border: 0 !important;
 }
 
 .login-button {

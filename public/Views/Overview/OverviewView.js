@@ -8,7 +8,6 @@ export default function OverviewView(props) {
     <div id="overview">
       <TopNav page="overview"/>
       <BalanceTable />
-      <BottomNav />
     </div>
   );
 }

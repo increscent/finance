@@ -8,7 +8,6 @@ export default function HistoryView(props) {
     <div>
       <TopNav page="history"/>
       <HistoryTable />
-      <BottomNav />
     </div>
   );
 }

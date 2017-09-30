@@ -24665,7 +24665,7 @@ var AnalysisService = function (_ListenerService) {
     value: function fetchOverview() {
       var _this2 = this;
 
-      _ApiService2.default.getRequest('/api/analyses/overview').then(function (data) {
+      _ApiService2.default.getRequest('/api/analysis/overview').then(function (data) {
         _this2.overview = data;
         _this2.notifyListeners();
       }).catch(function (error) {
@@ -24816,7 +24816,7 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'fetchBudgets',
     value: function fetchBudgets() {
-      _ApiService2.default.getRequest('/api/budgets').then(function (data) {
+      _ApiService2.default.getRequest('/api/budget').then(function (data) {
         _Store2.default.setStore('budgets', data);
       }).catch(function (error) {
         console.log(error);
@@ -24825,7 +24825,7 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'addOrUpdateBudget',
     value: function addOrUpdateBudget(budget) {
-      return _ApiService2.default.putRequest('/api/budgets/' + _Helpers2.default.encodeURIParam(budget.uri), budget).then(function (data) {
+      return _ApiService2.default.putRequest('/api/budget/' + _Helpers2.default.encodeURIParam(budget.uri), budget).then(function (data) {
         removeBudget(budget.uri, _Store2.default.budgets);
         insertBudget(data, _Store2.default.budgets);
         _Store2.default.setStore('budgets', _Store2.default.budgets, true);
@@ -24834,7 +24834,7 @@ var BudgetService = function (_ListenerService) {
   }, {
     key: 'deleteBudget',
     value: function deleteBudget(budgetName) {
-      return _ApiService2.default.deleteRequest('/api/budgets/' + _Helpers2.default.encodeURIParam(budgetName)).then(function (data) {
+      return _ApiService2.default.deleteRequest('/api/budget/' + _Helpers2.default.encodeURIParam(budgetName)).then(function (data) {
         removeBudget(budgetName, _Store2.default.budgets);
         _Store2.default.setStore('budgets', _Store2.default.budgets, true);
         console.log('deleted ' + budgetName);
@@ -24977,7 +24977,7 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'fetchTransactions',
     value: function fetchTransactions() {
-      _ApiService2.default.getRequest('/api/transactions').then(function (data) {
+      _ApiService2.default.getRequest('/api/transaction').then(function (data) {
         _Store2.default.setStore('transactions', data);
       }).catch(function (error) {
         console.log(error);
@@ -24986,7 +24986,7 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'addTransaction',
     value: function addTransaction(transaction) {
-      return _ApiService2.default.postRequest('/api/transactions', transaction).then(function (data) {
+      return _ApiService2.default.postRequest('/api/transaction', transaction).then(function (data) {
         insertTransaction(data, _Store2.default.transactions);
         _Store2.default.setStore('transactions', _Store2.default.transactions, true);
       });
@@ -24994,7 +24994,7 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'updateTransaction',
     value: function updateTransaction(transaction) {
-      return _ApiService2.default.putRequest('/api/transactions/' + transaction._id, transaction).then(function (data) {
+      return _ApiService2.default.putRequest('/api/transaction/' + transaction._id, transaction).then(function (data) {
         removeTransaction(transaction._id, _Store2.default.transactions);
         insertTransaction(data, _Store2.default.transactions);
         _Store2.default.setStore('transactions', _Store2.default.transactions, true);
@@ -25003,7 +25003,7 @@ var TransactionService = function (_ListenerService) {
   }, {
     key: 'deleteTransaction',
     value: function deleteTransaction(transaction_id) {
-      return _ApiService2.default.deleteRequest('/api/transactions/' + transaction_id).then(function (data) {
+      return _ApiService2.default.deleteRequest('/api/transaction/' + transaction_id).then(function (data) {
         removeTransaction(transaction_id, _Store2.default.transactions);
         _Store2.default.setStore('transactions', _Store2.default.transactions, true);
         console.log('deleted ' + transaction_id);
@@ -25361,7 +25361,7 @@ var AddTransactionForm = function (_mixin) {
     var _this = _possibleConstructorReturn(this, (AddTransactionForm.__proto__ || Object.getPrototypeOf(AddTransactionForm)).call(this, props));
 
     _this.state = {
-      transaction_type: 'debit',
+      transaction_type: 'credit',
       from: props.from || _this.getDefaultFrom(),
       to: props.to || '@Debit',
       motive: props.motive || '',
@@ -25611,43 +25611,50 @@ function BudgetSelect(props) {
 }
 
 },{"react":221}],239:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = DebitCreditRadioButtons;
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function DebitCreditRadioButtons(props) {
+  var debitClasses = (0, _classnames2.default)('btn', 'btn-outline-secondary', { 'active': props.transaction_type == 'debit' });
+  var creditClasses = (0, _classnames2.default)('btn', 'btn-outline-secondary', { 'active': props.transaction_type == 'credit' });
+
   return _react2.default.createElement(
-    "div",
-    { className: "btn-group", "data-toggle": "buttons" },
+    'div',
+    { className: 'btn-group', 'data-toggle': 'buttons' },
     _react2.default.createElement(
-      "label",
-      { className: "btn btn-outline-secondary active", onClick: function onClick() {
+      'label',
+      { className: debitClasses, onClick: function onClick() {
           return props.onTransactionTypeChange('debit');
         } },
-      _react2.default.createElement("input", { type: "radio", name: "transaction_type", id: "debit", autoComplete: "off" }),
-      " Debit"
+      _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', id: 'debit', autoComplete: 'off' }),
+      ' Debit'
     ),
     _react2.default.createElement(
-      "label",
-      { className: "btn btn-outline-secondary", onClick: function onClick() {
+      'label',
+      { className: creditClasses, onClick: function onClick() {
           return props.onTransactionTypeChange('credit');
         } },
-      _react2.default.createElement("input", { type: "radio", name: "transaction_type", id: "credit", autoComplete: "off" }),
-      " Credit"
+      _react2.default.createElement('input', { type: 'radio', name: 'transaction_type', id: 'credit', autoComplete: 'off' }),
+      ' Credit'
     )
   );
 }
 
-},{"react":221}],240:[function(require,module,exports){
+},{"classnames":1,"react":221}],240:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25818,7 +25825,6 @@ function FormValidationMessages(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = TopNav;
 
 var _react = require('react');
 
@@ -25833,6 +25839,13 @@ var _classnames2 = _interopRequireDefault(_classnames);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function TopNav(props) {
+  var goToRoute = function goToRoute(route) {
+    return function (e) {
+      e.preventDefault();
+      props.history.push(route);
+    };
+  };
+
   return _react2.default.createElement(
     'ul',
     { id: 'top-nav', className: 'nav nav-tabs' },
@@ -25840,8 +25853,8 @@ function TopNav(props) {
       'li',
       { className: 'nav-item' },
       _react2.default.createElement(
-        _reactRouterDom.Link,
-        { to: '/overview', className: (0, _classnames2.default)('nav-link', { 'active': props.page == 'overview' }) },
+        'a',
+        { href: '#', onClick: goToRoute('/overview'), className: (0, _classnames2.default)('nav-link', { 'active': props.page == 'overview' }) },
         'Overview'
       )
     ),
@@ -25849,19 +25862,48 @@ function TopNav(props) {
       'li',
       { className: 'nav-item' },
       _react2.default.createElement(
-        _reactRouterDom.Link,
-        { to: '/history', className: (0, _classnames2.default)('nav-link', { 'active': props.page == 'history' }) },
+        'a',
+        { href: '#', onClick: goToRoute('/history'), className: (0, _classnames2.default)('nav-link', { 'active': props.page == 'history' }) },
         'History'
       )
     ),
     _react2.default.createElement(
-      'a',
-      { role: 'button', href: '/logout', className: 'btn btn-link logout-button' },
-      'Logout ',
-      _react2.default.createElement('i', { className: 'fa fa-sign-out', 'aria-hidden': 'true' })
+      'div',
+      { className: 'btn-group menu-dropdown' },
+      _react2.default.createElement(
+        'button',
+        { type: 'button', className: 'btn btn-link dropdown-toggle', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
+        _react2.default.createElement('i', { className: 'fa fa-bars', 'aria-hidden': 'true' })
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'dropdown-menu dropdown-menu-right' },
+        _react2.default.createElement(
+          'button',
+          { className: 'dropdown-item', type: 'button', onClick: goToRoute('/addTransaction') },
+          '+ Transaction'
+        ),
+        _react2.default.createElement(
+          'button',
+          { className: 'dropdown-item', type: 'button', onClick: goToRoute('/addBudget') },
+          '+ Budget'
+        ),
+        _react2.default.createElement(
+          'button',
+          { className: 'dropdown-item', type: 'button' },
+          _react2.default.createElement(
+            'a',
+            { role: 'button', href: '/logout', className: 'btn btn-link logout-button' },
+            'Logout ',
+            _react2.default.createElement('i', { className: 'fa fa-sign-out', 'aria-hidden': 'true' })
+          )
+        )
+      )
     )
   );
 }
+
+exports.default = (0, _reactRouterDom.withRouter)(TopNav);
 
 },{"classnames":1,"react":221,"react-router-dom":182}],245:[function(require,module,exports){
 'use strict';
@@ -26346,8 +26388,7 @@ function HistoryView(props) {
     'div',
     null,
     _react2.default.createElement(_TopNav2.default, { page: 'history' }),
-    _react2.default.createElement(_HistoryTable2.default, null),
-    _react2.default.createElement(_BottomNav2.default, null)
+    _react2.default.createElement(_HistoryTable2.default, null)
   );
 }
 
@@ -26786,8 +26827,7 @@ function OverviewView(props) {
     'div',
     { id: 'overview' },
     _react2.default.createElement(_TopNav2.default, { page: 'overview' }),
-    _react2.default.createElement(_BalanceTable2.default, null),
-    _react2.default.createElement(_BottomNav2.default, null)
+    _react2.default.createElement(_BalanceTable2.default, null)
   );
 }
 

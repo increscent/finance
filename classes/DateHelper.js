@@ -1,4 +1,9 @@
 class DateHelper {
+  rightNow() {
+    var date = new Date();
+    return date;
+  }
+
   startOfThisMonth() {
     var date = new Date();
     date.setMonth(this.thisMonth(), 1);

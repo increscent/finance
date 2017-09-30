@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var Models = require('../models');
-var helpers = require('./helpers');
-var Account = require('../classes/Account');
+var Helpers = require('./Helpers');
+var Analysis = require('../classes/Analysis');
 
-router.use(helpers.verifyAccount);
+router.use(Helpers.verifyAccount);
 
-router.get('/start_period', helpers.getBudgets, function (req, res) {
+router.get('/overview', Helpers.getBudgets, Helpers.getTransactions, function (req, res) {
   var analysis = new Analysis(req.budgets, req.transactions);
   res.send(JSON.stringify(analysis.getOverview()));
 });

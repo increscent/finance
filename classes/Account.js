@@ -21,7 +21,6 @@ class Account {
           first_name: firstName,
           last_name: lastName,
           budget_period_start: DateHelper.startOfThisMonth(),
-          budget_period_end: DateHelper.startOfNextMonth(),
           google_id: googleId
         });
         return newAccount.save();
@@ -29,29 +28,36 @@ class Account {
     });
   }
 
-  startNewPeriod(callback) {
-    this.account.budget_period_start = DateHelper.startOfThisMonth();
-    this.account.budget_period_end = DateHelper.startOfNextMonth();
-    this.account.save()
+  startNewPeriod() {
+    this.account.past_budget_periods.push({
+      start_date: this.account.budget_period_start,
+      end_date: DateHelper.rightNow()
+    });
+    this.account.budget_period_start = DateHelper.rightNow();
+    this.account.markModified('past_budget_periods');
+
+    return this.account.save()
     .then(account => {
-      for (var i in this.budgets) {
-        if (this.budgets[i].allowance_type == '$') {
-          var transaction = new Models.Transaction({
-            from: 'Other',
-            to: this.budgets[i].name,
-            motive: 'Budget Allocations',
-            amount: this.budgets[i].allowance,
-            date: Date.now(),
-            account_id: this.account.id
-          });
-          transaction.save();
-        }
-      }
-      callback(null, account);
-    })
-    .catch(error => {
-      console.log(error)
-      callback(true);
+      let filterBudgets = budget => {
+        return budget.allowance_type == '$';
+      };
+
+      let addTransaction = budget => {
+        let transaction = new Models.Transaction({
+          from: 'Other',
+          to: budget.name,
+          motive: 'Budget Allocations',
+          amount: budget.allowance,
+          date: DateHelper.rightNow(),
+          account_id: this.account.id
+        });
+        return transaction.save();
+      };
+
+      return Promise.all(this.budgets
+        .filter(filterBudgets)
+        .map(addTransaction)
+      );
     });
   }
 }

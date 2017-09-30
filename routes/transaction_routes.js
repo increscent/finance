@@ -1,33 +1,37 @@
 var express = require('express');
 var router = express.Router();
 var Models = require('../models');
-var helpers = require('./helpers');
+var Helpers = require('./Helpers');
 var config = require('../config/route_config');
 var Transaction = require('../classes/Transaction');
 
-router.use(helpers.verifyAccount);
+router.use(Helpers.verifyAccount);
 
-router.get('/', helpers.getTransactions, function (req, res) {
-  res.send(JSON.stringify(req.transactions));
+router.get('/', Helpers.getTransactions, function (req, res) {
+  res.send(JSON.stringify(req.transactions.map(Helpers.cleanTransaction)));
 });
 
-router.post('/', helpers.validateRequestBody(config.transaction_required_fields), helpers.getBudgets, function (req, res) {
+router.post('/', Helpers.validateRequestBody(config.transaction_required_fields), Helpers.getBudgets, function (req, res) {
   var transaction = new Transaction(req.account, req.budgets);
   transaction.create(req.validated_body)
   .then(newTransaction => {
-    res.send(JSON.stringify(newTransaction));
+    res.send(JSON.stringify(Helpers.cleanTransaction(newTransaction)));
   })
   .catch(error => {
-    helpers.errorResponse(res, error.message);
+    Helpers.errorResponse(res, error.message);
   });
 });
 
-router.put('/:id', helpers.validateRequestBody(config.transaction_required_fields), function (req, res) {
+router.put('/:id', Helpers.validateRequestBody(config.transaction_required_fields), function (req, res) {
   var transaction = new Transaction(req.account);
   req.validated_body._id = req.params.id;
   transaction.update(req.validated_body)
-  .then(newTransaction => res.send(JSON.stringify(newTransaction)))
-  .catch(error => helpers.errorResponse(res, error.message));
+  .then(newTransaction => {
+    res.send(JSON.stringify(Helpers.cleanTransaction(ewTransaction)))
+  })
+  .catch(error => {
+    Helpers.errorResponse(res, error.message)
+  });
 });
 
 router.delete('/:id', function (req, res) {
@@ -37,7 +41,7 @@ router.delete('/:id', function (req, res) {
     res.send(JSON.stringify({success: true}));
   })
   .catch(error => {
-    helpers.errorResponse(res, error.message);
+    Helpers.errorResponse(res, error.message);
   })
 });
 

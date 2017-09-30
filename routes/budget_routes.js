@@ -1,39 +1,39 @@
 var express = require('express');
 var router = express.Router();
 var Models = require('../models');
-var helpers = require('./helpers');
+var Helpers = require('./Helpers');
 var config = require('../config/route_config');
 var Budget = require('../classes/Budget');
 
-router.use(helpers.verifyAccount);
+router.use(Helpers.verifyAccount);
 
-router.get('/', helpers.getBudgets, function (req, res) {
+router.get('/', Helpers.getBudgets, function (req, res) {
   req.budgets.push({name: 'Other'});
-  res.send(JSON.stringify(req.budgets));
+  res.send(JSON.stringify(req.budgets.map(Helpers.cleanBudget)));
 });
 
-router.put('/:name', helpers.validateRequestBody(config.budget_required_fields), helpers.getBudgets, helpers.getTransactions, function (req, res) {
+router.put('/:name', Helpers.validateRequestBody(config.budget_required_fields), Helpers.getBudgets, Helpers.getTransactions, function (req, res) {
   var budget = new Budget(req.account, req.budgets, req.params.name, req.transactions);
   budget.updateOrCreate(req.validated_body)
   .then(budget => {
-    res.send(JSON.stringify(budget));
+    res.send(JSON.stringify(Helpers.cleanBudget(budget)));
   })
   .catch(error => {
-    helpers.errorResponse(res, error.message);
+    Helpers.errorResponse(res, error.message);
     console.log(error);
   });
 });
 
-router.delete('/:name', helpers.getBudgets, helpers.getTransactions, function (req, res) {
+router.delete('/:name', Helpers.getBudgets, Helpers.getTransactions, function (req, res) {
   var budget = new Budget(req.account, req.budgets, req.params.name, req.transactions);
   budget.delete()
   .then(() => {
     res.send(JSON.stringify({success: true}));
   })
   .catch(error => {
-    helpers.errorResponse(res, error.message);
+    Helpers.errorResponse(res, error.message);
     console.log(error);
-  })
+  });
 });
 
 module.exports = router;

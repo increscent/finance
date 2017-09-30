@@ -1,33 +1,51 @@
 var Models = require('../models');
 
-module.exports = {
-  verifyAccount: function (req, res, next) {
+class Helpers {
+  verifyAccount(req, res, next) {
     if (!req.user) return res.redirect('/');
     req.account = req.user;
     return next();
-  },
+  }
 
-  getBudgets: function (req, res, next) {
+  getBudgets(req, res, next) {
     Models.Budget.find({account_id: req.account._id}, function (err, budgets) {
       req.budgets = budgets || [];
       return next();
     });
-  },
+  }
 
-  getTransactions: function (req, res, next) {
+  getTransactions(req, res, next) {
     Models.Transaction.find({
       account_id: req.account._id,
       date: {
-        $gt: req.account.budget_period_start,
-        $lt: req.account.budget_period_end
+        $gt: req.account.budget_period_start
       }
     }, function (err, transactions) {
       req.transactions = transactions || [];
       return next();
     });
-  },
+  }
 
-  validateRequestBody: function (required_fields) {
+  cleanBudget(budget) {
+    return {
+      name: budget.name,
+      allowance: budget.allowance,
+      allowance_type: budget.allowance_type,
+      date: budget.date
+    };
+  }
+
+  cleanTransaction(transaction) {
+    return {
+      from: transaction.from,
+      to: transaction.to,
+      motive: transaction.motive,
+      amount: transaction.amount,
+      date: transaction.date
+    };
+  }
+
+  validateRequestBody(required_fields) {
     return function (req, res, next) {
       if (required_fields.includes('date') && !req.body.date) req.body.date = Date.now();
 
@@ -45,21 +63,21 @@ module.exports = {
 
       next();
     }
-  },
+  }
 
-  userError: function (res, text) {
+  userError(res, text) {
     res.statusCode = 400;
     res.send(text);
-  },
+  }
 
-  serverError: function (res, text) {
+  serverError(res, text) {
     res.statusCode = 500;
     res.send(JSON.stringify({
       error: text
     }));
-  },
+  }
 
-  errorResponse: function (res, text) {
+  errorResponse(res, text) {
     var statusCode = parseInt(text.substr(0, 3));
     if (!statusCode) {
       res.statusCode = 500;
@@ -71,4 +89,6 @@ module.exports = {
       error: text
     }))
   }
-};
+}
+
+module.exports = new Helpers();

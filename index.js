@@ -15,7 +15,8 @@ app.use(session({
     secret: secrets.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({mongooseConnection: mongoose.connection})
+    store: new MongoStore({mongooseConnection: mongoose.connection}),
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 7 * 6}
 }));
 
 const passportConfig = require('./config/passport_config');

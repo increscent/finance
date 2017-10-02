@@ -25361,7 +25361,7 @@ var AddTransactionForm = function (_mixin) {
     var _this = _possibleConstructorReturn(this, (AddTransactionForm.__proto__ || Object.getPrototypeOf(AddTransactionForm)).call(this, props));
 
     _this.state = {
-      transaction_type: 'credit',
+      transaction_type: props.transaction_type || 'debit',
       from: props.from || _this.getDefaultFrom(),
       to: props.to || '@Debit',
       motive: props.motive || '',
@@ -25573,7 +25573,7 @@ function AddTransactionView(props) {
     _react2.default.createElement(
       'div',
       { className: 'container' },
-      _react2.default.createElement(_AddTransactionForm2.default, { from: from })
+      _react2.default.createElement(_AddTransactionForm2.default, { from: from, transaction_type: from ? 'debit' : 'credit' })
     )
   );
 }
@@ -26135,7 +26135,7 @@ var EditTransactionView = function (_React$Component) {
           'div',
           { className: 'container' },
           transaction ? // transaction must be set in order to edit it
-          _react2.default.createElement(_AddTransactionForm2.default, { uri: transaction._id, from: transaction.from, to: transaction.to, amount: transaction.amount, motive: transaction.motive }) : _react2.default.createElement(
+          _react2.default.createElement(_AddTransactionForm2.default, { uri: transaction._id, from: transaction.from, to: transaction.to, amount: transaction.amount, motive: transaction.motive, transaction_type: transaction.to == '@Debit' ? 'debit' : 'credit' }) : _react2.default.createElement(
             'div',
             { className: 'alert alert-warning', role: 'alert' },
             'The specified transaction was not found :('

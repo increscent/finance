@@ -12,7 +12,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
-      transaction_type: 'credit',
+      transaction_type: props.transaction_type || 'debit',
       from: props.from || this.getDefaultFrom(),
       to: props.to || '@Debit',
       motive: props.motive || '',

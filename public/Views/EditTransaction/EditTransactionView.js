@@ -27,7 +27,7 @@ export default class EditTransactionView extends React.Component {
           <div className="container">
             {
               transaction? // transaction must be set in order to edit it
-              <AddTransactionForm uri={transaction._id} from={transaction.from} to={transaction.to} amount={transaction.amount} motive={transaction.motive} />
+              <AddTransactionForm uri={transaction._id} from={transaction.from} to={transaction.to} amount={transaction.amount} motive={transaction.motive} transaction_type={transaction.to == '@Debit'?'debit':'credit'} />
               :
               <div className="alert alert-warning" role="alert">
                 The specified transaction was not found :(

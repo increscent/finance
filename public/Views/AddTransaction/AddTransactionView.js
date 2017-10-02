@@ -10,7 +10,7 @@ export default function AddTransactionView(props) {
     <div>
       <BackNav title="Log Transaction"/>
       <div className="container">
-        <AddTransactionForm from={from} />
+        <AddTransactionForm from={from} transaction_type={from? 'debit':'credit'} />
       </div>
     </div>
   );

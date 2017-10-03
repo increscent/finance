@@ -1,7 +1,10 @@
+import AccountService from './AccountService.js';
+
 class ApiService {
   getRequest(endpoint) {
     var request_options = {
-      method: 'GET'
+      method: 'GET',
+      headers: {'period.id': AccountService.period._id}
     };
 
     return this.apiRequest(endpoint, request_options);

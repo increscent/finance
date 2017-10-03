@@ -43,6 +43,7 @@ class BalanceTable extends React.Component {
             budget.onEditBudget = () => this.handleEditBudget(budget);
             budget.onNewTransaction = () => this.handleNewTransaction(budget);
             budget.safe_name = Helpers.generateSafeName(budget.name);
+            if (budget.name == 'Total') budget.transactions = TransactionService.getCreditTransactions();
             return <BalanceCard key={budget.name} budget={budget}/>
           })
         }

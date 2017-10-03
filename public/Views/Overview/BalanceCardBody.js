@@ -1,5 +1,5 @@
 import React from 'react';
-import TransactionList from '../Components/TransactionList.js';
+import TransactionList from './TransactionList.js';
 import BudgetControls from './BudgetControls.js';
 
 export default function BalanceCardBody(props) {

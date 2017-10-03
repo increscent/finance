@@ -91,8 +91,8 @@ class AddTransactionForm extends mixin(Form, React.Component) {
     if (!error_messages.length) {
       // validation successful
       var transaction = {
-        from: this.state.from,
-        to: this.state.to,
+        from: this.state.transaction_type == 'credit'? '@Credit':this.state.from,
+        to: this.state.transaction_type == 'credit'? 'Other':this.state.to,
         motive: this.state.motive.trim(),
         amount: parseFloat(this.state.amount)
       };

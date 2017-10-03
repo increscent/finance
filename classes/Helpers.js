@@ -37,6 +37,7 @@ class Helpers {
 
   cleanTransaction(transaction) {
     return {
+      _id: transaction._id,
       from: transaction.from,
       to: transaction.to,
       motive: transaction.motive,

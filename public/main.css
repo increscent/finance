@@ -1,3 +1,10 @@
+body {
+  max-width: 600px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .table th {
   border-top: 0;
 }
@@ -59,11 +66,19 @@
 
 .cell-padding {
   padding: 10px 5px !important;
-  margin: 0 !important;
+  /*margin: 0 !important;*/
+}
+
+.transaction-list-item:hover {
+  cursor: pointer;
+}
+
+.transaction-list-item:nth-child(2n) {
+  background-color: rgba(135,206,250,0.15);
 }
 
 .transaction-list-item:nth-child(2n - 1) {
-  background-color: rgba(0,0,0,.05);
+  background-color: rgba(135,206,250,0.3);
 }
 
 #overview .card-header-content {

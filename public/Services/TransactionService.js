@@ -21,6 +21,18 @@ class TransactionService extends ListenerService {
   getDebitTransactionsForBudget(budget) {
     return Store.transactions.filter(transaction => {
       return transaction.from == budget.name && transaction.to == '@Debit';
+    })
+    .sort((transactionA,transactionB) => {
+      return (new Date(transactionA.date)) < (new Date(transactionB.date))? 1:-1;
+    });
+  }
+
+  getCreditTransactions() {
+    return Store.transactions.filter(transaction => {
+      return transaction.from == '@Credit';
+    })
+    .sort((transactionA,transactionB) => {
+      return (new Date(transactionA.date)) < (new Date(transactionB.date))? 1:-1;
     });
   }
 

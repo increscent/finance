@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Models = require('../models');
-var Helpers = require('./Helpers');
+var Helpers = require('../classes/Helpers');
 var config = require('../config/route_config');
 var Transaction = require('../classes/Transaction');
 
@@ -27,7 +27,7 @@ router.put('/:id', Helpers.validateRequestBody(config.transaction_required_field
   req.validated_body._id = req.params.id;
   transaction.update(req.validated_body)
   .then(newTransaction => {
-    res.send(JSON.stringify(Helpers.cleanTransaction(ewTransaction)))
+    res.send(JSON.stringify(Helpers.cleanTransaction(newTransaction)))
   })
   .catch(error => {
     Helpers.errorResponse(res, error.message)

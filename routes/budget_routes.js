@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Models = require('../models');
-var Helpers = require('./Helpers');
+var Helpers = require('../classes/Helpers');
 var config = require('../config/route_config');
 var Budget = require('../classes/Budget');
 

@@ -38,6 +38,20 @@ class Account {
 
     return this.account.save()
     .then(account => {
+      let addBudget = budget => {
+        let newBudget = new Models.Budget({
+          name: budget.name,
+          allowance: budget.allowance,
+          allowance_type: budget.allowance_type,
+          date: DateHelper.rightNow(),
+          account_id: this.account.id
+        });
+        return newBudget.save();
+      };
+
+      return Promise.all(this.budgets.map(addBudget));
+    })
+    .then(() => {
       let filterBudgets = budget => {
         return budget.allowance_type == '$';
       };

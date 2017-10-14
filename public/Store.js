@@ -15,8 +15,10 @@ class Store extends ListenerService {
     this.budgets = [];
     this.transactions = [];
     this.overview = [];
+    this.periods = [];
 
-    this.hasUpdated("all");
+    if (this.isLoggedIn())
+      this.hasUpdated("all");
   }
 
   hasUpdated(type) {
@@ -24,10 +26,22 @@ class Store extends ListenerService {
     this.fetchOverview(periodId);
     if (type !== "budgets") this.fetchBudgets(periodId);
     if (type !== "transactions") this.fetchTransactions(periodId);
+    if (type == "all" || type == "periods") this.fetchPeriods();
   }
 
   isLoggedIn() {
     return this.accountService.isLoggedIn;
+  }
+
+  fetchPeriods() {
+    this.accountService.fetchPeriods()
+    .then(data => {
+      this.periods = data;
+      this.notifyListeners();
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
   fetchOverview() {

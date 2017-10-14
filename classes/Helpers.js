@@ -4,6 +4,7 @@ var DateHelper = require('./DateHelper');
 class Helpers {
   constructor() {
     this.getTransactions = this.getTransactions.bind(this);
+    this.getBudgets = this.getBudgets.bind(this);
   }
 
   verifyAccount(req, res, next) {
@@ -13,7 +14,15 @@ class Helpers {
   }
 
   getBudgets(req, res, next) {
-    Models.Budget.find({account_id: req.account._id}, function (err, budgets) {
+    let period = this.getPeriod(req);
+
+    Models.Budget.find({
+      account_id: req.account._id,
+      date: {
+        $gt: period.start_date,
+        $lt: period.end_date
+      }
+    }, function (err, budgets) {
       req.budgets = budgets || [];
       return next();
     });
@@ -38,7 +47,7 @@ class Helpers {
     let periodId = req.headers['period.id'];
     let period = undefined;
     if (periodId) period = req.account.past_budget_periods.find(period => period._id == periodId);
-    
+
     if (!periodId || !period) {
       return {
         start_date: req.account.budget_period_start,

@@ -24593,24 +24593,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ApiService = require('./ApiService.js');
+
+var _ApiService2 = _interopRequireDefault(_ApiService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var AccountService = function AccountService() {
-  _classCallCheck(this, AccountService);
+var AccountService = function () {
+  function AccountService() {
+    _classCallCheck(this, AccountService);
 
-  var cookieName = 'is-logged-in';
-  var i = document.cookie.indexOf(cookieName);
-  var cookieValue = document.cookie.substr(i + cookieName.length);
-  this.isLoggedIn = cookieValue.startsWith('=true') ? true : false;
-  this.periodId = null;
-  this.period = {
-    // _id: "59cf1648d8863f27a13e24bc"
-  };
-};
+    var cookieName = 'is-logged-in';
+    var i = document.cookie.indexOf(cookieName);
+    var cookieValue = document.cookie.substr(i + cookieName.length);
+    this.isLoggedIn = cookieValue.startsWith('=true') ? true : false;
+    this.periodId = null;
+  }
+
+  _createClass(AccountService, [{
+    key: 'fetchPeriods',
+    value: function fetchPeriods() {
+      return _ApiService2.default.getRequest('/api/account/periods', null);
+    }
+  }]);
+
+  return AccountService;
+}();
 
 exports.default = AccountService;
 
-},{}],228:[function(require,module,exports){
+},{"./ApiService.js":229}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24989,8 +25005,9 @@ var Store = function (_ListenerService) {
     _this.budgets = [];
     _this.transactions = [];
     _this.overview = [];
+    _this.periods = [];
 
-    _this.hasUpdated("all");
+    if (_this.isLoggedIn()) _this.hasUpdated("all");
     return _this;
   }
 
@@ -25001,6 +25018,7 @@ var Store = function (_ListenerService) {
       this.fetchOverview(periodId);
       if (type !== "budgets") this.fetchBudgets(periodId);
       if (type !== "transactions") this.fetchTransactions(periodId);
+      if (type == "all" || type == "periods") this.fetchPeriods();
     }
   }, {
     key: "isLoggedIn",
@@ -25008,13 +25026,25 @@ var Store = function (_ListenerService) {
       return this.accountService.isLoggedIn;
     }
   }, {
-    key: "fetchOverview",
-    value: function fetchOverview() {
+    key: "fetchPeriods",
+    value: function fetchPeriods() {
       var _this2 = this;
 
-      this.analysisService.fetchOverview(this.accountService.periodId).then(function (data) {
-        _this2.overview = data;
+      this.accountService.fetchPeriods().then(function (data) {
+        _this2.periods = data;
         _this2.notifyListeners();
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: "fetchOverview",
+    value: function fetchOverview() {
+      var _this3 = this;
+
+      this.analysisService.fetchOverview(this.accountService.periodId).then(function (data) {
+        _this3.overview = data;
+        _this3.notifyListeners();
       }).catch(function (error) {
         console.log(error);
       });
@@ -25022,11 +25052,11 @@ var Store = function (_ListenerService) {
   }, {
     key: "fetchBudgets",
     value: function fetchBudgets() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.budgetService.fetchBudgets(this.accountService.periodId).then(function (data) {
-        _this3.budgets = data;
-        _this3.notifyListeners();
+        _this4.budgets = data;
+        _this4.notifyListeners();
       }).catch(function (error) {
         console.log(error);
       });
@@ -25034,29 +25064,29 @@ var Store = function (_ListenerService) {
   }, {
     key: "addOrUpdateBudget",
     value: function addOrUpdateBudget(budget) {
-      var _this4 = this;
+      var _this5 = this;
 
       return this.budgetService.addOrUpdateBudget(budget, this.budgets).then(function () {
-        _this4.hasUpdated("budgets");
+        _this5.hasUpdated("budgets");
       });
     }
   }, {
     key: "deleteBudget",
     value: function deleteBudget(budgetUri) {
-      var _this5 = this;
+      var _this6 = this;
 
       return this.budgetService.deleteBudget(budgetUri, this.budgets).then(function () {
-        _this5.hasUpdated("budgets");
+        _this6.hasUpdated("budgets");
       });
     }
   }, {
     key: "fetchTransactions",
     value: function fetchTransactions() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.transactionService.fetchTransactions(this.accountService.periodId).then(function (data) {
-        _this6.transactions = data;
-        _this6.notifyListeners();
+        _this7.transactions = data;
+        _this7.notifyListeners();
       }).catch(function (error) {
         console.log(error);
       });
@@ -25064,28 +25094,28 @@ var Store = function (_ListenerService) {
   }, {
     key: "addTransaction",
     value: function addTransaction(transaction) {
-      var _this7 = this;
+      var _this8 = this;
 
       return this.transactionService.addTransaction(transaction, this.transactions).then(function () {
-        _this7.hasUpdated("transactions");
+        _this8.hasUpdated("transactions");
       });
     }
   }, {
     key: "updateTransaction",
     value: function updateTransaction(transaction) {
-      var _this8 = this;
+      var _this9 = this;
 
       return this.transactionService.updateTransaction(transaction, this.transactions).then(function () {
-        _this8.hasUpdated("transactions");
+        _this9.hasUpdated("transactions");
       });
     }
   }, {
     key: "deleteTransaction",
     value: function deleteTransaction(transactionId) {
-      var _this9 = this;
+      var _this10 = this;
 
       return this.transactionService.deleteTransaction(transactionId, this.transactions).then(function () {
-        _this9.hasUpdated("transactions");
+        _this10.hasUpdated("transactions");
       });
     }
   }, {

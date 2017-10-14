@@ -1,7 +1,7 @@
 import React from 'react';
 import AddTransactionForm from '../AddTransaction/AddTransactionForm.js';
 import BackNav from '../Components/BackNav.js';
-import TransactionService from '../../Services/TransactionService.js';
+import Store from "../../Store.js";
 
 export default class EditTransactionView extends React.Component {
   constructor(props) {
@@ -11,16 +11,16 @@ export default class EditTransactionView extends React.Component {
   }
 
   componentDidMount() {
-    this.transactionServiceListenerId = TransactionService.registerListener(this.forceUpdate);
+    this.storeListenerId = Store.registerListener(this.forceUpdate);
   }
 
   componentWillUnmount() {
-    TransactionService.unRegisterListener(this.transactionServiceListenerId);
+    Store.unRegisterListener(this.storeListenerId);
   }
 
   render() {
     let id = this.props.match.params.id;
-    let transaction = TransactionService.getTransactions().find(x => x._id == id);
+    let transaction = Store.transactions.find(x => x._id == id);
     return (
       <div>
         <BackNav title={"Edit Transaction"} />

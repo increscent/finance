@@ -1,22 +1,21 @@
-import React from 'react';
+import React from "react";
 import {withRouter} from "react-router-dom";
-import BudgetService from '../../Services/BudgetService.js';
-import TransactionService from '../../Services/TransactionService.js';
-import BudgetSelect from './BudgetSelect.js';
-import Form from '../Components/Form.js';
-import FormValidationMessages from '../Components/FormValidationMessages.js';
-import mixin from 'mixin';
-import DebitCreditRadioButtons from './DebitCreditRadioButtons.js';
+import BudgetSelect from "./BudgetSelect.js";
+import Form from "../Components/Form.js";
+import FormValidationMessages from "../Components/FormValidationMessages.js";
+import mixin from "mixin";
+import DebitCreditRadioButtons from "./DebitCreditRadioButtons.js";
+import Store from "../../Store.js";
 
 class AddTransactionForm extends mixin(Form, React.Component) {
   constructor(props) {
     super(props);
     this.state = {
-      transaction_type: props.transaction_type || 'debit',
+      transaction_type: props.transaction_type || "credit",
       from: props.from || this.getDefaultFrom(),
-      to: props.to || '@Debit',
-      motive: props.motive || '',
-      amount: props.amount || '',
+      to: props.to || "@Debit",
+      motive: props.motive || "",
+      amount: props.amount || "",
       validation_messages: []
     };
 
@@ -24,6 +23,7 @@ class AddTransactionForm extends mixin(Form, React.Component) {
     this.setDefaultFrom = this.setDefaultFrom.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleTransactionDelete = this.handleTransactionDelete.bind(this);
+    this.forceUpdate = this.forceUpdate.bind(this);
   }
 
   setDefaultFrom() {
@@ -34,16 +34,16 @@ class AddTransactionForm extends mixin(Form, React.Component) {
   }
 
   componentDidMount() {
-    this.budgetServiceListenerId = BudgetService.registerListener(this.setDefaultFrom);
+    this.storeListenerId = Store.registerListener(this.forceUpdate);
   }
 
   componentWillUnmount() {
-    BudgetService.unRegisterListener(this.budgetServiceListenerId);
+    Store.unRegisterListener(this.storeListenerId);
   }
 
   handleTransactionDelete(e) {
     e.preventDefault();
-    TransactionService.deleteTransaction(this.props.uri)
+    Store.deleteTransaction(this.props.uri)
     .then(() => {
       this.props.history.goBack();
     })
@@ -55,15 +55,15 @@ class AddTransactionForm extends mixin(Form, React.Component) {
   }
 
   getDefaultFrom() {
-    return BudgetService.getBudgets()[0]? BudgetService.getBudgets()[0].name : '';
+    return Store.budgets[0]? Store.budgets[0].name : "";
   }
 
   handleTransactionTypeChange(transaction_type) {
-    var from = '@Credit';
-    var to = 'Other';
-    if (transaction_type == 'debit') {
+    var from = "@Credit";
+    var to = "Other";
+    if (transaction_type == "debit") {
       var from = this.getDefaultFrom();
-      var to = '@Debit';
+      var to = "@Debit";
     }
     this.setState({
       transaction_type: transaction_type,
@@ -76,11 +76,11 @@ class AddTransactionForm extends mixin(Form, React.Component) {
     e.preventDefault();
 
     var rules = [
-      {name: 'transaction_type', validate: (x) => x == 'debit' || x == 'credit', error_message: 'Please select a transaction type.'},
-      {name: 'from', validate: (x) => x, error_message: 'Please select a category.'},
-      {name: 'motive', validate: (x) => true, error_message: 'It doesn\'t matter what note you write.'},
-      {name: 'amount', validate: (x) => parseFloat(x), error_message: 'Please enter a valid amount.'},
-      {name: 'amount', validate: (x) => parseFloat(x) && parseFloat(x) > 0, error_message: 'Transaction amount must be a positive number.'}
+      {name: "transaction_type", validate: (x) => x == "debit" || x == "credit", error_message: "Please select a transaction type."},
+      {name: "from", validate: (x) => x, error_message: "Please select a category."},
+      {name: "motive", validate: (x) => true, error_message: "It doesn\'t matter what note you write."},
+      {name: "amount", validate: (x) => parseFloat(x), error_message: "Please enter a valid amount."},
+      {name: "amount", validate: (x) => parseFloat(x) && parseFloat(x) > 0, error_message: "Transaction amount must be a positive number."}
     ];
 
     var error_messages = this.validateFormInput(rules);
@@ -91,8 +91,8 @@ class AddTransactionForm extends mixin(Form, React.Component) {
     if (!error_messages.length) {
       // validation successful
       var transaction = {
-        from: this.state.transaction_type == 'credit'? '@Credit':this.state.from,
-        to: this.state.transaction_type == 'credit'? 'Other':this.state.to,
+        from: this.state.transaction_type == "credit"? "@Credit":this.state.from,
+        to: this.state.transaction_type == "credit"? "Other":"@Debit",
         motive: this.state.motive.trim(),
         amount: parseFloat(this.state.amount)
       };
@@ -100,9 +100,9 @@ class AddTransactionForm extends mixin(Form, React.Component) {
       var request;
       if (this.props.uri) {
         transaction._id = this.props.uri;
-        request = TransactionService.updateTransaction(transaction);
+        request = Store.updateTransaction(transaction);
       } else {
-        request = TransactionService.addTransaction(transaction);
+        request = Store.addTransaction(transaction);
       }
 
       request
@@ -126,17 +126,17 @@ class AddTransactionForm extends mixin(Form, React.Component) {
 
         <div className="form-group">
           {
-            this.state.transaction_type == 'debit' &&
-            <BudgetSelect budgets={BudgetService.getBudgets()} from={this.state.from} onChange={(e) => this.handleFormInput('from', e)} />
+            this.state.transaction_type == "debit" &&
+            <BudgetSelect budgets={Store.budgets} from={this.state.from} onChange={(e) => this.handleFormInput("from", e)} />
           }
         </div>
 
         <div className="form-group">
-          $<input type="text" name="amount" placeholder="Amount" className="form-control amount" value={this.state.amount} onChange={(e) => this.handleFormInput('amount', e)} />
+          $<input type="text" name="amount" placeholder="Amount" className="form-control amount" value={this.state.amount} onChange={(e) => this.handleFormInput("amount", e)} />
         </div>
 
         <div className="form-group">
-          <input type="text" name="motive" placeholder="Note" className="form-control" value={this.state.motive} onChange={(e) => this.handleFormInput('motive', e)} />
+          <input type="text" name="motive" placeholder="Note" className="form-control" value={this.state.motive} onChange={(e) => this.handleFormInput("motive", e)} />
         </div>
 
         <div className="form-group">

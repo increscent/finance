@@ -1,11 +1,9 @@
 import React from 'react';
-import AnalysisService from '../../Services/AnalysisService.js';
-import BudgetService from '../../Services/BudgetService.js';
-import TransactionService from '../../Services/TransactionService.js';
 import BalanceTableHeader from './BalanceTableHeader.js';
 import BalanceCard from './BalanceCard.js';
 import {withRouter} from 'react-router-dom';
 import Helpers from '../../Helpers.js';
+import Store from "../../Store.js";
 
 class BalanceTable extends React.Component {
   constructor(props) {
@@ -17,13 +15,11 @@ class BalanceTable extends React.Component {
   }
 
   componentDidMount() {
-    this.analysisServiceListenerId = AnalysisService.registerListener(this.forceUpdate);
-    this.budgetServiceListenerId = BudgetService.registerListener(this.forceUpdate);
+    this.storeListenerId = Store.registerListener(this.forceUpdate);
   }
 
   componentWillUnmount() {
-    AnalysisService.unRegisterListener(this.analysisServiceListenerId);
-    BudgetService.unRegisterListener(this.budgetServiceListenerId);
+    Store.unRegisterListener(this.storeListenerId);
   }
 
   handleEditBudget(budget) {
@@ -38,12 +34,12 @@ class BalanceTable extends React.Component {
     return (
       <div id="accordion" role="tablist">
         {
-          AnalysisService.overview.map((budget) => {
-            budget.transactions = TransactionService.getDebitTransactionsForBudget(budget);
+          Store.overview.map((budget) => {
+            budget.transactions = Store.getDebitTransactionsForBudget(budget);
             budget.onEditBudget = () => this.handleEditBudget(budget);
             budget.onNewTransaction = () => this.handleNewTransaction(budget);
             budget.safe_name = Helpers.generateSafeName(budget.name);
-            if (budget.name == 'Total') budget.transactions = TransactionService.getCreditTransactions();
+            if (budget.name == 'Total') budget.transactions = Store.getCreditTransactions();
             return <BalanceCard key={budget.name} budget={budget}/>
           })
         }

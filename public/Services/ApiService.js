@@ -1,47 +1,45 @@
-import AccountService from './AccountService.js';
-
 class ApiService {
-  getRequest(endpoint) {
-    var request_options = {
+  getRequest(endpoint, periodId) {
+    var requestOptions = {
       method: 'GET',
-      headers: {'period.id': AccountService.period._id}
+      headers: {'period.id': periodId}
     };
 
-    return this.apiRequest(endpoint, request_options);
+    return this.apiRequest(endpoint, requestOptions);
   }
 
   postRequest(endpoint, body) {
-    var request_options = {
+    var requestOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     };
 
-    return this.apiRequest(endpoint, request_options);
+    return this.apiRequest(endpoint, requestOptions);
   }
 
   putRequest(endpoint, body) {
-    var request_options = {
+    var requestOptions = {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     };
 
-    return this.apiRequest(endpoint, request_options);
+    return this.apiRequest(endpoint, requestOptions);
   }
 
   deleteRequest(endpoint) {
-    var request_options = {
+    var requestOptions = {
       method: 'DELETE',
       headers: {'Content-Type': 'application/json'}
     };
 
-    return this.apiRequest(endpoint, request_options);
+    return this.apiRequest(endpoint, requestOptions);
   }
 
-  apiRequest(endpoint, request_options, response_type) {
-    request_options.credentials = 'same-origin';
-    return fetch(endpoint, request_options)
+  apiRequest(endpoint, requestOptions, response_type) {
+    requestOptions.credentials = 'same-origin';
+    return fetch(endpoint, requestOptions)
     .then(res => res.json())
     .then(data => {
       if (data.error) throw new Error(data.error);

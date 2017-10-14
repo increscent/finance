@@ -24517,49 +24517,49 @@ var Helpers = function () {
 exports.default = new Helpers();
 
 },{}],226:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
+var _reactDom = require("react-dom");
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactRouterDom = require('react-router-dom');
+var _reactRouterDom = require("react-router-dom");
 
-var _OverviewView = require('./Views/Overview/OverviewView.js');
+var _OverviewView = require("./Views/Overview/OverviewView.js");
 
 var _OverviewView2 = _interopRequireDefault(_OverviewView);
 
-var _HistoryView = require('./Views/History/HistoryView.js');
+var _HistoryView = require("./Views/History/HistoryView.js");
 
 var _HistoryView2 = _interopRequireDefault(_HistoryView);
 
-var _AddTransactionView = require('./Views/AddTransaction/AddTransactionView.js');
+var _AddTransactionView = require("./Views/AddTransaction/AddTransactionView.js");
 
 var _AddTransactionView2 = _interopRequireDefault(_AddTransactionView);
 
-var _AddBudgetView = require('./Views/AddBudget/AddBudgetView.js');
+var _AddBudgetView = require("./Views/AddBudget/AddBudgetView.js");
 
 var _AddBudgetView2 = _interopRequireDefault(_AddBudgetView);
 
-var _EditBudgetView = require('./Views/EditBudget/EditBudgetView.js');
+var _EditBudgetView = require("./Views/EditBudget/EditBudgetView.js");
 
 var _EditBudgetView2 = _interopRequireDefault(_EditBudgetView);
 
-var _EditTransactionView = require('./Views/EditTransaction/EditTransactionView.js');
+var _EditTransactionView = require("./Views/EditTransaction/EditTransactionView.js");
 
 var _EditTransactionView2 = _interopRequireDefault(_EditTransactionView);
 
-var _LoginView = require('./Views/Login/LoginView.js');
+var _LoginView = require("./Views/Login/LoginView.js");
 
 var _LoginView2 = _interopRequireDefault(_LoginView);
 
-var _AccountService = require('./Services/AccountService.js');
+var _Store = require("./Store.js");
 
-var _AccountService2 = _interopRequireDefault(_AccountService);
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24567,26 +24567,26 @@ function App(props) {
   return _react2.default.createElement(
     _reactRouterDom.HashRouter,
     null,
-    _AccountService2.default.isLoggedIn ? _react2.default.createElement(
-      'div',
+    _Store2.default.isLoggedIn() ? _react2.default.createElement(
+      "div",
       null,
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/(|overview)/', component: _OverviewView2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/history', component: _HistoryView2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/addTransaction/:from?', component: _AddTransactionView2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/addBudget', component: _AddBudgetView2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/editBudget/:name?', component: _EditBudgetView2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/editTransaction/:id?', component: _EditTransactionView2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/(|overview)/", component: _OverviewView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/history", component: _HistoryView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/addTransaction/:from?", component: _AddTransactionView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/addBudget", component: _AddBudgetView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/editBudget/:name?", component: _EditBudgetView2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/editTransaction/:id?", component: _EditTransactionView2.default })
     ) : _react2.default.createElement(
-      'div',
+      "div",
       null,
-      _react2.default.createElement(_reactRouterDom.Route, { path: '*', component: _LoginView2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { path: "*", component: _LoginView2.default })
     )
   );
 }
 
-_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
+_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("root"));
 
-},{"./Services/AccountService.js":227,"./Views/AddBudget/AddBudgetView.js":235,"./Views/AddTransaction/AddTransactionView.js":237,"./Views/EditBudget/EditBudgetView.js":245,"./Views/EditTransaction/EditTransactionView.js":246,"./Views/History/HistoryView.js":247,"./Views/Login/LoginView.js":248,"./Views/Overview/OverviewView.js":255,"react":221,"react-dom":44,"react-router-dom":182}],227:[function(require,module,exports){
+},{"./Store.js":233,"./Views/AddBudget/AddBudgetView.js":235,"./Views/AddTransaction/AddTransactionView.js":237,"./Views/EditBudget/EditBudgetView.js":245,"./Views/EditTransaction/EditTransactionView.js":246,"./Views/History/HistoryView.js":247,"./Views/Login/LoginView.js":248,"./Views/Overview/OverviewView.js":255,"react":221,"react-dom":44,"react-router-dom":182}],227:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24602,15 +24602,16 @@ var AccountService = function AccountService() {
   var i = document.cookie.indexOf(cookieName);
   var cookieValue = document.cookie.substr(i + cookieName.length);
   this.isLoggedIn = cookieValue.startsWith('=true') ? true : false;
+  this.periodId = null;
   this.period = {
     // _id: "59cf1648d8863f27a13e24bc"
   };
 };
 
-exports.default = new AccountService();
+exports.default = AccountService;
 
 },{}],228:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -24618,71 +24619,32 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ApiService = require('./ApiService.js');
+var _ApiService = require("./ApiService.js");
 
 var _ApiService2 = _interopRequireDefault(_ApiService);
-
-var _ListenerService2 = require('./ListenerService.js');
-
-var _ListenerService3 = _interopRequireDefault(_ListenerService2);
-
-var _Store = require('../Store.js');
-
-var _Store2 = _interopRequireDefault(_Store);
-
-var _AccountService = require('./AccountService.js');
-
-var _AccountService2 = _interopRequireDefault(_AccountService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AnalysisService = function (_ListenerService) {
-  _inherits(AnalysisService, _ListenerService);
-
+var AnalysisService = function () {
   function AnalysisService() {
     _classCallCheck(this, AnalysisService);
-
-    var _this = _possibleConstructorReturn(this, (AnalysisService.__proto__ || Object.getPrototypeOf(AnalysisService)).call(this));
-
-    _this.overview = [];
-    if (_AccountService2.default.isLoggedIn) _this.fetchOverview();
-
-    _this.update = _this.update.bind(_this);
-    _Store2.default.registerListener(_this.update);
-    return _this;
   }
 
   _createClass(AnalysisService, [{
-    key: 'update',
-    value: function update(server_modified) {
-      if (server_modified) this.fetchOverview();
-    }
-  }, {
-    key: 'fetchOverview',
-    value: function fetchOverview() {
-      var _this2 = this;
-
-      _ApiService2.default.getRequest('/api/analysis/overview').then(function (data) {
-        _this2.overview = data;
-        _this2.notifyListeners();
-      }).catch(function (error) {
-        console.log(error);
-      });
+    key: "fetchOverview",
+    value: function fetchOverview(periodId) {
+      return _ApiService2.default.getRequest("/api/analysis/overview", periodId);
     }
   }]);
 
   return AnalysisService;
-}(_ListenerService3.default);
+}();
 
-exports.default = new AnalysisService();
+exports.default = AnalysisService;
 
-},{"../Store.js":233,"./AccountService.js":227,"./ApiService.js":229,"./ListenerService.js":231}],229:[function(require,module,exports){
+},{"./ApiService.js":229}],229:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24690,12 +24652,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _AccountService = require('./AccountService.js');
-
-var _AccountService2 = _interopRequireDefault(_AccountService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24706,51 +24662,51 @@ var ApiService = function () {
 
   _createClass(ApiService, [{
     key: 'getRequest',
-    value: function getRequest(endpoint) {
-      var request_options = {
+    value: function getRequest(endpoint, periodId) {
+      var requestOptions = {
         method: 'GET',
-        headers: { 'period.id': _AccountService2.default.period._id }
+        headers: { 'period.id': periodId }
       };
 
-      return this.apiRequest(endpoint, request_options);
+      return this.apiRequest(endpoint, requestOptions);
     }
   }, {
     key: 'postRequest',
     value: function postRequest(endpoint, body) {
-      var request_options = {
+      var requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       };
 
-      return this.apiRequest(endpoint, request_options);
+      return this.apiRequest(endpoint, requestOptions);
     }
   }, {
     key: 'putRequest',
     value: function putRequest(endpoint, body) {
-      var request_options = {
+      var requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       };
 
-      return this.apiRequest(endpoint, request_options);
+      return this.apiRequest(endpoint, requestOptions);
     }
   }, {
     key: 'deleteRequest',
     value: function deleteRequest(endpoint) {
-      var request_options = {
+      var requestOptions = {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
       };
 
-      return this.apiRequest(endpoint, request_options);
+      return this.apiRequest(endpoint, requestOptions);
     }
   }, {
     key: 'apiRequest',
-    value: function apiRequest(endpoint, request_options, response_type) {
-      request_options.credentials = 'same-origin';
-      return fetch(endpoint, request_options).then(function (res) {
+    value: function apiRequest(endpoint, requestOptions, response_type) {
+      requestOptions.credentials = 'same-origin';
+      return fetch(endpoint, requestOptions).then(function (res) {
         return res.json();
       }).then(function (data) {
         if (data.error) throw new Error(data.error);
@@ -24764,8 +24720,8 @@ var ApiService = function () {
 
 exports.default = new ApiService();
 
-},{"./AccountService.js":227}],230:[function(require,module,exports){
-'use strict';
+},{}],230:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -24773,110 +24729,76 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ApiService = require('./ApiService.js');
-
-var _ApiService2 = _interopRequireDefault(_ApiService);
-
-var _ListenerService2 = require('./ListenerService.js');
-
-var _ListenerService3 = _interopRequireDefault(_ListenerService2);
-
-var _Store = require('../Store.js');
-
-var _Store2 = _interopRequireDefault(_Store);
-
-var _AccountService = require('./AccountService.js');
-
-var _AccountService2 = _interopRequireDefault(_AccountService);
-
-var _Helpers = require('../Helpers.js');
+var _Helpers = require("../Helpers.js");
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
+
+var _ApiService = require("./ApiService.js");
+
+var _ApiService2 = _interopRequireDefault(_ApiService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BudgetService = function (_ListenerService) {
-  _inherits(BudgetService, _ListenerService);
-
+var BudgetService = function () {
   function BudgetService() {
     _classCallCheck(this, BudgetService);
-
-    var _this = _possibleConstructorReturn(this, (BudgetService.__proto__ || Object.getPrototypeOf(BudgetService)).call(this));
-
-    _this.notifyListeners = _this.notifyListeners.bind(_this);
-    _Store2.default.registerListener(function () {
-      return _this.notifyListeners();
-    });
-
-    if (_AccountService2.default.isLoggedIn) _this.fetchBudgets();
-    return _this;
   }
 
   _createClass(BudgetService, [{
-    key: 'getBudgets',
-    value: function getBudgets() {
-      return _Store2.default.budgets;
+    key: "fetchBudgets",
+    value: function fetchBudgets(periodId) {
+      return _ApiService2.default.getRequest("/api/budget", periodId);
     }
   }, {
-    key: 'fetchBudgets',
-    value: function fetchBudgets() {
-      _ApiService2.default.getRequest('/api/budget').then(function (data) {
-        _Store2.default.setStore('budgets', data);
-      }).catch(function (error) {
-        console.log(error);
+    key: "addOrUpdateBudget",
+    value: function addOrUpdateBudget(budget, collection) {
+      var _this = this;
+
+      return _ApiService2.default.putRequest("/api/budget/" + _Helpers2.default.encodeURIParam(budget.uri), budget).then(function (data) {
+        _this.removeBudget(budget.uri, collection);
+        _this.insertBudget(data, collection);
       });
     }
   }, {
-    key: 'addOrUpdateBudget',
-    value: function addOrUpdateBudget(budget) {
-      return _ApiService2.default.putRequest('/api/budget/' + _Helpers2.default.encodeURIParam(budget.uri), budget).then(function (data) {
-        removeBudget(budget.uri, _Store2.default.budgets);
-        insertBudget(data, _Store2.default.budgets);
-        _Store2.default.setStore('budgets', _Store2.default.budgets, true);
+    key: "deleteBudget",
+    value: function deleteBudget(budgetUri, collection) {
+      var _this2 = this;
+
+      return _ApiService2.default.deleteRequest("/api/budget/" + _Helpers2.default.encodeURIParam(budgetUri)).then(function (data) {
+        _this2.removeBudget(budgetUri, collection);
+        console.log("deleted " + budgetUri);
       });
     }
   }, {
-    key: 'deleteBudget',
-    value: function deleteBudget(budgetName) {
-      return _ApiService2.default.deleteRequest('/api/budget/' + _Helpers2.default.encodeURIParam(budgetName)).then(function (data) {
-        removeBudget(budgetName, _Store2.default.budgets);
-        _Store2.default.setStore('budgets', _Store2.default.budgets, true);
-        console.log('deleted ' + budgetName);
+    key: "insertBudget",
+    value: function insertBudget(budget, collection) {
+      for (var i = 0; i < collection.length - 1; i++) {
+        // "Other" is at the end
+        if (collection[i].name < budget.name) {
+          collection.splice(i + 1, 0, budget); // sort by name
+          return;
+        }
+      }
+      collection.splice(0, 0, budget); // insert at beginning
+    }
+  }, {
+    key: "removeBudget",
+    value: function removeBudget(budgetName, collection) {
+      var index = collection.findIndex(function (x) {
+        return x.name == budgetName;
       });
+      if (index >= 0) collection.splice(index, 1);
     }
   }]);
 
   return BudgetService;
-}(_ListenerService3.default);
+}();
 
-exports.default = new BudgetService();
+exports.default = BudgetService;
 
-
-function insertBudget(budget, collection) {
-  for (var i = 0; i < collection.length - 1; i++) {
-    // 'Other' is at the end
-    if (collection[i].name < budget.name) {
-      collection.splice(i + 1, 0, budget); // sort by name
-      return;
-    }
-  }
-  collection.splice(0, 0, budget); // insert at beginning
-}
-
-function removeBudget(budgetName, collection) {
-  var index = collection.findIndex(function (x) {
-    return x.name == budgetName;
-  });
-  if (index >= 0) collection.splice(index, 1);
-}
-
-},{"../Helpers.js":225,"../Store.js":233,"./AccountService.js":227,"./ApiService.js":229,"./ListenerService.js":231}],231:[function(require,module,exports){
+},{"../Helpers.js":225,"./ApiService.js":229}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24933,54 +24855,19 @@ var _ApiService = require('./ApiService.js');
 
 var _ApiService2 = _interopRequireDefault(_ApiService);
 
-var _ListenerService2 = require('./ListenerService.js');
-
-var _ListenerService3 = _interopRequireDefault(_ListenerService2);
-
-var _Store = require('../Store.js');
-
-var _Store2 = _interopRequireDefault(_Store);
-
-var _AccountService = require('./AccountService.js');
-
-var _AccountService2 = _interopRequireDefault(_AccountService);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TransactionService = function (_ListenerService) {
-  _inherits(TransactionService, _ListenerService);
-
+var TransactionService = function () {
   function TransactionService() {
     _classCallCheck(this, TransactionService);
-
-    var _this = _possibleConstructorReturn(this, (TransactionService.__proto__ || Object.getPrototypeOf(TransactionService)).call(this));
-
-    _this.transactions = [];
-
-    _this.notifyListeners = _this.notifyListeners.bind(_this);
-    _Store2.default.registerListener(function () {
-      return _this.notifyListeners();
-    });
-
-    if (_AccountService2.default.isLoggedIn) _this.fetchTransactions();
-    return _this;
   }
 
   _createClass(TransactionService, [{
-    key: 'getTransactions',
-    value: function getTransactions() {
-      return _Store2.default.transactions;
-    }
-  }, {
     key: 'getDebitTransactionsForBudget',
-    value: function getDebitTransactionsForBudget(budget) {
-      return _Store2.default.transactions.filter(function (transaction) {
+    value: function getDebitTransactionsForBudget(budget, collection) {
+      return collection.filter(function (transaction) {
         return transaction.from == budget.name && transaction.to == '@Debit';
       }).sort(function (transactionA, transactionB) {
         return new Date(transactionA.date) < new Date(transactionB.date) ? 1 : -1;
@@ -24988,8 +24875,8 @@ var TransactionService = function (_ListenerService) {
     }
   }, {
     key: 'getCreditTransactions',
-    value: function getCreditTransactions() {
-      return _Store2.default.transactions.filter(function (transaction) {
+    value: function getCreditTransactions(collection) {
+      return collection.filter(function (transaction) {
         return transaction.from == '@Credit';
       }).sort(function (transactionA, transactionB) {
         return new Date(transactionA.date) < new Date(transactionB.date) ? 1 : -1;
@@ -24997,59 +24884,59 @@ var TransactionService = function (_ListenerService) {
     }
   }, {
     key: 'fetchTransactions',
-    value: function fetchTransactions() {
-      _ApiService2.default.getRequest('/api/transaction').then(function (data) {
-        _Store2.default.setStore('transactions', data);
-      }).catch(function (error) {
-        console.log(error);
-      });
+    value: function fetchTransactions(periodId) {
+      return _ApiService2.default.getRequest('/api/transaction', periodId);
     }
   }, {
     key: 'addTransaction',
-    value: function addTransaction(transaction) {
+    value: function addTransaction(transaction, collection) {
+      var _this = this;
+
       return _ApiService2.default.postRequest('/api/transaction', transaction).then(function (data) {
-        insertTransaction(data, _Store2.default.transactions);
-        _Store2.default.setStore('transactions', _Store2.default.transactions, true);
+        _this.insertTransaction(data, collection);
       });
     }
   }, {
     key: 'updateTransaction',
-    value: function updateTransaction(transaction) {
+    value: function updateTransaction(transaction, collection) {
+      var _this2 = this;
+
       return _ApiService2.default.putRequest('/api/transaction/' + transaction._id, transaction).then(function (data) {
-        removeTransaction(transaction._id, _Store2.default.transactions);
-        insertTransaction(data, _Store2.default.transactions);
-        _Store2.default.setStore('transactions', _Store2.default.transactions, true);
+        _this2.removeTransaction(transaction._id, collection);
+        _this2.insertTransaction(data, collection);
       });
     }
   }, {
     key: 'deleteTransaction',
-    value: function deleteTransaction(transaction_id) {
-      return _ApiService2.default.deleteRequest('/api/transaction/' + transaction_id).then(function (data) {
-        removeTransaction(transaction_id, _Store2.default.transactions);
-        _Store2.default.setStore('transactions', _Store2.default.transactions, true);
-        console.log('deleted ' + transaction_id);
+    value: function deleteTransaction(transactionId) {
+      var _this3 = this;
+
+      return _ApiService2.default.deleteRequest('/api/transaction/' + transactionId).then(function (data) {
+        _this3.removeTransaction(transactionId, collection);
+        console.log('deleted ' + transactionId);
       });
+    }
+  }, {
+    key: 'insertTransaction',
+    value: function insertTransaction(transaction, collection) {
+      collection.push(transaction);
+    }
+  }, {
+    key: 'removeTransaction',
+    value: function removeTransaction(transactionId, collection) {
+      var index = collection.findIndex(function (x) {
+        return x._id == transactionId;
+      });
+      if (index >= 0) collection.splice(index, 1);
     }
   }]);
 
   return TransactionService;
-}(_ListenerService3.default);
+}();
 
-exports.default = new TransactionService();
+exports.default = TransactionService;
 
-
-function insertTransaction(transaction, collection) {
-  collection.push(transaction);
-}
-
-function removeTransaction(transaction_id, collection) {
-  var index = collection.findIndex(function (x) {
-    return x._id == transaction_id;
-  });
-  if (index >= 0) collection.splice(index, 1);
-}
-
-},{"../Store.js":233,"./AccountService.js":227,"./ApiService.js":229,"./ListenerService.js":231}],233:[function(require,module,exports){
+},{"./ApiService.js":229}],233:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25061,6 +24948,22 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _ListenerService2 = require("./Services/ListenerService.js");
 
 var _ListenerService3 = _interopRequireDefault(_ListenerService2);
+
+var _AccountService = require("./Services/AccountService.js");
+
+var _AccountService2 = _interopRequireDefault(_AccountService);
+
+var _AnalysisService = require("./Services/AnalysisService.js");
+
+var _AnalysisService2 = _interopRequireDefault(_AnalysisService);
+
+var _BudgetService = require("./Services/BudgetService.js");
+
+var _BudgetService2 = _interopRequireDefault(_BudgetService);
+
+var _TransactionService = require("./Services/TransactionService.js");
+
+var _TransactionService2 = _interopRequireDefault(_TransactionService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25078,16 +24981,122 @@ var Store = function (_ListenerService) {
 
     var _this = _possibleConstructorReturn(this, (Store.__proto__ || Object.getPrototypeOf(Store)).call(this));
 
+    _this.accountService = new _AccountService2.default();
+    _this.analysisService = new _AnalysisService2.default();
+    _this.budgetService = new _BudgetService2.default();
+    _this.transactionService = new _TransactionService2.default();
+
     _this.budgets = [];
     _this.transactions = [];
+    _this.overview = [];
+
+    _this.hasUpdated("all");
     return _this;
   }
 
   _createClass(Store, [{
-    key: "setStore",
-    value: function setStore(store, value, server_modified) {
-      this[store] = value;
-      this.notifyListeners(server_modified);
+    key: "hasUpdated",
+    value: function hasUpdated(type) {
+      var periodId = this.accountService.periodId;
+      this.fetchOverview(periodId);
+      if (type !== "budgets") this.fetchBudgets(periodId);
+      if (type !== "transactions") this.fetchTransactions(periodId);
+    }
+  }, {
+    key: "isLoggedIn",
+    value: function isLoggedIn() {
+      return this.accountService.isLoggedIn;
+    }
+  }, {
+    key: "fetchOverview",
+    value: function fetchOverview() {
+      var _this2 = this;
+
+      this.analysisService.fetchOverview(this.accountService.periodId).then(function (data) {
+        _this2.overview = data;
+        _this2.notifyListeners();
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: "fetchBudgets",
+    value: function fetchBudgets() {
+      var _this3 = this;
+
+      this.budgetService.fetchBudgets(this.accountService.periodId).then(function (data) {
+        _this3.budgets = data;
+        _this3.notifyListeners();
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: "addOrUpdateBudget",
+    value: function addOrUpdateBudget(budget) {
+      var _this4 = this;
+
+      return this.budgetService.addOrUpdateBudget(budget, this.budgets).then(function () {
+        _this4.hasUpdated("budgets");
+      });
+    }
+  }, {
+    key: "deleteBudget",
+    value: function deleteBudget(budgetUri) {
+      var _this5 = this;
+
+      return this.budgetService.deleteBudget(budgetUri, this.budgets).then(function () {
+        _this5.hasUpdated("budgets");
+      });
+    }
+  }, {
+    key: "fetchTransactions",
+    value: function fetchTransactions() {
+      var _this6 = this;
+
+      this.transactionService.fetchTransactions(this.accountService.periodId).then(function (data) {
+        _this6.transactions = data;
+        _this6.notifyListeners();
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: "addTransaction",
+    value: function addTransaction(transaction) {
+      var _this7 = this;
+
+      return this.transactionService.addTransaction(transaction, this.transactions).then(function () {
+        _this7.hasUpdated("transactions");
+      });
+    }
+  }, {
+    key: "updateTransaction",
+    value: function updateTransaction(transaction) {
+      var _this8 = this;
+
+      return this.transactionService.updateTransaction(transaction, this.transactions).then(function () {
+        _this8.hasUpdated("transactions");
+      });
+    }
+  }, {
+    key: "deleteTransaction",
+    value: function deleteTransaction(transactionId) {
+      var _this9 = this;
+
+      return this.transactionService.deleteTransaction(transactionId, this.transactions).then(function () {
+        _this9.hasUpdated("transactions");
+      });
+    }
+  }, {
+    key: "getCreditTransactions",
+    value: function getCreditTransactions() {
+      return this.transactionService.getCreditTransactions(this.transactions);
+    }
+  }, {
+    key: "getDebitTransactionsForBudget",
+    value: function getDebitTransactionsForBudget(budget) {
+      return this.transactionService.getDebitTransactionsForBudget(budget, this.transactions);
     }
   }]);
 
@@ -25096,8 +25105,8 @@ var Store = function (_ListenerService) {
 
 exports.default = new Store();
 
-},{"./Services/ListenerService.js":231}],234:[function(require,module,exports){
-'use strict';
+},{"./Services/AccountService.js":227,"./Services/AnalysisService.js":228,"./Services/BudgetService.js":230,"./Services/ListenerService.js":231,"./Services/TransactionService.js":232}],234:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -25105,27 +25114,27 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = require('react-router-dom');
+var _reactRouterDom = require("react-router-dom");
 
-var _BudgetService = require('../../Services/BudgetService.js');
-
-var _BudgetService2 = _interopRequireDefault(_BudgetService);
-
-var _Form = require('../Components/Form.js');
+var _Form = require("../Components/Form.js");
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormValidationMessages = require('../Components/FormValidationMessages.js');
+var _FormValidationMessages = require("../Components/FormValidationMessages.js");
 
 var _FormValidationMessages2 = _interopRequireDefault(_FormValidationMessages);
 
-var _mixin2 = require('mixin');
+var _mixin2 = require("mixin");
 
 var _mixin3 = _interopRequireDefault(_mixin2);
+
+var _Store = require("../../Store.js");
+
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25144,9 +25153,9 @@ var AddBudgetForm = function (_mixin) {
     var _this = _possibleConstructorReturn(this, (AddBudgetForm.__proto__ || Object.getPrototypeOf(AddBudgetForm)).call(this, props));
 
     _this.state = {
-      name: props.name || '',
-      allowance: props.allowance || '',
-      allowance_type: props.allowanceType || '$',
+      name: props.name || "",
+      allowance: props.allowance || "",
+      allowance_type: props.allowanceType || "$",
       validation_messages: []
     };
 
@@ -25157,22 +25166,22 @@ var AddBudgetForm = function (_mixin) {
   }
 
   _createClass(AddBudgetForm, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
-      this.budgetServiceListenerId = _BudgetService2.default.registerListener(this.forceUpdate);
+      this.storeListenerId = _Store2.default.registerListener(this.forceUpdate);
     }
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      _BudgetService2.default.unRegisterListener(this.budgetServiceListenerId);
+      _Store2.default.unRegisterListener(this.storeListenerId);
     }
   }, {
-    key: 'handleBudgetDelete',
+    key: "handleBudgetDelete",
     value: function handleBudgetDelete(e) {
       var _this2 = this;
 
       e.preventDefault();
-      _BudgetService2.default.deleteBudget(this.props.uri).then(function () {
+      _Store2.default.deleteBudget(this.props.uri).then(function () {
         _this2.props.history.goBack();
       }).catch(function (error) {
         _this2.setState({
@@ -25181,27 +25190,27 @@ var AddBudgetForm = function (_mixin) {
       });
     }
   }, {
-    key: 'handleFormSubmit',
+    key: "handleFormSubmit",
     value: function handleFormSubmit(e) {
       var _this3 = this;
 
       e.preventDefault();
 
-      var rules = [{ name: 'name', validate: function validate(x) {
+      var rules = [{ name: "name", validate: function validate(x) {
           return x;
-        }, error_message: 'Please enter a name' }, { name: 'name', validate: function validate(x) {
-          return _BudgetService2.default.getBudgets().find(function (budget) {
+        }, error_message: "Please enter a name" }, { name: "name", validate: function validate(x) {
+          return _Store2.default.budgets.find(function (budget) {
             return x.trim().toLowerCase() != budget.name.trim().toLowerCase();
           });
-        }, error_message: 'That name already exists. Please enter a unique budget name.' }, { name: 'allowance_type', validate: function validate(x) {
-          return x == '%' || x == '$';
-        }, error_message: 'Please select an allowance type ($ or %).' }, { name: 'allowance', validate: function validate(x) {
+        }, error_message: "That name already exists. Please enter a unique budget name." }, { name: "allowance_type", validate: function validate(x) {
+          return x == "%" || x == "$";
+        }, error_message: "Please select an allowance type ($ or %)." }, { name: "allowance", validate: function validate(x) {
           return parseFloat(x);
-        }, error_message: 'Please enter a valid amount.' }, { name: 'allowance', validate: function validate(x) {
-          return _this3.state.allowance_type == '$' || x >= 0 && x <= 100;
-        }, error_message: 'The allowance percentage must be between 0 and 100.' }, { name: 'allowance', validate: function validate(x) {
+        }, error_message: "Please enter a valid amount." }, { name: "allowance", validate: function validate(x) {
+          return _this3.state.allowance_type == "$" || x >= 0 && x <= 100;
+        }, error_message: "The allowance percentage must be between 0 and 100." }, { name: "allowance", validate: function validate(x) {
           return parseFloat(x) && parseFloat(x) > 0;
-        }, error_message: 'The allowance must be a positive number.' }];
+        }, error_message: "The allowance must be a positive number." }];
 
       var error_messages = this.validateFormInput(rules);
       this.setState({
@@ -25211,7 +25220,7 @@ var AddBudgetForm = function (_mixin) {
       if (!error_messages.length) {
         // validation successful
         var name = this.state.name.trim();
-        _BudgetService2.default.addOrUpdateBudget({
+        _Store2.default.addOrUpdateBudget({
           uri: this.props.uri || name,
           name: name,
           allowance_type: this.state.allowance_type,
@@ -25226,55 +25235,55 @@ var AddBudgetForm = function (_mixin) {
       }
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this4 = this;
 
       return _react2.default.createElement(
-        'form',
-        { id: 'addBudgetForm', onSubmit: this.handleFormSubmit },
+        "form",
+        { id: "addBudgetForm", onSubmit: this.handleFormSubmit },
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
-          _react2.default.createElement('input', { type: 'text', name: 'category', placeholder: 'Name', className: 'form-control', value: this.state.name, onChange: function onChange(e) {
-              return _this4.handleFormInput('name', e);
+          "div",
+          { className: "form-group" },
+          _react2.default.createElement("input", { type: "text", name: "category", placeholder: "Name", className: "form-control", value: this.state.name, onChange: function onChange(e) {
+              return _this4.handleFormInput("name", e);
             } })
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
+          "div",
+          { className: "form-group" },
           _react2.default.createElement(
-            'select',
+            "select",
             { value: this.state.allowance_type, onChange: function onChange(e) {
-                return _this4.handleFormInput('allowance_type', e);
-              }, className: 'form-control allowance-type' },
+                return _this4.handleFormInput("allowance_type", e);
+              }, className: "form-control allowance-type" },
             _react2.default.createElement(
-              'option',
-              { value: '$' },
-              '$'
+              "option",
+              { value: "$" },
+              "$"
             ),
             _react2.default.createElement(
-              'option',
-              { value: '%' },
-              '%'
+              "option",
+              { value: "%" },
+              "%"
             )
           ),
-          _react2.default.createElement('input', { type: 'text', name: 'allowance', placeholder: 'Amount', className: 'form-control amount', value: this.state.allowance, onChange: function onChange(e) {
-              return _this4.handleFormInput('allowance', e);
+          _react2.default.createElement("input", { type: "text", name: "allowance", placeholder: "Amount", className: "form-control amount", value: this.state.allowance, onChange: function onChange(e) {
+              return _this4.handleFormInput("allowance", e);
             } })
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
-          _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save', className: 'btn btn-primary' })
+          "div",
+          { className: "form-group" },
+          _react2.default.createElement("input", { type: "submit", name: "submit", value: "save", className: "btn btn-primary" })
         ),
         this.props.uri && _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
+          "div",
+          { className: "form-group" },
           _react2.default.createElement(
-            'a',
-            { href: '#', className: 'text-danger', onClick: this.handleBudgetDelete },
-            'delete budget'
+            "a",
+            { href: "#", className: "text-danger", onClick: this.handleBudgetDelete },
+            "delete budget"
           )
         ),
         _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
@@ -25287,7 +25296,7 @@ var AddBudgetForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddBudgetForm);
 
-},{"../../Services/BudgetService.js":230,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
+},{"../../Store.js":233,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25323,7 +25332,7 @@ function AddBudgetView(props) {
 }
 
 },{"../Components/BackNav.js":240,"./AddBudgetForm.js":234,"react":221}],236:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -25331,39 +25340,35 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = require('react-router-dom');
+var _reactRouterDom = require("react-router-dom");
 
-var _BudgetService = require('../../Services/BudgetService.js');
-
-var _BudgetService2 = _interopRequireDefault(_BudgetService);
-
-var _TransactionService = require('../../Services/TransactionService.js');
-
-var _TransactionService2 = _interopRequireDefault(_TransactionService);
-
-var _BudgetSelect = require('./BudgetSelect.js');
+var _BudgetSelect = require("./BudgetSelect.js");
 
 var _BudgetSelect2 = _interopRequireDefault(_BudgetSelect);
 
-var _Form = require('../Components/Form.js');
+var _Form = require("../Components/Form.js");
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormValidationMessages = require('../Components/FormValidationMessages.js');
+var _FormValidationMessages = require("../Components/FormValidationMessages.js");
 
 var _FormValidationMessages2 = _interopRequireDefault(_FormValidationMessages);
 
-var _mixin2 = require('mixin');
+var _mixin2 = require("mixin");
 
 var _mixin3 = _interopRequireDefault(_mixin2);
 
-var _DebitCreditRadioButtons = require('./DebitCreditRadioButtons.js');
+var _DebitCreditRadioButtons = require("./DebitCreditRadioButtons.js");
 
 var _DebitCreditRadioButtons2 = _interopRequireDefault(_DebitCreditRadioButtons);
+
+var _Store = require("../../Store.js");
+
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25382,11 +25387,11 @@ var AddTransactionForm = function (_mixin) {
     var _this = _possibleConstructorReturn(this, (AddTransactionForm.__proto__ || Object.getPrototypeOf(AddTransactionForm)).call(this, props));
 
     _this.state = {
-      transaction_type: props.transaction_type || 'debit',
+      transaction_type: props.transaction_type || "credit",
       from: props.from || _this.getDefaultFrom(),
-      to: props.to || '@Debit',
-      motive: props.motive || '',
-      amount: props.amount || '',
+      to: props.to || "@Debit",
+      motive: props.motive || "",
+      amount: props.amount || "",
       validation_messages: []
     };
 
@@ -25394,11 +25399,12 @@ var AddTransactionForm = function (_mixin) {
     _this.setDefaultFrom = _this.setDefaultFrom.bind(_this);
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
     _this.handleTransactionDelete = _this.handleTransactionDelete.bind(_this);
+    _this.forceUpdate = _this.forceUpdate.bind(_this);
     return _this;
   }
 
   _createClass(AddTransactionForm, [{
-    key: 'setDefaultFrom',
+    key: "setDefaultFrom",
     value: function setDefaultFrom() {
       if (this.state.from) this.forceUpdate();
       this.setState({
@@ -25406,22 +25412,22 @@ var AddTransactionForm = function (_mixin) {
       });
     }
   }, {
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
-      this.budgetServiceListenerId = _BudgetService2.default.registerListener(this.setDefaultFrom);
+      this.storeListenerId = _Store2.default.registerListener(this.forceUpdate);
     }
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      _BudgetService2.default.unRegisterListener(this.budgetServiceListenerId);
+      _Store2.default.unRegisterListener(this.storeListenerId);
     }
   }, {
-    key: 'handleTransactionDelete',
+    key: "handleTransactionDelete",
     value: function handleTransactionDelete(e) {
       var _this2 = this;
 
       e.preventDefault();
-      _TransactionService2.default.deleteTransaction(this.props.uri).then(function () {
+      _Store2.default.deleteTransaction(this.props.uri).then(function () {
         _this2.props.history.goBack();
       }).catch(function (error) {
         _this2.setState({
@@ -25430,18 +25436,18 @@ var AddTransactionForm = function (_mixin) {
       });
     }
   }, {
-    key: 'getDefaultFrom',
+    key: "getDefaultFrom",
     value: function getDefaultFrom() {
-      return _BudgetService2.default.getBudgets()[0] ? _BudgetService2.default.getBudgets()[0].name : '';
+      return _Store2.default.budgets[0] ? _Store2.default.budgets[0].name : "";
     }
   }, {
-    key: 'handleTransactionTypeChange',
+    key: "handleTransactionTypeChange",
     value: function handleTransactionTypeChange(transaction_type) {
-      var from = '@Credit';
-      var to = 'Other';
-      if (transaction_type == 'debit') {
+      var from = "@Credit";
+      var to = "Other";
+      if (transaction_type == "debit") {
         var from = this.getDefaultFrom();
-        var to = '@Debit';
+        var to = "@Debit";
       }
       this.setState({
         transaction_type: transaction_type,
@@ -25450,23 +25456,23 @@ var AddTransactionForm = function (_mixin) {
       });
     }
   }, {
-    key: 'handleFormSubmit',
+    key: "handleFormSubmit",
     value: function handleFormSubmit(e) {
       var _this3 = this;
 
       e.preventDefault();
 
-      var rules = [{ name: 'transaction_type', validate: function validate(x) {
-          return x == 'debit' || x == 'credit';
-        }, error_message: 'Please select a transaction type.' }, { name: 'from', validate: function validate(x) {
+      var rules = [{ name: "transaction_type", validate: function validate(x) {
+          return x == "debit" || x == "credit";
+        }, error_message: "Please select a transaction type." }, { name: "from", validate: function validate(x) {
           return x;
-        }, error_message: 'Please select a category.' }, { name: 'motive', validate: function validate(x) {
+        }, error_message: "Please select a category." }, { name: "motive", validate: function validate(x) {
           return true;
-        }, error_message: 'It doesn\'t matter what note you write.' }, { name: 'amount', validate: function validate(x) {
+        }, error_message: "It doesn\'t matter what note you write." }, { name: "amount", validate: function validate(x) {
           return parseFloat(x);
-        }, error_message: 'Please enter a valid amount.' }, { name: 'amount', validate: function validate(x) {
+        }, error_message: "Please enter a valid amount." }, { name: "amount", validate: function validate(x) {
           return parseFloat(x) && parseFloat(x) > 0;
-        }, error_message: 'Transaction amount must be a positive number.' }];
+        }, error_message: "Transaction amount must be a positive number." }];
 
       var error_messages = this.validateFormInput(rules);
       this.setState({
@@ -25476,8 +25482,8 @@ var AddTransactionForm = function (_mixin) {
       if (!error_messages.length) {
         // validation successful
         var transaction = {
-          from: this.state.transaction_type == 'credit' ? '@Credit' : this.state.from,
-          to: this.state.transaction_type == 'credit' ? 'Other' : this.state.to,
+          from: this.state.transaction_type == "credit" ? "@Credit" : this.state.from,
+          to: this.state.transaction_type == "credit" ? "Other" : "@Debit",
           motive: this.state.motive.trim(),
           amount: parseFloat(this.state.amount)
         };
@@ -25485,9 +25491,9 @@ var AddTransactionForm = function (_mixin) {
         var request;
         if (this.props.uri) {
           transaction._id = this.props.uri;
-          request = _TransactionService2.default.updateTransaction(transaction);
+          request = _Store2.default.updateTransaction(transaction);
         } else {
-          request = _TransactionService2.default.addTransaction(transaction);
+          request = _Store2.default.addTransaction(transaction);
         }
 
         request.then(function () {
@@ -25500,52 +25506,52 @@ var AddTransactionForm = function (_mixin) {
       }
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this4 = this;
 
       return _react2.default.createElement(
-        'form',
-        { id: 'addTransactionForm', onSubmit: this.handleFormSubmit },
+        "form",
+        { id: "addTransactionForm", onSubmit: this.handleFormSubmit },
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
+          "div",
+          { className: "form-group" },
           _react2.default.createElement(_DebitCreditRadioButtons2.default, { transaction_type: this.state.transaction_type, onTransactionTypeChange: this.handleTransactionTypeChange })
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
-          this.state.transaction_type == 'debit' && _react2.default.createElement(_BudgetSelect2.default, { budgets: _BudgetService2.default.getBudgets(), from: this.state.from, onChange: function onChange(e) {
-              return _this4.handleFormInput('from', e);
+          "div",
+          { className: "form-group" },
+          this.state.transaction_type == "debit" && _react2.default.createElement(_BudgetSelect2.default, { budgets: _Store2.default.budgets, from: this.state.from, onChange: function onChange(e) {
+              return _this4.handleFormInput("from", e);
             } })
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
-          '$',
-          _react2.default.createElement('input', { type: 'text', name: 'amount', placeholder: 'Amount', className: 'form-control amount', value: this.state.amount, onChange: function onChange(e) {
-              return _this4.handleFormInput('amount', e);
+          "div",
+          { className: "form-group" },
+          "$",
+          _react2.default.createElement("input", { type: "text", name: "amount", placeholder: "Amount", className: "form-control amount", value: this.state.amount, onChange: function onChange(e) {
+              return _this4.handleFormInput("amount", e);
             } })
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
-          _react2.default.createElement('input', { type: 'text', name: 'motive', placeholder: 'Note', className: 'form-control', value: this.state.motive, onChange: function onChange(e) {
-              return _this4.handleFormInput('motive', e);
+          "div",
+          { className: "form-group" },
+          _react2.default.createElement("input", { type: "text", name: "motive", placeholder: "Note", className: "form-control", value: this.state.motive, onChange: function onChange(e) {
+              return _this4.handleFormInput("motive", e);
             } })
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
-          _react2.default.createElement('input', { type: 'submit', name: 'submit', value: 'save', className: 'btn btn-primary' })
+          "div",
+          { className: "form-group" },
+          _react2.default.createElement("input", { type: "submit", name: "submit", value: "save", className: "btn btn-primary" })
         ),
         this.props.uri && _react2.default.createElement(
-          'div',
-          { className: 'form-group' },
+          "div",
+          { className: "form-group" },
           _react2.default.createElement(
-            'a',
-            { href: '#', className: 'text-danger', onClick: this.handleTransactionDelete },
-            'delete transaction'
+            "a",
+            { href: "#", className: "text-danger", onClick: this.handleTransactionDelete },
+            "delete transaction"
           )
         ),
         _react2.default.createElement(_FormValidationMessages2.default, { validationMessages: this.state.validation_messages })
@@ -25558,7 +25564,7 @@ var AddTransactionForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddTransactionForm);
 
-},{"../../Services/BudgetService.js":230,"../../Services/TransactionService.js":232,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"./BudgetSelect.js":238,"./DebitCreditRadioButtons.js":239,"mixin":36,"react":221,"react-router-dom":182}],237:[function(require,module,exports){
+},{"../../Store.js":233,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"./BudgetSelect.js":238,"./DebitCreditRadioButtons.js":239,"mixin":36,"react":221,"react-router-dom":182}],237:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25927,7 +25933,7 @@ function TopNav(props) {
 exports.default = (0, _reactRouterDom.withRouter)(TopNav);
 
 },{"classnames":1,"react":221,"react-router-dom":182}],245:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -25935,25 +25941,25 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _AddBudgetForm = require('../AddBudget/AddBudgetForm.js');
+var _AddBudgetForm = require("../AddBudget/AddBudgetForm.js");
 
 var _AddBudgetForm2 = _interopRequireDefault(_AddBudgetForm);
 
-var _BackNav = require('../Components/BackNav.js');
+var _BackNav = require("../Components/BackNav.js");
 
 var _BackNav2 = _interopRequireDefault(_BackNav);
 
-var _BudgetService = require('../../Services/BudgetService.js');
-
-var _BudgetService2 = _interopRequireDefault(_BudgetService);
-
-var _Helpers = require('../../Helpers.js');
+var _Helpers = require("../../Helpers.js");
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
+
+var _Store = require("../../Store.js");
+
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25976,34 +25982,34 @@ var EditBudgetView = function (_React$Component) {
   }
 
   _createClass(EditBudgetView, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
-      this.budgetServiceListenerId = _BudgetService2.default.registerListener(this.forceUpdate);
+      this.storeListenerId = _Store2.default.registerListener(this.forceUpdate);
     }
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      _BudgetService2.default.unRegisterListener(this.budgetServiceListenerId);
+      _Store2.default.unRegisterListener(this.storeListenerId);
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var name = _Helpers2.default.decodeURIParam(this.props.match.params.name);
-      var budget = _BudgetService2.default.getBudgets().find(function (x) {
+      var budget = _Store2.default.budgets.find(function (x) {
         return x.name == name;
       });
       return _react2.default.createElement(
-        'div',
+        "div",
         null,
         _react2.default.createElement(_BackNav2.default, { title: "Edit Budget \"" + name + "\"" }),
         _react2.default.createElement(
-          'div',
-          { className: 'container' },
+          "div",
+          { className: "container" },
           budget ? // budget must be set in order to edit it
           _react2.default.createElement(_AddBudgetForm2.default, { uri: budget.name, name: budget.name, allowanceType: budget.allowance_type, allowance: budget.allowance }) : _react2.default.createElement(
-            'div',
-            { className: 'alert alert-warning', role: 'alert' },
-            'The specified budget was not found :('
+            "div",
+            { className: "alert alert-warning", role: "alert" },
+            "The specified budget was not found :("
           )
         )
       );
@@ -26015,7 +26021,7 @@ var EditBudgetView = function (_React$Component) {
 
 exports.default = EditBudgetView;
 
-},{"../../Helpers.js":225,"../../Services/BudgetService.js":230,"../AddBudget/AddBudgetForm.js":234,"../Components/BackNav.js":240,"react":221}],246:[function(require,module,exports){
+},{"../../Helpers.js":225,"../../Store.js":233,"../AddBudget/AddBudgetForm.js":234,"../Components/BackNav.js":240,"react":221}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26036,9 +26042,9 @@ var _BackNav = require('../Components/BackNav.js');
 
 var _BackNav2 = _interopRequireDefault(_BackNav);
 
-var _TransactionService = require('../../Services/TransactionService.js');
+var _Store = require('../../Store.js');
 
-var _TransactionService2 = _interopRequireDefault(_TransactionService);
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26063,18 +26069,18 @@ var EditTransactionView = function (_React$Component) {
   _createClass(EditTransactionView, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.transactionServiceListenerId = _TransactionService2.default.registerListener(this.forceUpdate);
+      this.storeListenerId = _Store2.default.registerListener(this.forceUpdate);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _TransactionService2.default.unRegisterListener(this.transactionServiceListenerId);
+      _Store2.default.unRegisterListener(this.storeListenerId);
     }
   }, {
     key: 'render',
     value: function render() {
       var id = this.props.match.params.id;
-      var transaction = _TransactionService2.default.getTransactions().find(function (x) {
+      var transaction = _Store2.default.transactions.find(function (x) {
         return x._id == id;
       });
       return _react2.default.createElement(
@@ -26100,7 +26106,7 @@ var EditTransactionView = function (_React$Component) {
 
 exports.default = EditTransactionView;
 
-},{"../../Services/TransactionService.js":232,"../AddTransaction/AddTransactionForm.js":236,"../Components/BackNav.js":240,"react":221}],247:[function(require,module,exports){
+},{"../../Store.js":233,"../AddTransaction/AddTransactionForm.js":236,"../Components/BackNav.js":240,"react":221}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26342,18 +26348,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _AnalysisService = require('../../Services/AnalysisService.js');
-
-var _AnalysisService2 = _interopRequireDefault(_AnalysisService);
-
-var _BudgetService = require('../../Services/BudgetService.js');
-
-var _BudgetService2 = _interopRequireDefault(_BudgetService);
-
-var _TransactionService = require('../../Services/TransactionService.js');
-
-var _TransactionService2 = _interopRequireDefault(_TransactionService);
-
 var _BalanceTableHeader = require('./BalanceTableHeader.js');
 
 var _BalanceTableHeader2 = _interopRequireDefault(_BalanceTableHeader);
@@ -26367,6 +26361,10 @@ var _reactRouterDom = require('react-router-dom');
 var _Helpers = require('../../Helpers.js');
 
 var _Helpers2 = _interopRequireDefault(_Helpers);
+
+var _Store = require('../../Store.js');
+
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26393,14 +26391,12 @@ var BalanceTable = function (_React$Component) {
   _createClass(BalanceTable, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.analysisServiceListenerId = _AnalysisService2.default.registerListener(this.forceUpdate);
-      this.budgetServiceListenerId = _BudgetService2.default.registerListener(this.forceUpdate);
+      this.storeListenerId = _Store2.default.registerListener(this.forceUpdate);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _AnalysisService2.default.unRegisterListener(this.analysisServiceListenerId);
-      _BudgetService2.default.unRegisterListener(this.budgetServiceListenerId);
+      _Store2.default.unRegisterListener(this.storeListenerId);
     }
   }, {
     key: 'handleEditBudget',
@@ -26420,8 +26416,8 @@ var BalanceTable = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { id: 'accordion', role: 'tablist' },
-        _AnalysisService2.default.overview.map(function (budget) {
-          budget.transactions = _TransactionService2.default.getDebitTransactionsForBudget(budget);
+        _Store2.default.overview.map(function (budget) {
+          budget.transactions = _Store2.default.getDebitTransactionsForBudget(budget);
           budget.onEditBudget = function () {
             return _this2.handleEditBudget(budget);
           };
@@ -26429,7 +26425,7 @@ var BalanceTable = function (_React$Component) {
             return _this2.handleNewTransaction(budget);
           };
           budget.safe_name = _Helpers2.default.generateSafeName(budget.name);
-          if (budget.name == 'Total') budget.transactions = _TransactionService2.default.getCreditTransactions();
+          if (budget.name == 'Total') budget.transactions = _Store2.default.getCreditTransactions();
           return _react2.default.createElement(_BalanceCard2.default, { key: budget.name, budget: budget });
         })
       );
@@ -26441,7 +26437,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Helpers.js":225,"../../Services/AnalysisService.js":228,"../../Services/BudgetService.js":230,"../../Services/TransactionService.js":232,"./BalanceCard.js":249,"./BalanceTableHeader.js":253,"react":221,"react-router-dom":182}],253:[function(require,module,exports){
+},{"../../Helpers.js":225,"../../Store.js":233,"./BalanceCard.js":249,"./BalanceTableHeader.js":253,"react":221,"react-router-dom":182}],253:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

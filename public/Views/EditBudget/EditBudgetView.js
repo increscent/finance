@@ -1,8 +1,8 @@
-import React from 'react';
-import AddBudgetForm from '../AddBudget/AddBudgetForm.js';
-import BackNav from '../Components/BackNav.js';
-import BudgetService from '../../Services/BudgetService.js';
-import Helpers from '../../Helpers.js';
+import React from "react";
+import AddBudgetForm from "../AddBudget/AddBudgetForm.js";
+import BackNav from "../Components/BackNav.js";
+import Helpers from "../../Helpers.js";
+import Store from "../../Store.js";
 
 export default class EditBudgetView extends React.Component {
   constructor(props) {
@@ -12,16 +12,16 @@ export default class EditBudgetView extends React.Component {
   }
 
   componentDidMount() {
-    this.budgetServiceListenerId = BudgetService.registerListener(this.forceUpdate);
+    this.storeListenerId = Store.registerListener(this.forceUpdate);
   }
 
   componentWillUnmount() {
-    BudgetService.unRegisterListener(this.budgetServiceListenerId);
+    Store.unRegisterListener(this.storeListenerId);
   }
 
   render() {
     let name = Helpers.decodeURIParam(this.props.match.params.name);
-    let budget = BudgetService.getBudgets().find(x => x.name == name);
+    let budget = Store.budgets.find(x => x.name == name);
     return (
       <div>
         <BackNav title={"Edit Budget \"" + name + "\""} />

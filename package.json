@@ -30,13 +30,16 @@
     "passport-google-oauth": "^1.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.0"
+    "react-router-dom": "^4.2.0",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "babelify": "^7.3.0",
     "classnames": "^2.2.5",
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "redux-devtools": "^3.4.1"
   },
   "babel": {
     "presets": [

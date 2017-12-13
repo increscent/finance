@@ -1,11 +1,10 @@
 class ApiService {
   getRequest(endpoint, periodId) {
     var requestOptions = {
-      method: 'GET',
-      headers: {'period.id': periodId}
+      method: 'GET'
     };
 
-    return this.apiRequest(endpoint, requestOptions);
+    return this.apiRequest(endpoint + '?periodId=' + periodId, requestOptions);
   }
 
   postRequest(endpoint, body) {

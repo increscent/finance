@@ -3415,7 +3415,7 @@ mixin.alias = alias;
 
 module.exports = mixin;
 
-},{"util":261}],37:[function(require,module,exports){
+},{"util":262}],37:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -8487,7 +8487,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":258,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./ReactReconciler":116,"./instantiateReactComponent":160,"./shouldUpdateReactComponent":168,"./traverseAllChildren":169,"_process":259,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],71:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18049,7 +18049,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":258,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
+},{"./ReactPropTypeLocationNames":113,"./ReactPropTypesSecret":114,"./reactProdInvariant":164,"_process":259,"fbjs/lib/invariant":18,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],144:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -18420,7 +18420,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":258,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
+},{"./KeyEscapeUtils":66,"./traverseAllChildren":169,"_process":259,"fbjs/lib/warning":25,"react/lib/ReactComponentTreeHook":201}],149:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -23938,7 +23938,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,require('_process'))
-},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":258,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
+},{"./ReactComponentTreeHook":201,"./ReactPropTypeLocationNames":208,"./ReactPropTypesSecret":210,"./reactProdInvariant":219,"_process":259,"fbjs/lib/invariant":18,"fbjs/lib/warning":25}],214:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -24586,7 +24586,7 @@ function App(props) {
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("root"));
 
-},{"./Store.js":233,"./Views/AddBudget/AddBudgetView.js":235,"./Views/AddTransaction/AddTransactionView.js":237,"./Views/EditBudget/EditBudgetView.js":245,"./Views/EditTransaction/EditTransactionView.js":246,"./Views/History/HistoryView.js":247,"./Views/Login/LoginView.js":248,"./Views/Overview/OverviewView.js":255,"react":221,"react-dom":44,"react-router-dom":182}],227:[function(require,module,exports){
+},{"./Store.js":233,"./Views/AddBudget/AddBudgetView.js":235,"./Views/AddTransaction/AddTransactionView.js":237,"./Views/EditBudget/EditBudgetView.js":244,"./Views/EditTransaction/EditTransactionView.js":245,"./Views/History/HistoryView.js":246,"./Views/Login/LoginView.js":249,"./Views/Overview/OverviewView.js":256,"react":221,"react-dom":44,"react-router-dom":182}],227:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25018,7 +25018,7 @@ var Store = function (_ListenerService) {
       this.fetchOverview(periodId);
       if (type !== "budgets") this.fetchBudgets(periodId);
       if (type !== "transactions") this.fetchTransactions(periodId);
-      if (type == "all" || type == "periods") this.fetchPeriods();
+      if (type === "all" || type === "periods") this.fetchPeriods();
     }
   }, {
     key: "isLoggedIn",
@@ -25127,6 +25127,17 @@ var Store = function (_ListenerService) {
     key: "getDebitTransactionsForBudget",
     value: function getDebitTransactionsForBudget(budget) {
       return this.transactionService.getDebitTransactionsForBudget(budget, this.transactions);
+    }
+  }, {
+    key: "getSelectedPeriod",
+    value: function getSelectedPeriod() {
+      return this.accountService.periodId;
+    }
+  }, {
+    key: "setSelectedPeriod",
+    value: function setSelectedPeriod(periodId) {
+      this.accountService.periodId = periodId;
+      this.hasUpdated("periods");
     }
   }]);
 
@@ -25326,7 +25337,7 @@ var AddBudgetForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddBudgetForm);
 
-},{"../../Store.js":233,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
+},{"../../Store.js":233,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"mixin":36,"react":221,"react-router-dom":182}],235:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25594,7 +25605,7 @@ var AddTransactionForm = function (_mixin) {
 
 exports.default = (0, _reactRouterDom.withRouter)(AddTransactionForm);
 
-},{"../../Store.js":233,"../Components/Form.js":242,"../Components/FormValidationMessages.js":243,"./BudgetSelect.js":238,"./DebitCreditRadioButtons.js":239,"mixin":36,"react":221,"react-router-dom":182}],237:[function(require,module,exports){
+},{"../../Store.js":233,"../Components/Form.js":241,"../Components/FormValidationMessages.js":242,"./BudgetSelect.js":238,"./DebitCreditRadioButtons.js":239,"mixin":36,"react":221,"react-router-dom":182}],237:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25759,51 +25770,6 @@ function BackNav(props) {
 exports.default = (0, _reactRouterDom.withRouter)(BackNav);
 
 },{"react":221,"react-router-dom":182}],241:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = BottomNav;
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouterDom = require('react-router-dom');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function BottomNav(props) {
-  return _react2.default.createElement(
-    'div',
-    { id: 'bottom-nav', className: 'container' },
-    _react2.default.createElement(
-      'div',
-      { className: 'row' },
-      _react2.default.createElement(
-        'div',
-        { className: 'col-5 ml-auto' },
-        _react2.default.createElement(
-          _reactRouterDom.Link,
-          { to: '/addTransaction', className: 'btn btn-outline-primary' },
-          '+ Transaction'
-        )
-      ),
-      _react2.default.createElement(
-        'div',
-        { className: 'col-5 mr-auto' },
-        _react2.default.createElement(
-          _reactRouterDom.Link,
-          { to: '/addBudget', className: 'btn btn-outline-primary' },
-          '+ Budget'
-        )
-      )
-    )
-  );
-}
-
-},{"react":221,"react-router-dom":182}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25848,7 +25814,7 @@ var Form = function () {
 
 exports.default = Form;
 
-},{}],243:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25876,7 +25842,7 @@ function FormValidationMessages(props) {
   );
 };
 
-},{"react":221}],244:[function(require,module,exports){
+},{"react":221}],243:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25962,7 +25928,7 @@ function TopNav(props) {
 
 exports.default = (0, _reactRouterDom.withRouter)(TopNav);
 
-},{"classnames":1,"react":221,"react-router-dom":182}],245:[function(require,module,exports){
+},{"classnames":1,"react":221,"react-router-dom":182}],244:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26051,7 +26017,7 @@ var EditBudgetView = function (_React$Component) {
 
 exports.default = EditBudgetView;
 
-},{"../../Helpers.js":225,"../../Store.js":233,"../AddBudget/AddBudgetForm.js":234,"../Components/BackNav.js":240,"react":221}],246:[function(require,module,exports){
+},{"../../Helpers.js":225,"../../Store.js":233,"../AddBudget/AddBudgetForm.js":234,"../Components/BackNav.js":240,"react":221}],245:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26136,7 +26102,7 @@ var EditTransactionView = function (_React$Component) {
 
 exports.default = EditTransactionView;
 
-},{"../../Store.js":233,"../AddTransaction/AddTransactionForm.js":236,"../Components/BackNav.js":240,"react":221}],247:[function(require,module,exports){
+},{"../../Store.js":233,"../AddTransaction/AddTransactionForm.js":236,"../Components/BackNav.js":240,"react":221}],246:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26152,17 +26118,164 @@ var _TopNav = require('../Components/TopNav.js');
 
 var _TopNav2 = _interopRequireDefault(_TopNav);
 
+var _PeriodsTable = require('./PeriodsTable.js');
+
+var _PeriodsTable2 = _interopRequireDefault(_PeriodsTable);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function HistoryView(props) {
   return _react2.default.createElement(
     'div',
-    null,
-    _react2.default.createElement(_TopNav2.default, { page: 'history' })
+    { id: 'history' },
+    _react2.default.createElement(_TopNav2.default, { page: 'history' }),
+    _react2.default.createElement(_PeriodsTable2.default, null)
   );
 }
 
-},{"../Components/TopNav.js":244,"react":221}],248:[function(require,module,exports){
+},{"../Components/TopNav.js":243,"./PeriodsTable.js":248,"react":221}],247:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = PeriodRow;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Helpers = require('../../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function PeriodRow(props) {
+  var startDate = _Helpers2.default.readableDate(props.period.start_date);
+  var endDate = _Helpers2.default.readableDate(props.period.end_date);
+  var periodClass = (0, _classnames2.default)({ selected: props.selected });
+  return _react2.default.createElement(
+    'li',
+    { onClick: props.clickHandler, className: periodClass },
+    startDate,
+    ' - ',
+    endDate
+  );
+}
+
+},{"../../Helpers.js":225,"classnames":1,"react":221}],248:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = require('react-router-dom');
+
+var _PeriodRow = require('./PeriodRow.js');
+
+var _PeriodRow2 = _interopRequireDefault(_PeriodRow);
+
+var _Helpers = require('../../Helpers.js');
+
+var _Helpers2 = _interopRequireDefault(_Helpers);
+
+var _Store = require('../../Store.js');
+
+var _Store2 = _interopRequireDefault(_Store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BalanceTable = function (_React$Component) {
+  _inherits(BalanceTable, _React$Component);
+
+  function BalanceTable(props) {
+    _classCallCheck(this, BalanceTable);
+
+    var _this = _possibleConstructorReturn(this, (BalanceTable.__proto__ || Object.getPrototypeOf(BalanceTable)).call(this, props));
+
+    _this.state = _this.newState();
+
+    _this.updateState = _this.updateState.bind(_this);
+    _this.setSelectedPeriod = _this.setSelectedPeriod.bind(_this);
+    return _this;
+  }
+
+  _createClass(BalanceTable, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.storeListenerId = _Store2.default.registerListener(this.updateState);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _Store2.default.unRegisterListener(this.storeListenerId);
+    }
+  }, {
+    key: 'updateState',
+    value: function updateState() {
+      this.setState(this.newState());
+    }
+  }, {
+    key: 'newState',
+    value: function newState() {
+      var sortedPeriods = _Store2.default.periods.sort(function (a, b) {
+        return new Date(a.start_date) > new Date(b.start_date) ? -1 : 1;
+      });
+
+      return {
+        periods: sortedPeriods,
+        selectedPeriod: _Store2.default.getSelectedPeriod()
+      };
+    }
+  }, {
+    key: 'setSelectedPeriod',
+    value: function setSelectedPeriod(periodId) {
+      _Store2.default.setSelectedPeriod(periodId);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'ul',
+        { id: 'periods-table' },
+        this.state.periods.map(function (period) {
+          return _react2.default.createElement(_PeriodRow2.default, { key: period._id,
+            period: period,
+            selected: _this2.state.selectedPeriod === period._id,
+            clickHandler: function clickHandler() {
+              return _this2.setSelectedPeriod(period._id);
+            } });
+        })
+      );
+    }
+  }]);
+
+  return BalanceTable;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
+
+},{"../../Helpers.js":225,"../../Store.js":233,"./PeriodRow.js":247,"react":221,"react-router-dom":182}],249:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26197,7 +26310,7 @@ function LoginView(props) {
   );
 }
 
-},{"react":221}],249:[function(require,module,exports){
+},{"react":221}],250:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26208,14 +26321,6 @@ exports.default = BalanceCard;
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _BudgetService = require('../../Services/BudgetService.js');
-
-var _BudgetService2 = _interopRequireDefault(_BudgetService);
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
 
 var _BalanceCardHeader = require('./BalanceCardHeader.js');
 
@@ -26229,29 +26334,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function BalanceCard(props) {
   var budget = props.budget;
-  var balanceClass = (0, _classnames2.default)({ deficit: budget.balance < 0, surplus: budget.balance >= 0 });
   return _react2.default.createElement(
     'div',
     { className: 'card' },
     _react2.default.createElement(_BalanceCardHeader2.default, { budget: budget }),
     _react2.default.createElement(_BalanceCardBody2.default, { budget: budget })
   );
-
-  // <tr>
-  //   <td>
-  //     {
-  //       budget.name != 'Other' && budget.name != 'Total' &&
-  //       <span className="oi oi-pencil" onClick={() => props.onEditBudget(budget)}></span>
-  //     }
-  //   </td>
-  //   <td>{BudgetService.prettifyBudgetName(budget.name)}</td>
-  //   <td>{budget.credits}</td>
-  //   <td>{budget.debits}</td>
-  //   <td className={balanceClass}>{budget.balance}</td>
-  // </tr>
 }
 
-},{"../../Services/BudgetService.js":230,"./BalanceCardBody.js":250,"./BalanceCardHeader.js":251,"classnames":1,"react":221}],250:[function(require,module,exports){
+},{"./BalanceCardBody.js":251,"./BalanceCardHeader.js":252,"react":221}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26292,7 +26383,7 @@ function BalanceCardBody(props) {
   );
 }
 
-},{"./BudgetControls.js":254,"./TransactionList.js":256,"react":221}],251:[function(require,module,exports){
+},{"./BudgetControls.js":255,"./TransactionList.js":257,"react":221}],252:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26365,7 +26456,7 @@ function BalanceCardHeader(props) {
   );
 }
 
-},{"../../Helpers.js":225,"classnames":1,"react":221}],252:[function(require,module,exports){
+},{"../../Helpers.js":225,"classnames":1,"react":221}],253:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26467,7 +26558,7 @@ var BalanceTable = function (_React$Component) {
 
 exports.default = (0, _reactRouterDom.withRouter)(BalanceTable);
 
-},{"../../Helpers.js":225,"../../Store.js":233,"./BalanceCard.js":249,"./BalanceTableHeader.js":253,"react":221,"react-router-dom":182}],253:[function(require,module,exports){
+},{"../../Helpers.js":225,"../../Store.js":233,"./BalanceCard.js":250,"./BalanceTableHeader.js":254,"react":221,"react-router-dom":182}],254:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26513,7 +26604,7 @@ function BalanceTableHeader(props) {
   );
 }
 
-},{"react":221}],254:[function(require,module,exports){
+},{"react":221}],255:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26557,7 +26648,7 @@ function BudgetControls(props) {
   );
 }
 
-},{"../../Helpers.js":225,"react":221}],255:[function(require,module,exports){
+},{"../../Helpers.js":225,"react":221}],256:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26577,10 +26668,6 @@ var _BalanceTable = require('./BalanceTable.js');
 
 var _BalanceTable2 = _interopRequireDefault(_BalanceTable);
 
-var _BottomNav = require('../Components/BottomNav.js');
-
-var _BottomNav2 = _interopRequireDefault(_BottomNav);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function OverviewView(props) {
@@ -26592,7 +26679,7 @@ function OverviewView(props) {
   );
 }
 
-},{"../Components/BottomNav.js":241,"../Components/TopNav.js":244,"./BalanceTable.js":252,"react":221}],256:[function(require,module,exports){
+},{"../Components/TopNav.js":243,"./BalanceTable.js":253,"react":221}],257:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26624,7 +26711,7 @@ function TransactionList(props) {
 
 exports.default = (0, _reactRouterDom.withRouter)(TransactionList);
 
-},{"./TransactionListItem.js":257,"react":221,"react-router-dom":182}],257:[function(require,module,exports){
+},{"./TransactionListItem.js":258,"react":221,"react-router-dom":182}],258:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26669,7 +26756,7 @@ function TransactionListItem(props) {
   );
 }
 
-},{"../../Helpers.js":225,"react":221}],258:[function(require,module,exports){
+},{"../../Helpers.js":225,"react":221}],259:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -26855,7 +26942,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],259:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -26880,14 +26967,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],260:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],261:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -27477,4 +27564,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":260,"_process":258,"inherits":259}]},{},[226]);
+},{"./support/isBuffer":261,"_process":259,"inherits":260}]},{},[226]);

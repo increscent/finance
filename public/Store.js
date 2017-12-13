@@ -26,7 +26,7 @@ class Store extends ListenerService {
     this.fetchOverview(periodId);
     if (type !== "budgets") this.fetchBudgets(periodId);
     if (type !== "transactions") this.fetchTransactions(periodId);
-    if (type == "all" || type == "periods") this.fetchPeriods();
+    if (type === "all" || type === "periods") this.fetchPeriods();
   }
 
   isLoggedIn() {
@@ -118,6 +118,15 @@ class Store extends ListenerService {
 
   getDebitTransactionsForBudget(budget) {
     return this.transactionService.getDebitTransactionsForBudget(budget, this.transactions);
+  }
+
+  getSelectedPeriod() {
+    return this.accountService.periodId;
+  }
+
+  setSelectedPeriod(periodId) {
+    this.accountService.periodId = periodId;
+    this.hasUpdated("periods");
   }
 }
 

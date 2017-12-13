@@ -11,7 +11,11 @@ var Account = require('../classes/Account');
 // });
 
 router.get('/periods', Helpers.verifyAccount, function (req, res) {
-  res.send(JSON.stringify(req.account.past_budget_periods));
+  res.send(JSON.stringify([{
+      _id: null,
+      start_date: req.account.budget_period_start,
+      end_date: (new Date()).toString()
+    }, ...req.account.past_budget_periods]));
 });
 
 router.post('/periods', Helpers.verifyAccount, Helpers.getBudgets, function (req, res) {

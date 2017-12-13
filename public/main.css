@@ -123,3 +123,18 @@ body {
   border-bottom: 1px solid rgba(0,0,0,.125);
   border-radius: 0;
 }
+
+#history ul#periods-table {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#history ul#periods-table li {
+  display: inline-block;
+  padding: 12px 32px;
+  width: 100%;
+}
+
+#history ul#periods-table li.selected {
+  background-color: rgba(135,206,250,0.3);
+}

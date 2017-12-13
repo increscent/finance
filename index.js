@@ -23,7 +23,9 @@ const passportConfig = require('./config/passport_config');
 passportConfig(app);
 
 app.use('/api', function (req, res, next) {
-  res.set({'Expires': (new Date()).toString()});
+  var date = new Date();
+  date.setDate(date.getDate() - 1);
+  res.set({'Expires': date.toString()});
   next();
 });
 

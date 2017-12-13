@@ -22,13 +22,6 @@ app.use(session({
 const passportConfig = require('./config/passport_config');
 passportConfig(app);
 
-app.use('/api', function (req, res, next) {
-  var date = new Date();
-  date.setDate(date.getDate() - 1);
-  res.set({'Expires': date.toString()});
-  next();
-});
-
 const route_config = require('./config/route_config');
 for (var i in route_config.route_types) {
   var route = route_config.route_types[i];

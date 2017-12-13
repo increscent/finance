@@ -44,7 +44,7 @@ class Helpers {
   }
 
   getPeriod(req) {
-    let periodId = req.headers['period.id'];
+    let periodId = req.params['periodId'];
     let period = undefined;
     if (periodId) period = req.account.past_budget_periods.find(period => period._id == periodId);
 

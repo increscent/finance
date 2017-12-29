@@ -1,48 +1,38 @@
-var express = require('express');
-var router = express.Router();
-var Models = require('../models');
-var Helpers = require('../classes/Helpers');
-var config = require('../config/route_config');
-var Transaction = require('../classes/Transaction');
+import { Router } from 'express';
+import { transactionRequiredFields } from '../config/routeConfig';
+import { verifyRequestBody } from './middleware';
+import { getTransactions, addTransaction, updateTransaction, deleteTransaction }
+  from '../serviceLayer/transactionService';
 
-router.use(Helpers.verifyAccount);
+export default Router()
 
-router.get('/', Helpers.getTransactions, function (req, res) {
-  res.send(JSON.stringify(req.transactions.map(Helpers.cleanTransaction)));
+.get('/', function (req, res, next) {
+  if (!req.query.periodId)
+    return next({
+      statusCode: 400,
+      message: 'Please specify periodId as query string parameter.'
+    });
+
+  getTransactions(req.accountId, req.query.periodId)
+  .then(transactions => res.send(JSON.stringify(transactions)))
+  .catch(error => next(error));
+})
+
+.post('/', verifyRequestBody(transactionRequiredFields),
+function (req, res, next) {
+  addTransaction(req.accountId, req.body)
+  .then(transaction => res.send(JSON.stringify(transaction)))
+  .catch(error => next(error));
+})
+
+.put('/:transactionId', function (req, res, next) {
+  updateTransaction(req.accountId, req.params.transactionId, req.body)
+  .then((transaction) => res.send(JSON.stringify({success: true})))
+  .catch(error => next(error));
+})
+
+.delete('/:transactionId', function (req, res, next) {
+  deleteTransaction(req.accountId, req.params.transactionId)
+  .then((transaction) => res.send(JSON.stringify({success: true})))
+  .catch(error => next(error));
 });
-
-router.post('/', Helpers.validateRequestBody(config.transaction_required_fields), Helpers.getBudgets, function (req, res) {
-  var transaction = new Transaction(req.account, req.budgets);
-  transaction.create(req.validated_body)
-  .then(newTransaction => {
-    res.send(JSON.stringify(Helpers.cleanTransaction(newTransaction)));
-  })
-  .catch(error => {
-    Helpers.errorResponse(res, error.message);
-  });
-});
-
-router.put('/:id', Helpers.validateRequestBody(config.transaction_required_fields), function (req, res) {
-  var transaction = new Transaction(req.account);
-  req.validated_body._id = req.params.id;
-  transaction.update(req.validated_body)
-  .then(newTransaction => {
-    res.send(JSON.stringify(Helpers.cleanTransaction(newTransaction)))
-  })
-  .catch(error => {
-    Helpers.errorResponse(res, error.message)
-  });
-});
-
-router.delete('/:id', function (req, res) {
-  var existingTransaction = new Transaction(req.account);
-  existingTransaction.delete(req.params.id)
-  .then(() => {
-    res.send(JSON.stringify({success: true}));
-  })
-  .catch(error => {
-    Helpers.errorResponse(res, error.message);
-  })
-});
-
-module.exports = router;

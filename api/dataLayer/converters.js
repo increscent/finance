@@ -1,3 +1,9 @@
+export const convertAccount = dbAccount => ({
+  firstName: dbAccount.first_name,
+  lastName: dbAccount.last_name,
+  currentPeriodId: dbAccount.current_period_id
+});
+
 export const convertPeriod = dbPeriod => ({
   periodId: dbPeriod._id,
   startDate: dbPeriod.start_date,
@@ -13,8 +19,12 @@ export const convertCategory = dbCategory => ({
   currentLimit: dbCategory.current_limit
 });
 
-export const convertAccount = dbAccount => ({
-  firstName: dbAccount.first_name,
-  lastName: dbAccount.last_name,
-  currentPeriodId: dbAccount.current_period_id
+export const convertTransaction = dbTransaction => ({
+  transactionId: dbTransaction._id,
+  periodId: dbTransaction.period_id,
+  categoryId: dbTransaction.category_id,
+  type: dbTransaction.type,
+  note: dbTransaction.note,
+  amount: dbTransaction.amount,
+  date: dbTransaction.date
 });

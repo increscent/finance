@@ -12,6 +12,7 @@ let accountSchema = {
 
 let periodSchema = {
   account_id: ObjectId,
+  previous_period_id: ObjectId,
   start_date: Date,
   end_date: Date
 };

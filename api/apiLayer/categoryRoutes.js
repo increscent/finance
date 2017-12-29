@@ -7,47 +7,35 @@ import { getCategories, addCategory, updateCategory, deleteCategory }
 export default Router()
 
 .get('/', function (req, res, next) {
-  if (req.query.periodId === undefined) {
-    res.statusCode = 400;
-    res.errorMessage = 'Please specify periodId as query string parameter.';
-    next();
-  }
+  if (!req.query.periodId)
+    return next({
+      statusCode: 400,
+      message: 'Please specify periodId as query string parameter.'
+    });
 
   getCategories(req.accountId, req.query.periodId)
   .then(categories => res.send(JSON.stringify(categories)))
-  .catch(error => {
-    res.statusCode = 500;
-    next();
-  });
+  .catch(error => next(error));
 })
 
 .post('/', verifyRequestBody(categoryRequiredFields),
 function (req, res, next) {
   addCategory(req.accountId, req.body)
   .then(category => res.send(JSON.stringify(category)))
-  .catch(error => {
-    res.statusCode = 500;
-    next();
-  });
+  .catch(error => next(error));
 })
 
-.put('/:categoryId', verifyRequestBody(categoryRequiredFields),
-function (req, res, next) {
+.put('/:categoryId', function (req, res, next) {
   updateCategory(req.accountId, req.params.categoryId, req.body)
   .then(category => res.send(JSON.stringify({success: true})))
-  .catch(error => {
-    res.statusCode = 400;
-    res.errorMessage = error;
-    next();
-  });
+  .catch(error => next(error));
 })
 
 .delete('/:categoryId', function (req, res, next) {
-  deleteCategory(req.accountId, req.params.categoryId)
+  if (req.query.transferCategoryId === undefined)
+    next({statusCode: 400, message: 'Please specify transferCategoryId as query string parameter.'});
+
+  deleteCategory(req.accountId, req.params.categoryId, req.query.transferCategoryId)
   .then(category => res.send(JSON.stringify({success: true})))
-  .catch(error => {
-    res.statusCode = 400;
-    res.errorMessage = error;
-    next();
-  });
+  .catch(error => next(error));
 });

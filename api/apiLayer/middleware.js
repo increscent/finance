@@ -1,21 +1,20 @@
 export function verifyAccount(req, res, next) {
   if (!req.user) {
-    res.statusCode = 401;
-    res.send(JSON.stringify({
-      error: 'Unauthorized. Try logging in.'
-    }));
+    next({statusCode: 401, message: 'Unauthorized. Try logging in.'});
   } else {
     req.accountId = req.user;
     next();
   }
 }
 
-export function handleErrors(req, res, next) {
-  let message = res.errorMessage || 'There was a server error, sorry';
-  if (res.statusCode != 200 && !res.headerSent)
-    res.send(JSON.stringify({error: message}));
-  else
+export function handleApiErrors(err, req, res, next) {
+  if (err) {
+    res.statusCode = (err.statusCode)? err.statusCode:500;
+    let errorMessage = (err.message)? err.message:'There was a sever error, sorry.';
+    res.send(JSON.stringify({error: errorMessage}));
+  } else {
     next();
+  }
 }
 
 export function verifyRequestBody(requiredProperties) {
@@ -28,10 +27,7 @@ export function verifyRequestBody(requiredProperties) {
       }
       next();
     } catch (exception) {
-      res.statusCode = 400;
-      res.send(JSON.stringify({
-        error: 'Invalid request body'
-      }));
+      next({statusCode: 400, message: 'Invalid request body.'});
     }
   };
 }

@@ -1,4 +1,4 @@
-import { Category } from '../dataLayer/models';
+import { Category, Transaction } from '../dataLayer/models';
 import { convertCategory } from '../dataLayer/converters';
 
 export function getCategories(accountId, periodId) {
@@ -21,29 +21,37 @@ export function addCategory(accountId, request) {
 export function updateCategory(accountId, categoryId, request) {
   return getCategory(accountId, categoryId)
   .then(category => {
-    category.period_id = request.periodId;
-    category.name = request.name;
-    category.allowance = parseFloat(request.allowance);
-    category.allowance_type = (request.allowanceType.trim() == '%')? '%':'$';
-    category.current_limit = parseFloat(request.currentLimit);
+    if (request.periodId !== undefined)
+      category.period_id = request.periodId;
+    if (request.name !== undefined)
+      category.name = request.name;
+    if (request.allowance !== undefined)
+      category.allowance = parseFloat(request.allowance);
+    if (request.allowanceType !== undefined)
+      category.allowance_type = (request.allowanceType.trim() == '%')? '%':'$';
+    if (request.currentLimit !== undefined)
+      category.current_limit = parseFloat(request.currentLimit);
     return category.save();
   });
 }
 
-export function deleteCategory(accountId, categoryId) {
+export function deleteCategory(accountId, categoryId, transferCategoryId) {
   return getCategory(accountId, categoryId)
-  .then(category => {
-    return category.remove();
-  });
+  .then(category => category.remove())
+  .then(() => Transaction.find({category_id: categoryId}))
+  .then(categories => Promise.all(categories.map(category => {
+    category.category_id = transferCategoryId;
+    return category.save();
+  })));
 }
 
 function getCategory(accountId, categoryId) {
   return Category.findOne({account_id: accountId, _id: categoryId})
   .then(category => {
     if (category) {
-      return category
+      return category;
     } else {
-      throw 'Category not found.';
+      throw {statusCode: 400, message: 'Category not found.'};
     }
   })
 }

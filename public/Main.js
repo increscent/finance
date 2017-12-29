@@ -10,9 +10,8 @@ import EditTransactionView from './Views/EditTransaction/EditTransactionView.js'
 import LoginView from './Views/Login/LoginView.js';
 import Store from './Store.js';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { financeApp } from './Store/Reducers.js';
-import { fetchBudgets } from './Store/Actions.js';
+import store from './Store/Index.js';
+import BudgetsList from './Test/budgetsContainer.js';
 
 function App(props) {
   return (
@@ -35,10 +34,6 @@ function App(props) {
     </Router>
   );
 }
-
-let store = createStore(financeApp);
-
-fetchBudgets();
 
 ReactDOM.render(
   <Provider store={store}>

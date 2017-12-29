@@ -1,22 +1,23 @@
-var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
-var secrets = require('./secrets');
-var Account = require('../classes/Account');
+import passport from 'passport';
+import passportGoogle from 'passport-google-oauth20';
+import secrets from './secrets';
+import { findOrCreate } from '../serviceLayer/accountService';
+
+const googleStrategy  = passportGoogle.Strategy;
 
 module.exports = function (app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  passport.use(new GoogleStrategy({
+  passport.use(new googleStrategy({
       clientID: secrets.GOOGLE_CLIENT_ID,
       clientSecret: secrets.GOOGLE_CLIENT_SECRET,
       callbackURL: secrets.GOOGLE_CALLBACK_URL
     },
     function(accessToken, refreshToken, profile, callback) {
-      var account = new Account();
-      account.findOrCreate(profile.id, profile.name.givenName, profile.name.familyName)
-      .then(user => {
-        return callback(null, user);
+      findOrCreate(profile.id, profile.name.givenName, profile.name.familyName)
+      .then(accountId => {
+        return callback(null, accountId);
       })
       .catch(error => {
         return callback(error);
@@ -24,18 +25,12 @@ module.exports = function (app) {
     }
   ));
 
-  passport.serializeUser(function(user, done) {
-    done(null, user.google_id);
+  passport.serializeUser(function(accountId, done) {
+    done(null, accountId);
   });
 
-  passport.deserializeUser(function(id, done) {
-    (new Account()).find(id)
-    .then(user => {
-      return done(null, user);
-    })
-    .catch(error => {
-      return done(error);
-    });
+  passport.deserializeUser(function(accountId, done) {
+    done(null, accountId);
   });
 
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));

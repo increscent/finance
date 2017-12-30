@@ -5,9 +5,9 @@
   "main": "api/index.js",
   "scripts": {
     "test": "npm run build && mocha api_build/test/integrationTests.js",
-    "build": "browserify public/Main.js -t babelify --outfile public/bundle.js && babel api -d api_build --presets es2015",
+    "build": "browserify app/main.js -t babelify -t node-lessify -o public/bundle.js && babel api -d api_build --presets es2015",
     "start": "npm run build && node api_build/index.js",
-    "watch-client": "watchify public/Main.js -t babelify -o public/bundle.js",
+    "watch-client": "watchify app/main.js -t babelify -t node-lessify -o public/bundle.js",
     "watch-server": "nodemon api/index.js --exec babel-node --presets es2015"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "mixin": "^0.2.0",
     "mocha": "^3.5.3",
     "mongoose": "^4.13.8",
+    "node-lessify": "^0.1.5",
     "nodemon": "^1.14.3",
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",

@@ -27,7 +27,22 @@ function addTransaction(accountId, request) {
     note: request.note,
     amount: parseFloat(request.amount),
     date: request.date
-  }).save().then(_converters.convertTransaction);
+  }).save().then(function (transaction) {
+
+    if (transaction.type === 'CREDIT' && transaction.period_id) {
+      // add percentage of credit to categories in this period
+      return _models.Category.find({ account_id: accountId, period_id: transaction.period_id, allowance_type: '%' }).then(function (categories) {
+        return Promise.all(categories.map(function (category) {
+          category.current_limit += category.allowance * transaction.amount / 100;
+          return category.save();
+        }));
+      }).then(function () {
+        return transaction;
+      });
+    } else {
+      return transaction;
+    }
+  }).then(_converters.convertTransaction);
 }
 
 function updateTransaction(accountId, transactionId, request) {

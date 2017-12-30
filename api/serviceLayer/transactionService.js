@@ -1,4 +1,4 @@
-import { Transaction } from '../dataLayer/models';
+import { Transaction, Category } from '../dataLayer/models';
 import { convertTransaction } from '../dataLayer/converters';
 
 export function getTransactions(accountId, periodId) {
@@ -16,6 +16,21 @@ export function addTransaction(accountId, request) {
     amount: parseFloat(request.amount),
     date: request.date
   })).save()
+  .then(transaction => {
+
+    if (transaction.type === 'CREDIT' && transaction.period_id) {
+      // add percentage of credit to categories in this period
+      return Category.find({account_id: accountId, period_id: transaction.period_id, allowance_type: '%'})
+      .then(categories => Promise.all(categories.map(category => {
+        category.current_limit += category.allowance * transaction.amount / 100;
+        return category.save();
+      })))
+      .then(() => transaction);
+    } else {
+      return transaction;
+    }
+
+  })
   .then(convertTransaction);
 }
 

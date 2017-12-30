@@ -31,18 +31,25 @@ function addCategory(accountId, request) {
 
 function updateCategory(accountId, categoryId, request) {
   return getCategory(accountId, categoryId).then(function (category) {
-    category.period_id = request.periodId;
-    category.name = request.name;
-    category.allowance = parseFloat(request.allowance);
-    category.allowance_type = request.allowanceType.trim() == '%' ? '%' : '$';
-    category.current_limit = parseFloat(request.currentLimit);
+    if (request.periodId !== undefined) category.period_id = request.periodId;
+    if (request.name !== undefined) category.name = request.name;
+    if (request.allowance !== undefined) category.allowance = parseFloat(request.allowance);
+    if (request.allowanceType !== undefined) category.allowance_type = request.allowanceType.trim() == '%' ? '%' : '$';
+    if (request.currentLimit !== undefined) category.current_limit = parseFloat(request.currentLimit);
     return category.save();
   });
 }
 
-function deleteCategory(accountId, categoryId) {
+function deleteCategory(accountId, categoryId, transferCategoryId) {
   return getCategory(accountId, categoryId).then(function (category) {
     return category.remove();
+  }).then(function () {
+    return _models.Transaction.find({ category_id: categoryId });
+  }).then(function (categories) {
+    return Promise.all(categories.map(function (category) {
+      category.category_id = transferCategoryId;
+      return category.save();
+    }));
   });
 }
 
@@ -51,7 +58,7 @@ function getCategory(accountId, categoryId) {
     if (category) {
       return category;
     } else {
-      throw 'Category not found.';
+      throw { statusCode: 400, message: 'Category not found.' };
     }
   });
 }

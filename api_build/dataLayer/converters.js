@@ -3,6 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var convertAccount = exports.convertAccount = function convertAccount(dbAccount) {
+  return {
+    firstName: dbAccount.first_name,
+    lastName: dbAccount.last_name,
+    currentPeriodId: dbAccount.current_period_id
+  };
+};
+
 var convertPeriod = exports.convertPeriod = function convertPeriod(dbPeriod) {
   return {
     periodId: dbPeriod._id,
@@ -22,10 +30,14 @@ var convertCategory = exports.convertCategory = function convertCategory(dbCateg
   };
 };
 
-var convertAccount = exports.convertAccount = function convertAccount(dbAccount) {
+var convertTransaction = exports.convertTransaction = function convertTransaction(dbTransaction) {
   return {
-    firstName: dbAccount.first_name,
-    lastName: dbAccount.last_name,
-    currentPeriodId: dbAccount.current_period_id
+    transactionId: dbTransaction._id,
+    periodId: dbTransaction.period_id,
+    categoryId: dbTransaction.category_id,
+    type: dbTransaction.type,
+    note: dbTransaction.note,
+    amount: dbTransaction.amount,
+    date: dbTransaction.date
   };
 };

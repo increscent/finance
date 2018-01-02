@@ -1,0 +1,87 @@
+@import '/components/viewContainer/viewContainer.less';
+@import './components/categoryList/categoryList.less';
+@import './components/categoryListAdjust/categoryListAdjust.less';
+@import './components/categorySummary/categorySummary.less';
+@import './components/categorySummaryEdit/categorySummaryEdit.less';
+@import './components/budgetSummary/budgetSummary.less';
+
+body {
+  font-size: 12pt;
+  font-family: Helvetica, sans-serif;
+  color: #333;
+  margin: 0;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* global elements */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.link-button {
+  font-size: 12pt;
+  color: #555;
+  text-decoration: underline;
+  padding: 5px 15px;
+
+  &:hover, &:active {
+    cursor: pointer;
+    background-color: #f0f0f0;
+  }
+
+  &.delete-button {
+    color: red;
+  }
+}
+
+.input-field {
+  border-radius: 3px;
+  padding: 5px;
+  font-size: 12pt;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.form-row {
+  display: flex;
+  padding: 0 10px 15px;
+  align-items: baseline;
+}
+
+.form-column-left {
+  width: 100px;
+}
+
+.form-column-right {
+  flex-grow: 1;
+}
+
+.form-submit-row {
+  width: 100%;
+  padding: 0 10px 15px;
+  text-align: center;
+}
+
+.form-button {
+  border-radius: 3px;
+  padding: 7px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 12pt;
+  color: #333;
+  border: 1px solid #ccc;
+  background-color: #fff;
+
+  &:hover, &:active {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+}

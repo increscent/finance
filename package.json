@@ -7,8 +7,9 @@
     "test": "npm run build && mocha api_build/test/integrationTests.js",
     "build": "browserify app/main.js -t babelify -t node-lessify -o public/bundle.js && babel api -d api_build --presets es2015",
     "start": "npm run build && node api_build/index.js",
-    "watch-client": "watchify app/main.js -t babelify -t node-lessify -o public/bundle.js",
-    "watch-server": "nodemon api/index.js --exec babel-node --presets es2015"
+    "watch-less": "watchify app/main.less -t node-lessify -o public/style.js -v",
+    "watch-react": "watchify app/main.js -t babelify -o public/bundle.js -v",
+    "watch-server": "nodemon api/index.js --watch api --exec babel-node --presets es2015"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "babel-preset-react": "^6.24.1",
     "babelify": "^7.3.0",
     "body-parser": "^1.18.2",
+    "catw": "^1.0.1",
     "classnames": "^2.2.5",
     "connect-mongo": "^1.3.2",
     "cookie-parser": "^1.4.3",

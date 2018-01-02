@@ -1,0 +1,30 @@
+.view-container {
+  width: 100%;
+  max-width: 420px;
+
+  .view-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .view-title {
+      padding: 10px 0;
+      flex-grow: 1;
+      padding-left: 60px;
+      font-size: 16pt;
+      text-align: center;
+    }
+
+    .view-close-button {
+      padding: 10px 0;
+      width: 60px;
+      text-align: center;
+      font-size: 16pt;
+
+      &:hover, &:active {
+        background-color: #f0f0f0;
+        cursor: pointer;
+      }
+    }
+  }
+}

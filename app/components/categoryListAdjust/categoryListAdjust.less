@@ -1,0 +1,36 @@
+.category-list-adjust {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  & > li {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    width: 100%;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+
+    .category-name-adjust {
+      width: 120px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 10px;
+      font-size: 12pt;
+    }
+
+    .category-balance-adjust {
+      flex-grow: 1;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-right: 10px;
+      font-size: 12pt;
+      text-align: right;
+
+      .allowance-edit {
+        .input-field;
+        width: 85px;
+      }
+    }
+  }
+}

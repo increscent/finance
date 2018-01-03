@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import Views from '../views/views.js';
+import Views from './views.js';
 
 const mapStateToProps = (state) => ({
-  viewStack: state.viewStack
+  views: state.views
 });
 
 export default connect(mapStateToProps)(Views);

@@ -10,6 +10,10 @@
 @import './components/shared/debitCreditList.less';
 @import './components/shared/formElements.less';
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   font-size: 12pt;
   font-family: Helvetica, sans-serif;
@@ -24,6 +28,7 @@ body {
 }
 
 #views {
+  width: 100%;
   display: flex;
   flex-direction: row;
 }

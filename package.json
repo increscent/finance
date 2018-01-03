@@ -5,11 +5,11 @@
   "main": "api/index.js",
   "scripts": {
     "test": "npm run build && mocha api_build/test/integrationTests.js",
-    "build": "browserify app/main.js -t babelify -t node-lessify -o public/bundle.js --presets es2015,stage-2 && babel api -d api_build --presets es2015,stage-2",
+    "build": "browserify app/main.js -t babelify -t node-lessify -o public/bundle.js && babel api -d api_build",
     "start": "npm run build && node api_build/index.js",
     "watch-less": "watchify app/main.less -t node-lessify -o public/style.js -v",
-    "watch-react": "watchify app/main.js -t babelify -o public/bundle.js --presets es2015,stage-2 -v",
-    "watch-server": "nodemon api/index.js --watch api --exec babel-node --presets es2015,stage-2"
+    "watch-react": "watchify app/main.js -t babelify -o public/bundle.js -v",
+    "watch-server": "nodemon api/index.js --watch api --exec babel-node"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://bitbucket.org/increscent/finance#readme",
   "dependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
@@ -48,9 +49,13 @@
     "redux-devtools": "^3.4.1"
   },
   "babel": {
+    "plugins": [
+      ["transform-object-rest-spread", { "useBuiltIns": true }]
+    ],
     "presets": [
-      "react",
-      "es2015"
+      "es2015",
+      "stage-2",
+      "react"
     ]
   }
 }

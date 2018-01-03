@@ -1,0 +1,37 @@
+.debit-credit-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-size: 12pt;
+
+  li.list-title {
+    border-top: 1px solid #ccc;
+
+    .left-align {
+      font-weight: bold;
+    }
+  }
+
+  li {
+    border-bottom: 1px solid #ccc;
+    padding: 7px 10px;
+
+    .info-row {
+      display: flex;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      align-items: baseline;
+
+      .left-align {
+        flex-grow: 4;
+        text-align: left;
+      }
+
+      .right-align {
+        flex-grow: 1;
+        text-align: right;
+      }
+    }
+  }
+}

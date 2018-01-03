@@ -1,0 +1,35 @@
+.category-edit {
+  .name-edit {
+    .input-field;
+    width: 150px;
+  }
+
+  .allowance-edit {
+    .input-field;
+    width: 85px;
+  }
+
+  .allowance-type-picker {
+    margin: 0;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+
+    & + label {
+      border-radius: 3px;
+      padding: 3px 7px;
+      margin-left: -19px;
+      font-size: 12pt;
+      background-color: #fff;
+      border: 1px solid #ccc;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &:checked + label {
+      background-color: #ccc;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+.transaction-add {
+  .amount-edit {
+    .input-field;
+    width: 85px;
+  }
+
+  .note-edit {
+    .input-field;
+    width: 250px;
+  }
+
+  input[type=date] {
+    .input-field;
+  }
+
+  select {
+    .input-field;
+    background-color: #fff;
+    width: 150px;
+  }
+
+  .transaction-type-picker {
+      margin: 0;
+      padding: 0;
+      width: 18px;
+      height: 18px;
+
+    & + label {
+      border-radius: 3px;
+      padding: 3px 7px;
+      margin-left: -19px;
+      font-size: 12pt;
+      background-color: #fff;
+      border: 1px solid #ccc;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &:checked + label {
+      background-color: #f0f0f0;
+    }
+
+    & + .left-label {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    & + .right-label {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}

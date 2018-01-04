@@ -2278,7 +2278,7 @@ exports.default = function () {
           var otherCategory = globalState.categories.filter(function (category) {
             return category.categoryId !== action.actionProperties.categoryId;
           })[0];
-          var transferCategoryId = otherCategory ? otherCategory.categoryId : null;
+          var transferCategoryId = otherCategory ? otherCategory.categoryId : '';
 
           return {
             actionType: action.actionType,

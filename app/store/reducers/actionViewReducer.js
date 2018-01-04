@@ -28,7 +28,7 @@ export default (state = null, action, globalState) => {
         case CATEGORY_DELETE:
           let otherCategory = globalState.categories.filter(category =>
             category.categoryId !== action.actionProperties.categoryId)[0];
-          let transferCategoryId = otherCategory? otherCategory.categoryId : null;
+          let transferCategoryId = otherCategory? otherCategory.categoryId : '';
 
           return {
             actionType: action.actionType,

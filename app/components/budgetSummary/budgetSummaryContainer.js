@@ -8,6 +8,7 @@ const mapStateToProps = (state) => ({
   totalCredits: selectors.getTotalAppliedCredits(state),
   totalDebits: selectors.getTotalDebits(state),
   totalBudgetedFunds: selectors.getTotalBudgetedFunds(state),
+  isAdjusting: state.views.budgetView.isAdjusting,
   categories: state.categories
 });
 

@@ -71,6 +71,7 @@ export const REMOVE_BUDGET_VIEW = 'REMOVE_BUDGET_VIEW';
 export const REMOVE_CATEGORY_VIEW = 'REMOVE_CATEGORY_VIEW';
 export const REMOVE_ACTION_VIEW = 'REMOVE_ACTION_VIEW';
 export const ADJUST_CATEGORY = 'ADJUST_CATEGORY';
+export const UPDATE_NEW_CATEGORY = 'UPDATE_NEW_CATEGORY';
 
 export const setBudgetView = (isAdjusting, categories) => ({
   type: SET_BUDGET_VIEW,
@@ -107,4 +108,9 @@ export const adjustCategory = (categoryId, currentLimit) => ({
   type: ADJUST_CATEGORY,
   categoryId,
   currentLimit
+});
+
+export const updateNewCategory = (category) => ({
+  type: UPDATE_NEW_CATEGORY,
+  category
 });

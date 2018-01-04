@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   adjustCategory: (categoryId, currentLimit) =>
-    dispatch(adjustCategory(categoryId, currentLimit)),
+    dispatch(adjustCategory(categoryId, parseFloat(currentLimit))),
   onCancel: () =>
     dispatch(setBudgetView(false)),
   onSave: (categories) => {
@@ -20,11 +20,11 @@ const mapDispatchToProps = (dispatch) => ({
       .filter(category => category.currentLimit !== category.previousLimit)
       .map(category => putRequest('/api/category/' + category.categoryId, {
         categoryId: category.categoryId,
-        currentLimit: category.currentLimit
+        currentLimit: parseFloat(category.currentLimit)
       }).then(() => category))
     )
     .then(categories => categories.map(category =>
-      dispatch(updateCategory(category.categoryId, {currentLimit: category.currentLimit}))))
+      dispatch(updateCategory(category.categoryId, {currentLimit: parseFloat(category.currentLimit)}))))
     .then(() => dispatch(setBudgetView(false)))
     .catch(error => console.log(error));
   }

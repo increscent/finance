@@ -17,7 +17,7 @@ export default (props) => (
             { category.name }
           </div>
           <div className="category-balance-adjust">
-            $ <input type="number" className="allowance-edit" value={category.currentLimit}
+            $ <input type="number" step=".01" className="allowance-edit" value={category.currentLimit}
               onChange={event => props.adjustCategory(category.categoryId, event.target.value)} />
               &nbsp;- ${category.debits} = ${category.currentLimit - category.debits}
           </div>

@@ -18,3 +18,6 @@ export const getAdjustedCategoriesWithDebits = (state) =>
 
 export const getAdjustedBudgetedFunds = (state) =>
   state.views.budgetView.categories.reduce((acc, category) => acc + category.currentLimit, 0);
+
+export const getNewCategory = (state) =>
+  state.views.actionView.category;

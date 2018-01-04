@@ -10,6 +10,9 @@ export const getCategoriesWithBalance = (state) =>
       getCategoryTotalDebits(state, category.categoryId)
   }));
 
+export const getOtherCategories = (state, categoryId) =>
+  state.categories.filter(category => category.categoryId !== categoryId);
+
 export const getAdjustedCategoriesWithDebits = (state) =>
   state.views.budgetView.categories.map(category => ({
     ...category,
@@ -21,3 +24,11 @@ export const getAdjustedBudgetedFunds = (state) =>
 
 export const getNewCategory = (state) =>
   state.views.actionView.category;
+
+export const getEditCategory = (state) =>
+  state.views.categoryView.category;
+
+export const getEditedBudgetedFunds = (state) =>
+  getOtherCategories(state, state.views.categoryView.categoryId)
+  .reduce((acc, category) => acc + category.currentLimit, 0)
+   + state.views.categoryView.category.currentLimit;

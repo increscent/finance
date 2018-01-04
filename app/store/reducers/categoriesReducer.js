@@ -34,6 +34,6 @@ export default (state = [], action) => {
 };
 
 function findIndex(categories, categoryId) {
-  categories.findIndex(category =>
+  return categories.findIndex(category =>
     category.categoryId === categoryId);
 }

@@ -94,6 +94,7 @@ export const adjustCategory = (categoryId, currentLimit) => ({
 
 export const SET_CATEGORY_VIEW = 'SET_CATEGORY_VIEW';
 export const REMOVE_CATEGORY_VIEW = 'REMOVE_CATEGORY_VIEW';
+export const EDIT_CATEGORY = 'EDIT_CATEGORY';
 
 export const setCategoryView = (categoryId, isEditing, isOtherTransactions) => ({
   type: SET_CATEGORY_VIEW,
@@ -106,11 +107,17 @@ export const removeCategoryView = () => ({
   type: REMOVE_CATEGORY_VIEW
 });
 
+export const editCategory = (category) => ({
+  type: EDIT_CATEGORY,
+  category
+});
+
 // Action View Actions
 
 export const SET_ACTION_VIEW = 'SET_ACTION_VIEW';
 export const REMOVE_ACTION_VIEW = 'REMOVE_ACTION_VIEW';
 export const UPDATE_NEW_CATEGORY = 'UPDATE_NEW_CATEGORY';
+export const UPDATE_DELETE_CATEGORY = 'UPDATE_DELETE_CATEGORY';
 export const UPDATE_NEW_TRANSACTION = 'UPDATE_NEW_TRANSACTION';
 
 export const setActionView = (actionType, actionProperties) => ({
@@ -126,6 +133,11 @@ export const removeActionView = () => ({
 export const updateNewCategory = (category) => ({
   type: UPDATE_NEW_CATEGORY,
   category
+});
+
+export const updateDeleteCategory = (transferCategoryId) => ({
+  type: UPDATE_DELETE_CATEGORY,
+  transferCategoryId
 });
 
 export const updateNewTransaction = (transaction) => ({

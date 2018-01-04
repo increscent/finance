@@ -1,5 +1,5 @@
-import { SET_ACTION_VIEW, REMOVE_ACTION_VIEW, UPDATE_NEW_CATEGORY, UPDATE_NEW_TRANSACTION }
-  from '../actions.js';
+import { SET_ACTION_VIEW, REMOVE_ACTION_VIEW, UPDATE_NEW_CATEGORY,
+  UPDATE_DELETE_CATEGORY, UPDATE_NEW_TRANSACTION } from '../actions.js';
 import { CATEGORY_ADD, CATEGORY_DELETE, TRANSACTION_ADD }
   from '../../components/views/actionView/actionView.js';
 
@@ -24,6 +24,16 @@ export default (state = null, action, globalState) => {
               allowance: '',
               periodId: globalState.account.currentPeriodId
             }
+          };
+        case CATEGORY_DELETE:
+          let otherCategory = globalState.categories.filter(category =>
+            category.categoryId !== action.actionProperties.categoryId)[0];
+          let transferCategoryId = otherCategory? otherCategory.categoryId : null;
+
+          return {
+            actionType: action.actionType,
+            categoryId: action.actionProperties.categoryId,
+            transferCategoryId
           };
         case TRANSACTION_ADD:
           let categoryId = (action.actionProperties && action.actionProperties.categoryId) ||
@@ -55,6 +65,11 @@ export default (state = null, action, globalState) => {
           ...state.category,
           ...action.category
         }
+      };
+    case UPDATE_DELETE_CATEGORY:
+      return {
+        ...state,
+        transferCategoryId: action.transferCategoryId
       };
     case UPDATE_NEW_TRANSACTION:
       return {

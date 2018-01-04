@@ -11,7 +11,7 @@ export default (props) => (
         Balance:
       </div>
       <div className="form-column-right">
-        $ <input type="number" className="allowance-edit" value={props.category.currentLimit}
+        $ <input type="number" step=".01" className="allowance-edit" value={props.category.currentLimit}
           onChange={event => props.onCurrentLimitChange(event.target.value)} /> - ${props.totalDebits} = ${props.category.currentLimit - props.totalDebits}
       </div>
     </div>}
@@ -30,11 +30,24 @@ export default (props) => (
         Allowance:
       </div>
       <div className="form-column-right">
+
         <input type="radio" name="allowanceType" className="allowance-type-picker" id="dollarType" value="$"
-          checked={props.category.allowanceType === '$'} onChange={event => props.onAllowanceTypeChange(event.target.value)} /><label htmlFor="dollarType">$</label>
-        &nbsp;<input type="number" step=".01" className="allowance-edit" value={props.category.allowance} onChange={event => props.onAllowanceChange(event.target.value)} />
-        &nbsp;<input type="radio" name="allowanceType" className="allowance-type-picker" id="percentType" value="%"
-          checked={props.category.allowanceType === '%'} onChange={event => props.onAllowanceTypeChange(event.target.value)} /><label htmlFor="percentType">%</label>
+          checked={props.category.allowanceType === '$'}
+          onChange={event => props.onAllowanceTypeChange(event.target.value, props.category, props.totalCredits)} />
+        <label htmlFor="dollarType">$</label>
+
+        &nbsp;
+
+        <input type="number" step=".01" className="allowance-edit" value={props.category.allowance}
+          onChange={event => props.onAllowanceChange(event.target.value, props.category, props.totalCredits)} />
+
+        &nbsp;
+
+        <input type="radio" name="allowanceType" className="allowance-type-picker" id="percentType" value="%"
+          checked={props.category.allowanceType === '%'}
+          onChange={event => props.onAllowanceTypeChange(event.target.value, props.category, props.totalCredits)} />
+        <label htmlFor="percentType">%</label>
+        
       </div>
     </div>
 

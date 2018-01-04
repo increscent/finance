@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onEdit: (categoryId) => dispatch(setCategoryView(categoryId, true)),
-  onDelete: (categoryId) => dispatch(setActionView(DELETE_CATEGORY, {categoryId}))
+  onDelete: (categoryId) => dispatch(setActionView(CATEGORY_DELETE, {categoryId}))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategorySummary);

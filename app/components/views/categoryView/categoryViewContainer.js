@@ -5,6 +5,7 @@ import { removeCategoryView } from '../../../store/actions.js';
 
 const mapStateToProps = (state) => ({
   categoryId: state.views.categoryView.categoryId,
+  isEditing: state.views.categoryView.isEditing,
   isOtherTransactions: state.views.categoryView.isOtherTransactions,
   title: state.views.categoryView.isOtherTransactions?
     'Other Transactions' : selectors.getCategory(state, state.views.categoryView.categoryId).name

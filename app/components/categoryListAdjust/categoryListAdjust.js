@@ -4,19 +4,29 @@ export default (props) => (
   <ul className="category-list-adjust">
     <li>
       <div className="category-name-adjust">
-        Food
+        Total funds: ${props.totalCredits}
       </div>
       <div className="category-balance-adjust">
-        $ <input type="number" className="allowance-edit" defaultValue="150" /> - $30.00 = $120.00
+        Unbudgeted funds: ${props.totalCredits - props.budgetedFunds}
       </div>
     </li>
-    <li>
-      <div className="category-name-adjust">
-        Gas
-      </div>
-      <div className="category-balance-adjust">
-        $ <input type="number" className="allowance-edit" defaultValue="50" /> - $0.00 = $50.00
-      </div>
-    </li>
+    {
+      props.categories.map(category =>
+        <li key={category.categoryId}>
+          <div className="category-name-adjust">
+            { category.name }
+          </div>
+          <div className="category-balance-adjust">
+            $ <input type="number" className="allowance-edit" value={category.currentLimit}
+              onChange={event => props.adjustCategory(category.categoryId, event.target.value)} />
+              &nbsp;- ${category.debits} = ${category.currentLimit - category.debits}
+          </div>
+        </li>
+      )
+    }
+    <div className="form-submit-row">
+      <button className="form-button" onClick={props.onCancel}>cancel</button>
+      <button className="form-button" onClick={() => props.onSave(props.categories)}>save</button>
+    </div>
   </ul>
 );

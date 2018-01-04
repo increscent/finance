@@ -15,7 +15,7 @@ export default (state = defaultAccountState, action) => {
       return {
         ...state,
         currentPeriodId: action.currentPeriodId
-      }
+      };
     default:
       return state;
   }

@@ -18,6 +18,7 @@ export const setCurrentPeriodId = (currentPeriodId) => ({
 export const ADD_CATEGORY = 'ADD_CATEGORY';
 export const ADD_CATEGORIES = 'ADD_CATEGORIES';
 export const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 
 export const addCategory = (category) => ({
   type: ADD_CATEGORY,
@@ -32,6 +33,12 @@ export const addCategories = (categories) => ({
 export const removeCategory = (categoryId) => ({
   type: REMOVE_CATEGORY,
   categoryId
+});
+
+export const updateCategory = (categoryId, category) => ({
+  type: UPDATE_CATEGORY,
+  categoryId,
+  category
 });
 
 // Transaction Actions
@@ -63,10 +70,12 @@ export const SET_ACTION_VIEW = 'SET_ACTION_VIEW';
 export const REMOVE_BUDGET_VIEW = 'REMOVE_BUDGET_VIEW';
 export const REMOVE_CATEGORY_VIEW = 'REMOVE_CATEGORY_VIEW';
 export const REMOVE_ACTION_VIEW = 'REMOVE_ACTION_VIEW';
+export const ADJUST_CATEGORY = 'ADJUST_CATEGORY';
 
-export const setBudgetView = (isAdjusting) => ({
+export const setBudgetView = (isAdjusting, categories) => ({
   type: SET_BUDGET_VIEW,
-  isAdjusting
+  isAdjusting,
+  categories
 });
 
 export const setCategoryView = (categoryId, isEditing, isOtherTransactions) => ({
@@ -76,9 +85,10 @@ export const setCategoryView = (categoryId, isEditing, isOtherTransactions) => (
   isOtherTransactions
 });
 
-export const setActionView = (actionType) => ({
+export const setActionView = (actionType, actionProperties) => ({
   type: SET_ACTION_VIEW,
-  actionType
+  actionType,
+  actionProperties
 });
 
 export const removeBudgetView = () => ({
@@ -91,4 +101,10 @@ export const removeCategoryView = () => ({
 
 export const removeActionView = () => ({
   type: REMOVE_ACTION_VIEW
+});
+
+export const adjustCategory = (categoryId, currentLimit) => ({
+  type: ADJUST_CATEGORY,
+  categoryId,
+  currentLimit
 });

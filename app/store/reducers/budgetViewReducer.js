@@ -4,11 +4,11 @@ const defaultBudgetViewState = {
   isAdjusting: false
 };
 
-export default (state = defaultBudgetViewState, action) => {
+export default (state = defaultBudgetViewState, action, globalState) => {
   switch (action.type) {
     case SET_BUDGET_VIEW:
       let categories = (action.isAdjusting)?
-        action.categories.map(category => ({
+        globalState.categories.map(category => ({
           categoryId: category.categoryId,
           name: category.name,
           currentLimit: category.currentLimit,

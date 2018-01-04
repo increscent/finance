@@ -26,4 +26,4 @@ var _transactionRoutes2 = _interopRequireDefault(_transactionRoutes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = (0, _express.Router)().use('/', _middleware.verifyAccount).use('/account', _accountRoutes2.default).use('/period', _periodRoutes2.default).use('/category', _categoryRoutes2.default).use('/transaction', _transactionRoutes2.default).use('/', _middleware.handleApiErrors);
+exports.default = (0, _express.Router)().use('/', _middleware.no304).use('/', _middleware.verifyAccount).use('/account', _accountRoutes2.default).use('/period', _periodRoutes2.default).use('/category', _categoryRoutes2.default).use('/transaction', _transactionRoutes2.default).use('/', _middleware.handleApiErrors);

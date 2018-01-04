@@ -13,7 +13,10 @@ var _models = require('../dataLayer/models');
 var _converters = require('../dataLayer/converters');
 
 function getTransactions(accountId, periodId) {
-  return _models.Transaction.find({ account_id: accountId, period_id: periodId }).then(function (transactions) {
+  return _models.Transaction.find({
+    account_id: accountId,
+    $or: [{ period_id: periodId }, { period_id: null }]
+  }).then(function (transactions) {
     return transactions.map(_converters.convertTransaction);
   });
 }

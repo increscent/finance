@@ -16,7 +16,7 @@ export default (props) => (
       add transaction
     </span>
     {!props.isAdjusting && <span className="link-button"
-      onClick={() => props.adjustCategories(props.categories)}>
+      onClick={props.adjustCategories}>
       adjust budget
     </span>}
   </div>

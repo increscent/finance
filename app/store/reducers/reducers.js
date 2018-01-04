@@ -1,12 +1,26 @@
-import { combineReducers } from 'redux';
-import account from './account.js';
-import categories from './categories.js';
-import transactions from './transactions.js';
-import views from './views.js';
+import accountReducer from './accountReducer.js';
+import categoriesReducer from './categoriesReducer.js';
+import transactionsReducer from './transactionsReducer.js';
+import viewsReducer from './viewsReducer.js';
 
-export default combineReducers({
-  account,
-  categories,
-  transactions,
-  views
-});
+// const defaultState = {
+//   account: {
+//     isLoggedIn: false
+//   },
+//   categories: [],
+//   transactions: [],
+//   views: {
+//     budgetView: {
+//       isAdjusting: false
+//     }
+//   }
+// }
+
+export default (state = {}, action) => {
+  return {
+    account: accountReducer(state.account, action, state),
+    categories: categoriesReducer(state.categories, action, state),
+    transactions: transactionsReducer(state.transactions, action, state),
+    views: viewsReducer(state.views, action, state)
+  };
+};

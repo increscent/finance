@@ -2,7 +2,7 @@ import React from 'react';
 import ViewHolder from '../../viewHolder/viewHolder.js';
 import CategoryAddContainer from '../../categoryAdd/categoryAddContainer.js';
 // import CategoryDelete from '../../categoryDelete/categoryDelete.js';
-import TransactionAdd from '../../transactionAdd/transactionAdd.js';
+import TransactionAddContainer from '../../transactionAdd/transactionAddContainer.js';
 
 export const CATEGORY_ADD = 'CATEGORY_ADD';
 export const CATEGORY_DELETE = 'CATEGORY_DELETE';
@@ -18,7 +18,7 @@ export default (props) => {
     <ViewHolder onClose={props.onClose} title={title}>
       {props.actionType === CATEGORY_ADD && <CategoryAddContainer />}
       {/*props.actionType === CATEGORY_DELETE && <CategoryDelete />*/}
-      {props.actionType === TRANSACTION_ADD && <TransactionAdd />}
+      {props.actionType === TRANSACTION_ADD && <TransactionAddContainer />}
     </ViewHolder>
   );
 };

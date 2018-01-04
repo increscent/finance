@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
   openCategory: (categoryId, isOtherTransactions) =>
     dispatch(setCategoryView(categoryId, false, isOtherTransactions)),
   addCategoryDebit: (categoryId) =>
-    dispatch(setActionView(TRANSACTION_ADD, { categoryId }))
+    dispatch(setActionView(TRANSACTION_ADD, {categoryId, type: 'DEBIT'}))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryList);

@@ -3,7 +3,7 @@ import React from 'react';
 export default (props) => (
   <div className="category-edit">
     <div className="form-row">
-      Unbudgeted funds: ${props.unbudgetedFunds}
+      Unbudgeted funds: ${props.totalCredits - props.budgetedFunds}
     </div>
 
     {!props.isNewCategory && <div className="form-row">
@@ -40,7 +40,7 @@ export default (props) => (
 
     <div className="form-submit-row">
       <button className="form-button" onClick={props.onCancel}>cancel</button>
-      <button className="form-button" onClick={() => props.onSave(props.category)}>save</button>
+      <button className="form-button" onClick={() => props.onSave(props.category, props.totalCredits)}>save</button>
     </div>
   </div>
 );

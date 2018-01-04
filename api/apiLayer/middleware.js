@@ -1,3 +1,8 @@
+export function no304(req, res, next) {
+  res.setHeader('Last-Modified', (new Date()).toUTCString());
+  next();
+}
+
 export function verifyAccount(req, res, next) {
   if (!req.user) {
     next({statusCode: 401, message: 'Unauthorized. Try logging in.'});

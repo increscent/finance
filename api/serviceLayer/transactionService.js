@@ -2,7 +2,13 @@ import { Transaction, Category } from '../dataLayer/models';
 import { convertTransaction } from '../dataLayer/converters';
 
 export function getTransactions(accountId, periodId) {
-  return Transaction.find({account_id: accountId, period_id: periodId})
+  return Transaction.find({
+    account_id: accountId,
+    $or: [
+      {period_id: periodId},
+      {period_id: null}
+    ]
+  })
   .then(transactions => transactions.map(convertTransaction));
 }
 

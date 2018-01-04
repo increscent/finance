@@ -3,9 +3,14 @@ import React from 'react';
 export default (props) => (
   <div className="category-summary">
     <div className="category-balance">
-      Balance: $150.00 - $30.00 = $120.00
+      Balance: ${props.currentLimit} - ${props.totalDebits} =
+        &nbsp; ${props.currentLimit - props.totalDebits}
     </div>
-    <span className="link-button">edit</span>
-    <span className="link-button delete-button">delete</span>
+    <span className="link-button" onClick={() => props.onEdit(props.categoryId)}>
+      edit
+    </span>
+    <span className="link-button delete-button" onClick={() => props.onDelete(props.categoryId)}>
+      delete
+    </span>
   </div>
-)
+);

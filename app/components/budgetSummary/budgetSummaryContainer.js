@@ -8,8 +8,7 @@ const mapStateToProps = (state) => ({
   totalCredits: selectors.getTotalAppliedCredits(state),
   totalDebits: selectors.getTotalDebits(state),
   totalBudgetedFunds: selectors.getTotalBudgetedFunds(state),
-  isAdjusting: state.views.budgetView.isAdjusting,
-  categories: state.categories
+  isAdjusting: state.views.budgetView.isAdjusting
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -17,8 +16,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setActionView(CATEGORY_ADD)),
   addTransaction: () =>
     dispatch(setActionView(TRANSACTION_ADD)),
-  adjustCategories: (categories) =>
-    dispatch(setBudgetView(true, categories))
+  adjustCategories: () =>
+    dispatch(setBudgetView(true))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetSummary);

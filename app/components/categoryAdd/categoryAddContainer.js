@@ -5,26 +5,23 @@ import selectors from '../../store/selectors/selectors.js';
 import { postRequest } from '../../store/api.js';
 
 const mapStateToProps = (state) => ({
-  unbudgetedFunds: selectors.getTotalAppliedCredits(state) - selectors.getTotalBudgetedFunds(state),
-  category: {
-    ...selectors.getNewCategory(state),
-    totalCredits: selectors.getTotalAppliedCredits(state),
-    periodId: state.account.currentPeriodId
-  }
+  budgetedFunds: selectors.getTotalBudgetedFunds(state),
+  totalCredits: selectors.getTotalAppliedCredits(state),
+  category: selectors.getNewCategory(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onNameChange: (name) => dispatch(updateNewCategory({name})),
   onAllowanceTypeChange: (allowanceType) => dispatch(updateNewCategory({allowanceType})),
-  onAllowanceChange: (allowance) => dispatch(updateNewCategory({allowance})),
+  onAllowanceChange: (allowance) => dispatch(updateNewCategory({
+    allowance: parseFloat(allowance)
+  })),
   onCancel: () => dispatch(removeActionView()),
-  onSave: (category) => {
+  onSave: (category, totalCredits) => {
     postRequest('/api/category', {
       ...category,
-      allowance: parseFloat(category.allowance),
       currentLimit: (category.allowanceType === '%')?
-        category.totalCredits * parseFloat(category.allowance) / 100 : parseFloat(category.allowance),
-      totalCredits: null
+        totalCredits * category.allowance / 100 : category.allowance
     })
     .then(category => dispatch(addCategory(category)))
     .then(() => dispatch(removeActionView()))

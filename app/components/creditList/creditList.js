@@ -1,4 +1,5 @@
 import React from 'react';
+import { prettyDate } from '../shared/converters.js';
 
 export default (props) => (
   <ul className="debit-credit-list">
@@ -8,47 +9,45 @@ export default (props) => (
           Credits
         </span>
         <span className="right-align">
-          <span className="link-button">add credit</span>
+          <span className="link-button" onClick={props.onAdd}>add credit</span>
         </span>
       </div>
     </li>
-    <li>
-      <div className="info-row">
-        <span className="left-align">
-          15 Oct 2017
-        </span>
-        <span className="right-align">
-          (applied) $25.00
-        </span>
-      </div>
-      <div className="info-row">
-        <span className="left-align">
-          Birthday something really really long
-        </span>
-        <span className="right-align">
-          <span className="link-button">unapply</span>
-          <span className="link-button delete-button">delete</span>
-        </span>
-      </div>
-    </li>
-    <li>
-      <div className="info-row">
-        <span className="left-align">
-          14 Oct 2017
-        </span>
-        <span className="right-align">
-          (unapplied) $500.00
-        </span>
-      </div>
-      <div className="info-row">
-        <span className="left-align">
-          Paycheck
-        </span>
-        <span className="right-align">
-          <span className="link-button">apply</span>
-          <span className="link-button delete-button">delete</span>
-        </span>
-      </div>
-    </li>
+    {
+      props.credits.map(credit =>
+        <li key={credit.transactionId}>
+          <div className="info-row">
+            <span className="left-align">
+              {prettyDate(credit.date)}
+            </span>
+            <span className="right-align">
+              {credit.periodId? '(applied)' : '(unapplied)'}
+              &nbsp; ${credit.amount}
+            </span>
+          </div>
+          <div className="info-row">
+            <span className="left-align">
+              {credit.note}
+            </span>
+            <span className="right-align">
+              {
+                (credit.periodId)?
+                <span className="link-button" onClick={() => props.onUnapply(credit.transactionId)}>
+                  unapply
+                </span>
+                :
+                <span className="link-button" onClick={() => props.onApply(credit.transactionId, props.currentPeriodId)}>
+                  apply
+                </span>
+              }
+              <span className="link-button delete-button"
+                onClick={() => props.onDelete(credit.transactionId)}>
+                delete
+              </span>
+            </span>
+          </div>
+        </li>
+      )
+    }
   </ul>
 );

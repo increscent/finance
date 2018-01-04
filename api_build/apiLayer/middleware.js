@@ -3,9 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.no304 = no304;
 exports.verifyAccount = verifyAccount;
 exports.handleApiErrors = handleApiErrors;
 exports.verifyRequestBody = verifyRequestBody;
+function no304(req, res, next) {
+  res.setHeader('Last-Modified', new Date().toUTCString());
+  next();
+}
+
 function verifyAccount(req, res, next) {
   if (!req.user) {
     next({ statusCode: 401, message: 'Unauthorized. Try logging in.' });

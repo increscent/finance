@@ -8,19 +8,15 @@ export default (state = [], action) => {
     case ADD_CATEGORIES:
       return [...state, ...action.categories];
     case REMOVE_CATEGORY:
-      index = state.findIndex(category =>
-        category.categoryId === action.categoryId);
-      if (index === -1) {
-        return state;
-      } else {
-        return [
-          ...state.slice(0, index),
-          ...state.slice(index + 1)
-        ];
-      }
+      index = findIndex(state, action.categoryId);
+      if (index === -1) return state;
+
+      return [
+        ...state.slice(0, index),
+        ...state.slice(index + 1)
+      ];
     case UPDATE_CATEGORY:
-      index = state.findIndex(category =>
-        category.categoryId === action.categoryId);
+      index = findIndex(state, action.categoryId);
       if (index === -1) return state;
 
       let category = state[index];
@@ -36,3 +32,8 @@ export default (state = [], action) => {
       return state;
   }
 };
+
+function findIndex(categories, categoryId) {
+  categories.findIndex(category =>
+    category.categoryId === categoryId);
+}

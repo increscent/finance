@@ -12,7 +12,7 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _mongoose2.default.Promise = global.Promise;
-_mongoose2.default.connect('mongodb://localhost/finance', { useMongoClient: true });
+_mongoose2.default.connect('mongodb://localhost/finance2', { useMongoClient: true });
 var ObjectId = _mongoose.Schema.Types.ObjectId;
 
 var accountSchema = {

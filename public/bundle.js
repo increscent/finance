@@ -697,50 +697,52 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_categoryListAdjust2.default);
 
 },{"../../store/actions.js":37,"../../store/api.js":38,"../../store/selectors/selectors.js":50,"./categoryListAdjust.js":10,"react-redux":235}],12:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _converters = require('../shared/converters.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
   return _react2.default.createElement(
-    "div",
-    { className: "category-summary" },
+    'div',
+    { className: 'category-summary' },
     _react2.default.createElement(
-      "div",
-      { className: "category-balance" },
-      "Balance: $",
-      props.currentLimit,
-      " - $",
-      props.totalDebits,
-      " = \xA0 $",
-      props.currentLimit - props.totalDebits
+      'div',
+      { className: 'category-balance' },
+      'Balance: $',
+      (0, _converters.prettyAmount)(props.currentLimit),
+      ' - $',
+      (0, _converters.prettyAmount)(props.totalDebits),
+      ' = \xA0 $',
+      (0, _converters.prettyAmount)(props.currentLimit - props.totalDebits)
     ),
     _react2.default.createElement(
-      "span",
-      { className: "link-button", onClick: function onClick() {
+      'span',
+      { className: 'link-button', onClick: function onClick() {
           return props.onEdit(props.categoryId);
         } },
-      "edit"
+      'edit'
     ),
     _react2.default.createElement(
-      "span",
-      { className: "link-button delete-button", onClick: function onClick() {
+      'span',
+      { className: 'link-button delete-button', onClick: function onClick() {
           return props.onDelete(props.categoryId);
         } },
-      "delete"
+      'delete'
     )
   );
 };
 
-},{"react":266}],13:[function(require,module,exports){
+},{"../shared/converters.js":21,"react":266}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

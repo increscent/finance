@@ -1,6 +1,6 @@
 import mongoose, { Types, Schema } from 'mongoose';
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/finance', {useMongoClient: true});
+mongoose.connect('mongodb://localhost/finance2', {useMongoClient: true});
 let ObjectId = Schema.Types.ObjectId;
 
 let accountSchema = {

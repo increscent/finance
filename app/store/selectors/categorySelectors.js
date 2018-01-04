@@ -27,8 +27,3 @@ export const getNewCategory = (state) =>
 
 export const getEditCategory = (state) =>
   state.views.categoryView.category;
-
-export const getEditedBudgetedFunds = (state) =>
-  getOtherCategories(state, state.views.categoryView.categoryId)
-  .reduce((acc, category) => acc + category.currentLimit, 0)
-   + state.views.categoryView.category.currentLimit;

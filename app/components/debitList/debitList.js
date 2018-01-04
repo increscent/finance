@@ -1,5 +1,5 @@
 import React from 'react';
-import { prettyDate } from '../shared/converters.js';
+import { prettyDate, prettyAmount } from '../shared/converters.js';
 
 export default (props) => (
   <ul className="debit-credit-list">
@@ -23,7 +23,7 @@ export default (props) => (
               {prettyDate(debit.date)}
             </span>
             <span className="right-align">
-              ${debit.amount}
+              ${prettyAmount(debit.amount)}
             </span>
           </div>
           <div className="info-row">

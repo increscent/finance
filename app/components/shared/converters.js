@@ -5,3 +5,6 @@ export const prettyDate = (date) => {
   return d.getUTCDate() + ' ' + abbreviatedMonths[d.getUTCMonth()] +
   ' ' + d.getUTCFullYear();
 };
+
+export const prettyAmount = (amount) =>
+  parseFloat(amount).toFixed(2);

@@ -6,7 +6,7 @@ import selectors from '../../store/selectors/selectors.js';
 import { putRequest } from '../../store/api.js';
 
 const mapStateToProps = (state) => ({
-  budgetedFunds: selectors.getEditedBudgetedFunds(state),
+  budgetedFunds: selectors.getOtherBudgetedFunds(state),
   totalCredits: selectors.getTotalAppliedCredits(state),
   category: selectors.getEditCategory(state),
   totalDebits: selectors.getCategoryTotalDebits(state, state.views.categoryView.categoryId)
@@ -33,7 +33,6 @@ const mapDispatchToProps = (dispatch) => ({
   })),
   onCancel: (categoryId) => dispatch(setCategoryView(categoryId)),
   onSave: (category) => {
-    console.log(category);
     putRequest('/api/category/' + category.categoryId, category)
     .then(() => dispatch(updateCategory(category.categoryId, category)))
     .then(() => dispatch(setCategoryView(category.categoryId)))

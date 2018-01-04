@@ -1,4 +1,5 @@
 import React from 'react';
+import { prettyAmount } from '../shared/converters.js';
 
 export default (props) => (
   <div className="category-list">
@@ -11,7 +12,7 @@ export default (props) => (
           </div>
           <div className="category-button"
             onClick={() => props.addCategoryDebit(category.categoryId)}>
-            ${category.balance}
+            ${prettyAmount(category.balance)}
           </div>
         </li>
       )

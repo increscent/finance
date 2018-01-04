@@ -1,9 +1,10 @@
 import React from 'react';
+import { prettyAmount } from '../shared/converters.js';
 
 export default (props) => (
   <div className="category-edit">
     <div className="form-row">
-      Unbudgeted funds: ${props.totalCredits - props.budgetedFunds}
+      Unbudgeted funds: ${prettyAmount(props.totalCredits - (props.budgetedFunds + (props.category.currentLimit || 0)))}
     </div>
 
     {!props.isNewCategory && <div className="form-row">
@@ -12,7 +13,8 @@ export default (props) => (
       </div>
       <div className="form-column-right">
         $ <input type="number" step=".01" className="allowance-edit" value={props.category.currentLimit}
-          onChange={event => props.onCurrentLimitChange(event.target.value)} /> - ${props.totalDebits} = ${props.category.currentLimit - props.totalDebits}
+          onChange={event => props.onCurrentLimitChange(event.target.value)} /> - ${prettyAmount(props.totalDebits)} =
+          &nbsp; ${prettyAmount((props.category.currentLimit || 0) - props.totalDebits)}
       </div>
     </div>}
 
@@ -47,7 +49,7 @@ export default (props) => (
           checked={props.category.allowanceType === '%'}
           onChange={event => props.onAllowanceTypeChange(event.target.value, props.category, props.totalCredits)} />
         <label htmlFor="percentType">%</label>
-        
+
       </div>
     </div>
 

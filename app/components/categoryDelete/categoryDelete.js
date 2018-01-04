@@ -3,7 +3,7 @@ import React from 'react';
 export default (props) => (
   <div className="category-delete">
     <div className="form-row">
-      Move all debits in "Food" to:
+      Move all debits in "{props.categoryName}" to:
     </div>
 
     <div className="form-row">
@@ -20,7 +20,7 @@ export default (props) => (
     </div>
 
     <div className="form-row">
-      Are you sure you want to delete category "Food"?
+      Are you sure you want to delete category "{props.categoryName}"?
     </div>
 
     <div className="form-submit-row">

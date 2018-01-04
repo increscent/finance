@@ -10,11 +10,21 @@ const mapStateToProps = (state) => ({
   category: selectors.getNewCategory(state)
 });
 
+const calcCurrentLimit = (allowance, allowanceType, totalCredits) =>
+  (allowanceType === '%')?
+    allowance * totalCredits / 100
+    :
+    allowance;
+
 const mapDispatchToProps = (dispatch) => ({
   onNameChange: (name) => dispatch(updateNewCategory({name})),
-  onAllowanceTypeChange: (allowanceType) => dispatch(updateNewCategory({allowanceType})),
-  onAllowanceChange: (allowance) => dispatch(updateNewCategory({
-    allowance: parseFloat(allowance)
+  onAllowanceTypeChange: (allowanceType, category, totalCredits) => dispatch(updateNewCategory({
+    allowanceType,
+    currentLimit: calcCurrentLimit(parseFloat(category.allowance), allowanceType, totalCredits)
+  })),
+  onAllowanceChange: (allowance, category, totalCredits) => dispatch(updateNewCategory({
+    allowance: parseFloat(allowance),
+    currentLimit: calcCurrentLimit(parseFloat(allowance), category.allowanceType, totalCredits)
   })),
   onCancel: () => dispatch(removeActionView()),
   onSave: (category, totalCredits) => {

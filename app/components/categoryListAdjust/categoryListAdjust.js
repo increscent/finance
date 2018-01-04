@@ -1,13 +1,14 @@
 import React from 'react';
+import { prettyAmount } from '../shared/converters.js';
 
 export default (props) => (
   <ul className="category-list-adjust">
     <li>
       <div className="category-name-adjust">
-        Total funds: ${props.totalCredits}
+        Total funds: ${prettyAmount(props.totalCredits)}
       </div>
       <div className="category-balance-adjust">
-        Unbudgeted funds: ${props.totalCredits - props.budgetedFunds}
+        Unbudgeted funds: ${prettyAmount(props.totalCredits - (props.budgetedFunds || 0))}
       </div>
     </li>
     {
@@ -19,7 +20,7 @@ export default (props) => (
           <div className="category-balance-adjust">
             $ <input type="number" step=".01" className="allowance-edit" value={category.currentLimit}
               onChange={event => props.adjustCategory(category.categoryId, event.target.value)} />
-              &nbsp;- ${category.debits} = ${category.currentLimit - category.debits}
+              &nbsp;- ${prettyAmount(category.debits)} = ${prettyAmount((category.currentLimit || 0) - category.debits)}
           </div>
         </li>
       )

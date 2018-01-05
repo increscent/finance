@@ -12,7 +12,7 @@ input[type=number] {
   font-size: 12pt;
   color: #555;
   text-decoration: underline;
-  margin-left: 15px;
+  margin-left: 10px;
 
   &:hover, &:active {
     cursor: pointer;
@@ -38,7 +38,8 @@ input[type=number] {
 }
 
 .form-column-left {
-  width: 100px;
+  padding-right: 5px;
+  flex-basis: 75px;
 }
 
 .form-column-right {
@@ -46,7 +47,7 @@ input[type=number] {
 }
 
 .form-submit-row {
-  width: 100%;
+  flex-grow: 1;
   padding: 0 10px 15px;
   text-align: center;
 }

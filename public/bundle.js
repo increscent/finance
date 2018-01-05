@@ -36,12 +36,12 @@ exports.default = function (props) {
     _react2.default.createElement(
       'span',
       { className: 'link-button', onClick: props.addCategory },
-      'add category'
+      '+ category'
     ),
     _react2.default.createElement(
       'span',
       { className: 'link-button', onClick: props.addTransaction },
-      'add transaction'
+      '+ transaction'
     ),
     !props.isAdjusting && _react2.default.createElement(
       'span',
@@ -1237,7 +1237,9 @@ var prettyDate = exports.prettyDate = function prettyDate(date) {
 };
 
 var prettyAmount = exports.prettyAmount = function prettyAmount(amount) {
-  return parseFloat(amount).toFixed(2);
+  return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+(\.|$))/g, function (match) {
+    return match + ',';
+  });
 };
 
 },{}],22:[function(require,module,exports){

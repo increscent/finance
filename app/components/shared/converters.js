@@ -7,4 +7,4 @@ export const prettyDate = (date) => {
 };
 
 export const prettyAmount = (amount) =>
-  parseFloat(amount).toFixed(2);
+  parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+(\.|$))/g, (match) => match + ',');

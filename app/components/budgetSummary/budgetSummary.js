@@ -11,10 +11,10 @@ export default (props) => (
       Unbudgeted funds: ${prettyAmount(props.totalCredits - props.totalBudgetedFunds)}
     </div>
     <span className="link-button" onClick={props.addCategory}>
-      add category
+      + category
     </span>
     <span className="link-button" onClick={props.addTransaction}>
-      add transaction
+      + transaction
     </span>
     {!props.isAdjusting && <span className="link-button"
       onClick={props.adjustCategories}>

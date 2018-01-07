@@ -3,6 +3,9 @@ import { prettyAmount } from '../shared/converters.js';
 
 export default (props) => (
   <div className="budget-summary">
+    <div className="logout-row">
+      <a className="link-button" href="/logout">logout</a>
+    </div>
     <div className="summary-row">
       Balance: ${prettyAmount(props.totalCredits)} - ${prettyAmount(props.totalDebits)} =
         ${prettyAmount(props.totalCredits - props.totalDebits)}

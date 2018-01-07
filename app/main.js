@@ -12,11 +12,11 @@ initData(store);
 
 ReactDOM.render(
   <Provider store={store}>
-    {/*
-      store.getState().account.isLoggedIn?*/
+    {
+      store.getState().account.isLoggedIn?
         <ViewsContainer />
-        /*:
-        <Login />*/
+        :
+        <Login />
     }
   </Provider>,
   document.getElementById('root')

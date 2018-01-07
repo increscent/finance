@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import mongoose from 'mongoose';
-import secrets from './config/secrets';
+import { getSecrets } from './config/secrets';
 import passportConfig from './config/passportConfig';
 import apiRoutes from './apiLayer/apiRoutes';
 
@@ -14,7 +14,7 @@ const mongoStore = connectMongo(session);
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
-    secret: secrets.SESSION_SECRET,
+    secret: getSecrets().SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new mongoStore({mongooseConnection: mongoose.connection}),

@@ -26,8 +26,6 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 
 var _secrets = require('./config/secrets');
 
-var _secrets2 = _interopRequireDefault(_secrets);
-
 var _passportConfig = require('./config/passportConfig');
 
 var _passportConfig2 = _interopRequireDefault(_passportConfig);
@@ -44,7 +42,7 @@ var mongoStore = (0, _connectMongo2.default)(_expressSession2.default);
 app.use(_bodyParser2.default.json());
 app.use((0, _cookieParser2.default)());
 app.use((0, _expressSession2.default)({
-    secret: _secrets2.default.SESSION_SECRET,
+    secret: (0, _secrets.getSecrets)().SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new mongoStore({ mongooseConnection: _mongoose2.default.connection }),

@@ -5,7 +5,9 @@ import store from './store/store.js';
 import { initData } from './store/data.js';
 import ViewsContainer from './components/views/viewsContainer.js';
 import Login from './components/login/login.js';
+import initReactFastclick from 'react-fastclick';
 
+initReactFastclick();
 initData(store);
 
 ReactDOM.render(

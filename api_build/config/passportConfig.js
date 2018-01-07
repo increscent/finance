@@ -10,8 +10,6 @@ var _passportGoogleOauth2 = _interopRequireDefault(_passportGoogleOauth);
 
 var _secrets = require('./secrets');
 
-var _secrets2 = _interopRequireDefault(_secrets);
-
 var _accountService = require('../serviceLayer/accountService');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23,9 +21,9 @@ module.exports = function (app) {
   app.use(_passport2.default.session());
 
   _passport2.default.use(new googleStrategy({
-    clientID: _secrets2.default.GOOGLE_CLIENT_ID,
-    clientSecret: _secrets2.default.GOOGLE_CLIENT_SECRET,
-    callbackURL: _secrets2.default.GOOGLE_CALLBACK_URL
+    clientID: (0, _secrets.getSecrets)().GOOGLE_CLIENT_ID,
+    clientSecret: (0, _secrets.getSecrets)().GOOGLE_CLIENT_SECRET,
+    callbackURL: (0, _secrets.getSecrets)().GOOGLE_CALLBACK_URL
   }, function (accessToken, refreshToken, profile, callback) {
     (0, _accountService.findOrCreate)(profile.id, profile.name.givenName, profile.name.familyName).then(function (accountId) {
       return callback(null, accountId);

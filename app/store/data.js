@@ -19,7 +19,7 @@ export const initData = (store) => {
       + store.getState().account.currentPeriodId))
     .then(categories => store.dispatch(addCategories(categories)))
     .catch(error => console.log(error))
-    
+
     .then(() => getRequest('/api/transaction?periodId='
       + store.getState().account.currentPeriodId))
     .then(transactions => store.dispatch(addTransactions(transactions)))

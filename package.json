@@ -5,7 +5,7 @@
   "main": "api/index.js",
   "scripts": {
     "test": "npm run build && mocha api_build/test/integrationTests.js",
-    "build": "browserify app/main.js -t babelify -t node-lessify -o public/bundle.js && babel api -d api_build",
+    "build": "browserify app/main.js -t babelify -t node-lessify -g uglifyify -o public/bundle.js && babel api -d api_build",
     "start": "npm run build && node api_build/index.js",
     "watch-less": "watchify app/main.less -t node-lessify -o public/style.js -v",
     "watch-react": "watchify app/main.js -t babelify -o public/bundle.js -v",
@@ -47,7 +47,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "redux-devtools": "^3.4.1"
+    "redux-devtools": "^3.4.1",
+    "uglifyify": "^4.0.5"
   },
   "babel": {
     "plugins": [

@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 module.exports = function (app) {
     app.post('/login', function(req, res) {
-        Account.findOne({username: req.body.username})
+        Account.findOne({username: req.body.username.trim().toLowerCase()})
         .then((account) => {
             if (account && account.password === hashPassword(req.body.password, account.salt)) {
                 req.session.accountId = account._id;

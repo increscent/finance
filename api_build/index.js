@@ -24,13 +24,13 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
-var _secrets = require('./config/secrets');
+var _secrets = require('./config/secrets.js');
 
-var _passportConfig = require('./config/passportConfig');
+var _loginConfig = require('./config/loginConfig.js');
 
-var _passportConfig2 = _interopRequireDefault(_passportConfig);
+var _loginConfig2 = _interopRequireDefault(_loginConfig);
 
-var _apiRoutes = require('./apiLayer/apiRoutes');
+var _apiRoutes = require('./apiLayer/apiRoutes.js');
 
 var _apiRoutes2 = _interopRequireDefault(_apiRoutes);
 
@@ -49,7 +49,7 @@ app.use((0, _expressSession2.default)({
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 * 6 }
 }));
 
-(0, _passportConfig2.default)(app);
+(0, _loginConfig2.default)(app);
 
 app.use('/api', _apiRoutes2.default);
 app.use(_express2.default.static(__dirname + '/../public'));

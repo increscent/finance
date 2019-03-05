@@ -4,9 +4,9 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import mongoose from 'mongoose';
-import { getSecrets } from './config/secrets';
-import passportConfig from './config/passportConfig';
-import apiRoutes from './apiLayer/apiRoutes';
+import { getSecrets } from './config/secrets.js';
+import loginConfig from './config/loginConfig.js';
+import apiRoutes from './apiLayer/apiRoutes.js';
 
 const app = express();
 const mongoStore = connectMongo(session);
@@ -21,7 +21,7 @@ app.use(session({
     cookie: {maxAge: 1000 * 60 * 60 * 24 * 7 * 6}
 }));
 
-passportConfig(app);
+loginConfig(app);
 
 app.use('/api', apiRoutes);
 app.use(express.static(__dirname + '/../public'));

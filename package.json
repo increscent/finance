@@ -47,7 +47,7 @@
         "react-router-dom": "^4.2.2",
         "redux": "^4.0.1",
         "redux-devtools": "^3.4.1",
-        "uglifyify": "^5.0.1"
+        "uglifyify": "^5.0.2"
     },
     "babel": {
         "plugins": [

@@ -10,5 +10,17 @@
   </div>
 
   <script type="text/javascript" src="/bundle.js"></script>
+  <script type="text/javascript">
+    var PRELOADED_CATEGORIES = [];
+    var PRELOADED_TRANSACTIONS = [];
+
+    fetch("/api/category")
+    .then(response => response.json())
+    .then(data => PRELOADED_CATEGORIES = data);
+
+    fetch("/api/transaction")
+    .then(response => response.json())
+    .then(data => PRELOADED_TRANSACTIONS = data);
+  </script>
 </body>
 </html>

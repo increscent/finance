@@ -3,19 +3,16 @@ import { categoryRequiredFields } from '../config/routeConfig';
 import { verifyRequestBody } from './middleware';
 import { getCategories, addCategory, updateCategory, deleteCategory }
   from '../serviceLayer/categoryService';
+import { periodIdOrCurrent } from './routeHelper';
 
 export default Router()
 
 .get('/', function (req, res, next) {
-  if (!req.query.periodId)
-    return next({
-      statusCode: 400,
-      message: 'Please specify periodId as query string parameter.'
-    });
-
-  getCategories(req.accountId, req.query.periodId)
-  .then(categories => res.send(JSON.stringify(categories)))
-  .catch(error => next(error));
+  periodIdOrCurrent(req, res, next, (periodId) => {
+    getCategories(req.accountId, periodId)
+    .then(categories => res.send(JSON.stringify(categories)))
+    .catch(error => next(error));
+  });
 })
 
 .post('/', verifyRequestBody(categoryRequiredFields),

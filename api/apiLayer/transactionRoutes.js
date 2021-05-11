@@ -3,19 +3,16 @@ import { transactionRequiredFields } from '../config/routeConfig';
 import { verifyRequestBody } from './middleware';
 import { getTransactions, addTransaction, updateTransaction, deleteTransaction }
   from '../serviceLayer/transactionService';
+import { periodIdOrCurrent } from './routeHelper';
 
 export default Router()
 
 .get('/', function (req, res, next) {
-  if (!req.query.periodId)
-    return next({
-      statusCode: 400,
-      message: 'Please specify periodId as query string parameter.'
-    });
-
-  getTransactions(req.accountId, req.query.periodId)
-  .then(transactions => res.send(JSON.stringify(transactions)))
-  .catch(error => next(error));
+  periodIdOrCurrent(req, res, next, (periodId) => {
+    getTransactions(req.accountId, periodId)
+    .then(transactions => res.send(JSON.stringify(transactions)))
+    .catch(error => next(error));
+  });
 })
 
 .post('/', verifyRequestBody(transactionRequiredFields),

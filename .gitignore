@@ -1,4 +1,4 @@
-config/secrets.js
+config.json
 
 public/bundle.js
 public/style.js

@@ -11,6 +11,7 @@ How to run:
 * `sudo systemctl start mongod`
 * `npm install`
 * `npm run build`
+* `cp config.json.example config.json`
 * Run simultaneously:
   * `npm run watch-less`
   * `npm run watch-react`
@@ -23,5 +24,6 @@ Visit `localhost:45678`
 How to run:
 * `sudo systemctl enable mongod`
 * `sudo systemctl start mongod`
+* `cp config.json.example config.json` (and update `SESSION_SECRET`)
 * `npm install`
 * `npm start`

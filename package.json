@@ -7,8 +7,8 @@
         "test": "npm run build && mocha api_build/test/integrationTests.js",
         "build": "browserify app/main.js -t babelify -t node-lessify -g uglifyify -o public/bundle.js && babel api -d api_build && chmod +x api_build/index.js",
         "start": "npm run build && node api_build/index.js",
-        "watch-less": "watchify app/main.less -t node-lessify -o public/style.js -v",
-        "watch-react": "watchify app/main.js -t babelify -o public/bundle.js -v",
+        "watch-less": "./node_modules/watchify/bin/cmd.js app/main.less -t node-lessify -o public/style.js -v",
+        "watch-react": "./node_modules/watchify/bin/cmd.js app/main.js -t babelify -o public/bundle.js -v",
         "watch-server": "nodemon api/index.js --watch api --exec babel-node"
     },
     "repository": {
@@ -35,10 +35,10 @@
         "express": "^4.16.2",
         "express-session": "^1.15.6",
         "mixin": "^0.2.0",
-        "mocha": "^6.0.2",
-        "mongoose": "^5.4.17",
+        "mocha": "^8.4.0",
+        "mongoose": "^5.12.8",
         "node-lessify": "^0.1.5",
-        "nodemon": "^1.14.7",
+        "nodemon": "^2.0.7",
         "react": "^16.8.3",
         "react-dom": "^16.8.3",
         "react-fastclick": "^3.0.2",
@@ -63,5 +63,8 @@
             "stage-2",
             "react"
         ]
+    },
+    "devDependencies": {
+        "watchify": "^4.0.0"
     }
 }

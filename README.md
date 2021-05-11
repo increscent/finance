@@ -1,5 +1,5 @@
 # Finance App
-### (How I keep track of my finances)
+### (How I track my finances)
 
 ## Development
 
